@@ -1,0 +1,10 @@
+query_id,candidate_artist,candidate_album,predicted_count,reference_count,exact_match_count,precision,recall,main_correction
+load-density,David Bowie,Earthling,,23,,,,"Curator profile recorded; dense is confirmed"
+load-density,U2,Pop,,11,,,,"Curator profile recorded; dense is absent and artist-arc analogy was overweighted"
+load-density,R.E.M.,Monster,,17,,,,"Curator profile recorded; noisy and buzzy are confirmed but dense is absent"
+korn-issues-despair-anxiety,Xiu Xiu,A Promise,27,71,21,0.778,0.296,"Use exact taxonomy term self-hatred; nonbinary-vocalist replaces incorrect male-vocalist; recover identity vocal-delivery and narrative axes"
+korn-issues-despair-anxiety,Dalek,Absence,26,48,22,0.846,0.458,"Political and conscious are umbrellas; recover ideological specificity and threatening atmosphere"
+korn-issues-despair-anxiety,Planning for Burial,Below the House,26,22,15,0.577,0.682,"Avoid unsupported contextual projection; recover lethargy winter sentimentality self-hatred and unrequited-love"
+janes-addiction-environment,Einsturzende Neubauten,Kollaps,23,27,15,0.652,0.556,"Recover rhythmic atonal anxious abstract minimalistic tribal ritualistic sampling misanthropic piercing and hypnotic; replace incorrect male-vocalist with nonbinary-vocalist"
+janes-addiction-environment,Fela Kuti,Expensive Shit,25,32,15,0.600,0.469,"Recover protest tropical female-vocalist polyphonic call-and-response polyrhythm socialism poverty police code-mixing and bouncy; do not promote contextual environment into unsupported album tags"
+janes-addiction-environment,Patricio Rey y sus Redonditos de Ricota,Gulp!,21,13,8,0.381,0.615,"Separate scene evidence from album assignments; recover anxious abstract sexual nocturnal and bittersweet while dropping unsupported contextual projections"

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Music Descriptor Taxonomy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "taxonomy_id",
+    "dimensions",
+    "nodes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "taxonomy_id": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "tier",
+        "parent_id",
+        "root_dimension",
+        "child_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "definition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tier": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parent_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "root_dimension": {
+          "type": "string"
+        },
+        "declared_subdescriptor_count": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "direct_child_count": {
+          "type": "integer"
+        },
+        "descendant_count": {
+          "type": "integer"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "child_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_paragraph": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

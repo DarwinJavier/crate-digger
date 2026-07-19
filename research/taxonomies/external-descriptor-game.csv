@@ -1,0 +1,291 @@
+round,artist,album,year,phase,rank,descriptor_id,source,confidence,notes
+1,Spice Girls,Spice,1996,prediction,1,female-vocalist,llm_inferred,0.60,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,2,energetic,llm_inferred,0.60,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,3,playful,llm_inferred,0.60,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,4,love,llm_inferred,0.55,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,5,romantic,llm_inferred,0.55,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,6,rhythmic,llm_inferred,0.55,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,7,melodic,llm_inferred,0.50,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,8,happy,llm_inferred,0.50,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,9,party,llm_inferred,0.45,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,prediction,10,uplifting,llm_inferred,0.45,Initial prediction before curator reference
+1,Spice Girls,Spice,1996,reference,1,uplifting,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,2,energetic,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,3,female-vocalist,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,4,party,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,5,playful,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,6,melodic,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,7,rhythmic,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,8,love,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,9,romantic,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,10,boastful,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,11,happy,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,12,warm,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,13,sexual,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,14,anthemic,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,15,gang-vocals,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,16,repetitive,curator,1.00,Ordered reference supplied after prediction
+1,Spice Girls,Spice,1996,reference,17,passionate,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,prediction,1,melancholic,llm_inferred,0.60,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,2,introspective,llm_inferred,0.60,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,3,male-vocalist,llm_inferred,0.60,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,4,melodic,llm_inferred,0.55,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,5,mellow,llm_inferred,0.55,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,6,bittersweet,llm_inferred,0.50,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,7,atmospheric,llm_inferred,0.50,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,8,sentimental,llm_inferred,0.50,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,9,lonely,llm_inferred,0.45,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,prediction,10,existential,llm_inferred,0.45,Initial prediction before curator reference
+2,David Bowie,Hours...,1999,reference,1,melodic,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,2,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,3,introspective,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,4,melancholic,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,5,atmospheric,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,6,ethereal,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,7,mellow,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,8,cold,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,9,lush,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,10,futuristic,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,11,space,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,12,ageing,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,13,serious,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,14,regret,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,15,grief,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,16,smooth,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,17,breakup,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,18,love,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,19,passionate,curator,1.00,Ordered reference supplied after prediction
+2,David Bowie,Hours...,1999,reference,20,anxious,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,1,melancholic,llm_inferred,0.65,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,2,male-vocalist,llm_inferred,0.65,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,3,nocturnal,llm_inferred,0.60,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,4,lonely,llm_inferred,0.60,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,5,romantic,llm_inferred,0.55,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,6,mellow,llm_inferred,0.55,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,7,lush,llm_inferred,0.50,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,8,longing,llm_inferred,0.50,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,9,breakup,llm_inferred,0.50,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,prediction,10,sentimental,llm_inferred,0.45,Initial prediction before curator reference
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,1,lonely,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,2,melancholic,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,3,concept-album,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,4,nocturnal,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,5,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,6,sentimental,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,7,introspective,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,8,romantic,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,9,breakup,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,10,longing,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,11,bittersweet,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,12,orchestral,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,13,mellow,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,14,lush,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,15,soothing,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,16,love,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,17,melodic,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,18,ballad,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,19,acoustic,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,20,passionate,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,21,atmospheric,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,22,crooning,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,23,divorce,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,24,urban,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,25,rain,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,26,twinkling,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,27,nightlife,curator,1.00,Ordered reference supplied after prediction
+3,Frank Sinatra,In the Wee Small Hours,1955,reference,28,calm,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,prediction,1,passionate,llm_inferred,0.60,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,2,melodic,llm_inferred,0.60,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,3,male-vocalist,llm_inferred,0.60,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,4,romantic,llm_inferred,0.55,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,5,love,llm_inferred,0.55,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,6,energetic,llm_inferred,0.50,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,7,rhythmic,llm_inferred,0.50,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,8,warm,llm_inferred,0.50,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,9,breakup,llm_inferred,0.45,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,prediction,10,longing,llm_inferred,0.45,Initial prediction before curator reference
+4,Maná,Sueños Líquidos,1997,reference,1,love,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,2,melodic,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,3,ethereal,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,4,lush,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,5,lonely,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,6,sensual,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,7,rhythmic,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,8,tropical,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,9,romantic,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,10,atmospheric,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,11,passionate,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,12,eclectic,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,13,aquatic,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,14,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+4,Maná,Sueños Líquidos,1997,reference,15,longing,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,prediction,1,pastoral,llm_inferred,0.60,Album inference with weak cover corroboration from depicted open field and rural dress
+5,Simón Díaz,Tonadas,1974,prediction,2,acoustic,llm_inferred,0.60,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,prediction,3,male-vocalist,llm_inferred,0.60,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,prediction,4,poetic,llm_inferred,0.55,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,prediction,5,nature,llm_inferred,0.55,Album inference with weak cover corroboration from depicted landscape
+5,Simón Díaz,Tonadas,1974,prediction,6,melodic,llm_inferred,0.50,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,prediction,7,mellow,llm_inferred,0.50,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,prediction,8,melancholic,llm_inferred,0.45,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,prediction,9,warm,llm_inferred,0.40,Weak cover-supported candidate from cream palette and sunlit landscape
+5,Simón Díaz,Tonadas,1974,prediction,10,rhythmic,llm_inferred,0.40,Album-knowledge inference; not inferred from cover
+5,Simón Díaz,Tonadas,1974,reference,1,acoustic,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,2,pastoral,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,3,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,4,poetic,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,5,sparse,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,6,folklore,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,7,passionate,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,8,soft,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,9,nature,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,10,lonely,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,11,longing,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,12,melodic,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,13,love,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,14,minimalistic,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,15,bittersweet,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,16,melancholic,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,17,peaceful,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,18,calm,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,19,mellow,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,20,lo-fi,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,21,nocturnal,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,22,sentimental,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,23,playful,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,24,humorous,curator,1.00,Ordered reference supplied after prediction
+5,Simón Díaz,Tonadas,1974,reference,25,falsetto,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,1,rhythmic,llm_inferred,0.60,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,2,male-vocalist,llm_inferred,0.60,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,3,energetic,llm_inferred,0.55,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,4,boastful,llm_inferred,0.55,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,5,conscious,llm_inferred,0.55,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,6,party,llm_inferred,0.50,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,7,sexual,llm_inferred,0.50,Album-knowledge inference; parental advisory does not identify this theme
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,8,sampling,llm_inferred,0.45,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,9,urban,llm_inferred,0.40,Album inference with weak cover corroboration from barbershop-like interior
+6,Tego Calderón,The Underdog / El Subestimado,2006,prediction,10,rebellious,llm_inferred,0.40,Album-knowledge inference; not inferred from cover
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,1,sampling,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,2,warm,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,3,playful,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,4,eclectic,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,5,boastful,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,6,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,7,sensual,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,8,anthemic,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,9,rhythmic,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,10,heavy,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,11,rebellious,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,12,happy,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,13,sexual,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,14,uplifting,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,15,summer,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,16,passionate,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,17,raw,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,18,urban,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,19,party,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,20,energetic,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,21,conscious,curator,1.00,Ordered reference supplied after prediction
+6,Tego Calderón,The Underdog / El Subestimado,2006,reference,22,hedonism,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,1,eclectic,llm_inferred,0.75,Supported by artist description and album review
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,2,rhythmic,llm_inferred,0.70,Supported by dance focus and documented Latin rhythmic forms
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,3,playful,llm_inferred,0.70,Supported by artist description and critical theme classification
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,4,party,llm_inferred,0.70,Supported by artist and critical descriptions of club and dance-floor intent
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,5,energetic,llm_inferred,0.65,Supported by artist description of live-band dance energy
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,6,sexual,llm_inferred,0.65,Supported by artist description and documented track subject matter
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,7,tropical,llm_inferred,0.65,Supported by artist description of tropical dance tracks
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,8,sensual,llm_inferred,0.55,Inferred from documented sexy dance presentation
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,9,male-vocalist,llm_inferred,0.55,Supported by documented primary vocal credit
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,prediction,10,futuristic,llm_inferred,0.50,Weakly supported by electronic simulation and techno flourishes; cover corroborates space-age framing
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,1,humorous,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,2,sexual,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,3,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,4,playful,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,5,warm,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,6,party,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,7,love,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,8,eclectic,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,9,rhythmic,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,10,quirky,curator,1.00,Ordered reference supplied after prediction
+7,Los Amigos Invisibles,Arepa 3000: A Venezuelan Journey Into Space,2000,reference,11,melodic,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,1,romantic,llm_inferred,0.75,Supported by official identification of the album's major salsa romántica selection
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,2,love,llm_inferred,0.70,Supported by romantic repertoire and relationship-oriented track subjects
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,3,rhythmic,llm_inferred,0.70,Supported by documented salsa, son montuno, bachata, and merengue forms
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,4,male-vocalist,llm_inferred,0.65,Supported by official group history; cover provides weak corroboration only
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,5,melodic,llm_inferred,0.60,Inferred from documented romantic salsa repertoire
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,6,passionate,llm_inferred,0.60,Inferred from romantic and dramatic relationship material
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,7,eclectic,llm_inferred,0.60,Supported by official description of the album's stylistic versatility
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,8,sentimental,llm_inferred,0.55,Inferred from memory and romantic-innocence subjects in the track list
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,9,energetic,llm_inferred,0.55,Supported by merengue and official descriptions of rhythmic energy
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,prediction,10,sensual,llm_inferred,0.45,Weakly inferred from the official description of seductive swing
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,1,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,2,party,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,3,rhythmic,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,4,tropical,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,5,warm,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,6,melodic,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,7,dancing,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,8,bittersweet,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,9,passionate,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,10,folklore,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,11,eclectic,curator,1.00,Ordered reference supplied after prediction
+8,Adolescent's Orquesta,Ahora Más Que Nunca,2001,reference,12,community,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,1,male-vocalist,llm_inferred,0.80,Supported by artist and label documentation
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,2,mellow,llm_inferred,0.75,Supported by gentle arrangements and unhurried presentation across the album
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,3,melodic,llm_inferred,0.75,Supported by label discussion of melody as a core album strength
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,4,acoustic,llm_inferred,0.75,Supported by documented acoustic guitar and voice-led arrangements
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,5,sentimental,llm_inferred,0.65,Supported by reflective material involving the past and emotional connection
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,6,pastoral,llm_inferred,0.70,Explicitly supported by label description of multiple arrangements
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,7,introspective,llm_inferred,0.60,Supported by contemporary discussion of self-reflection and ambivalence
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,8,warm,llm_inferred,0.60,Inferred from recurring sincerity comfort sweetness and gentle arrangement
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,9,soothing,llm_inferred,0.60,Supported by recurring descriptions of comfort and gentle space-filled arrangements
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,prediction,10,love,llm_inferred,0.55,Supported by multiple titles and documented love and contentment themes
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,1,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,2,mellow,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,3,melodic,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,4,pastoral,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,5,happy,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,6,warm,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,7,uplifting,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,8,love,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,9,bittersweet,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,10,soothing,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,11,introspective,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,12,soft,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,13,longing,curator,1.00,Ordered reference supplied after prediction
+9,James Taylor,Mud Slide Slim and the Blue Horizon,1971,reference,14,sentimental,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,prediction,1,boastful,llm_inferred,0.80,Supported by recurring self-assertive lyrical framing
+10,Dr. Dre,2001,1999,prediction,2,male-vocalist,llm_inferred,0.85,Supported by official credits and documented guest rappers
+10,Dr. Dre,2001,1999,prediction,3,violence,llm_inferred,0.85,Explicitly documented as recurring album subject matter
+10,Dr. Dre,2001,1999,prediction,4,crime,llm_inferred,0.80,Supported by recurring criminal and gangster subject matter
+10,Dr. Dre,2001,1999,prediction,5,sexual,llm_inferred,0.85,Explicitly documented as recurring album subject matter
+10,Dr. Dre,2001,1999,prediction,6,sampling,llm_inferred,0.85,Supported by official label sample documentation and instrumental notes
+10,Dr. Dre,2001,1999,prediction,7,ominous,llm_inferred,0.75,Supported by critical descriptions of ominous strings and uncanny synthesizer space
+10,Dr. Dre,2001,1999,prediction,8,urban,llm_inferred,0.65,Inferred from recurring Compton and city-centered gangsta narratives
+10,Dr. Dre,2001,1999,prediction,9,aggressive,llm_inferred,0.65,Supported by forceful lyrical and performance descriptions
+10,Dr. Dre,2001,1999,prediction,10,drugs,llm_inferred,0.80,Explicitly documented as recurring album subject matter
+10,Dr. Dre,2001,1999,reference,1,drugs,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,2,sexual,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,3,crime,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,4,male-vocalist,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,5,vulgar,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,6,cannabis,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,7,boastful,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,8,urban,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,9,rhythmic,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,10,hedonism,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,11,party,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,12,humorous,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,13,sampling,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,14,violence,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,15,nocturnal,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,16,skit,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,17,hateful,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,18,mellow,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,19,rebellious,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,20,posse-cut,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,21,playful,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,22,aggressive,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,23,money,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,24,ageing,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,25,manhood,curator,1.00,Ordered reference supplied after prediction
+10,Dr. Dre,2001,1999,reference,26,summer,curator,1.00,Ordered reference supplied after prediction

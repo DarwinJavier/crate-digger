@@ -1,0 +1,178 @@
+artist,album,year,bucket,region,role,notes,artist_mbid,release_group_mbid,resolved_artist,resolved_album,status
+Joy Division,Unknown Pleasures,1979,A,UK,anchor,Hannett-produced Manchester cornerstone,9a58fda3-f4ed-4080-a3a5-f457aac9fcdd,42352def-1aab-3000-b548-895ebd869cb6,Joy Division,Unknown Pleasures,resolved
+Joy Division,Closer,1980,A,UK,anchor,,9a58fda3-f4ed-4080-a3a5-f457aac9fcdd,852f9715-24b3-37d5-b8a5-456f5e19b41e,Joy Division,Closer,resolved
+Wire,Chairs Missing,1978,A,UK,anchor,art-punk to post-punk hinge,7f2a8098-50e3-451c-8696-c5d9f64f4762,3e60a576-5bd0-3028-a0db-558c4a9845c7,Wire,Chairs Missing,resolved
+Wire,154,1979,A,UK,anchor,,7f2a8098-50e3-451c-8696-c5d9f64f4762,30e3a3dc-f544-3bc0-b574-c680cfeb64fe,Wire,154,resolved
+Public Image Ltd,Metal Box,1979,A,UK,anchor,dub-informed post-punk,68950696-ee9a-49b2-a8c2-d1d6c19355cc,57209d3f-f3ef-34db-82a7-ad633497b784,Public Image Ltd,Metal Box,resolved
+Gang of Four,Entertainment!,1979,A,UK,anchor,Leeds angular funk-punk,d8661c02-f423-4d72-8044-40ff05daf7a1,d0493944-992b-3534-9174-8320c1879837,Gang of Four,Entertainment!,resolved
+The Fall,Hex Enduction Hour,1982,A,UK,anchor,,d5da1841-9bc8-4813-9f89-11098090148e,71d6b717-75e8-373c-a482-32c58c241b35,The Fall,Hex Enduction Hour,resolved
+Siouxsie and the Banshees,Juju,1981,A,UK,anchor,bridge toward goth bucket B,78ea5ea1-3c4d-4b7e-ac5d-68900319ebe2,844bfb05-2b51-35e2-8063-1c8e6746c781,Siouxsie and the Banshees,Juju,resolved
+Siouxsie and the Banshees,A Kiss in the Dreamhouse,1982,A,UK,anchor,,78ea5ea1-3c4d-4b7e-ac5d-68900319ebe2,7b0c2e7b-c1f2-3914-8418-b92c0cb9f5d0,Siouxsie and the Banshees,A Kiss in the Dreamhouse,resolved
+The Cure,Seventeen Seconds,1980,A,UK,anchor,start of the cold trilogy,69ee3720-a7cb-4402-b48d-a02c366f2bcf,7cd31244-186e-36bb-966f-fd6a90c0832c,The Cure,Seventeen Seconds,resolved
+The Cure,Faith,1981,A,UK,anchor,,69ee3720-a7cb-4402-b48d-a02c366f2bcf,ce2dda01-88b9-3134-8c35-065897e9cbb2,The Cure,Faith,resolved
+The Cure,Pornography,1982,A,UK,anchor,,69ee3720-a7cb-4402-b48d-a02c366f2bcf,5d4f8f19-23cf-34cf-b225-8cd0339c37de,The Cure,Pornography,resolved
+The Cure,Disintegration,1989,A,UK,anchor,late anchor bridging to dream pop,69ee3720-a7cb-4402-b48d-a02c366f2bcf,494bf606-d2f7-36d0-8340-eadad8601d2b,The Cure,Disintegration,resolved
+Echo & the Bunnymen,Crocodiles,1980,A,UK,anchor,,ccd4879c-5e88-4385-b131-bf65296bf245,94b22dcb-4761-3655-975a-1a226e00a9c8,Echo & the Bunnymen,Crocodiles,resolved
+Echo & the Bunnymen,Ocean Rain,1984,A,UK,anchor,orchestral post-punk,ccd4879c-5e88-4385-b131-bf65296bf245,ecbe6d07-c2e4-37fe-9a99-8484dd7f9a20,Echo & the Bunnymen,Ocean Rain,resolved
+The Sound,Jeopardy,1980,A,UK,deep_cut,perennially underrated,b2c36d47-e5e3-4ac8-a967-10e0265d3fff,ae0f7b78-3dce-3157-8dd5-a82251dcf8ef,The Sound,Jeopardy,resolved
+The Sound,From the Lions Mouth,1981,A,UK,deep_cut,,b2c36d47-e5e3-4ac8-a967-10e0265d3fff,136274f0-7d87-34f4-9a99-871b70ebde47,The Sound,From the Lions Mouth,resolved
+The Chameleons,Script of the Bridge,1983,A,UK,deep_cut,proto-shoegaze guitar architecture,8d07f60f-b9f4-46c0-9c27-31de0fb9b671,800508e1-5174-3f58-9fb5-35f469b677ed,The Chameleons,Script of the Bridge,resolved
+Magazine,Real Life,1978,A,UK,anchor,,043324ca-100d-48ce-8c7c-fd015afc103b,5ef7ef5c-f9aa-3800-9f55-ec58130846ba,Magazine,Real Life,resolved
+The Comsat Angels,Waiting for a Miracle,1980,A,UK,deep_cut,Sheffield,d4a8e74d-0315-42b5-9fcd-3ee1ded14f26,5c4537c4-e1d3-37d8-8db2-fa597d8083ea,The Comsat Angels,Waiting for a Miracle,resolved
+Josef K,The Only Fun in Town,1981,A,UK,deep_cut,Postcard Records Scotland,ab5f1b53-dabe-444a-a8fe-116cde87f709,57fc5452-f919-3ccd-afd1-06a3100620f3,Josef K,The Only Fun in Town,resolved
+A Certain Ratio,To Each...,1981,A,UK,deep_cut,Factory funk side,73577e86-4da8-4d76-949d-34c757e053be,56199b82-0445-3f0d-a0b7-939d26644f60,A Certain Ratio,To Each…,resolved
+Sad Lovers & Giants,Epic Garden Music,1982,A,UK,deep_cut,cult atmospheric post-punk,0105c851-8780-42fe-96f4-0abdb2ab48fe,dd4bd181-6df4-3c36-9ce8-58c85ddb605d,Sad Lovers and Giants,Epic Garden Music,resolved
+Killing Joke,Killing Joke,1980,A,UK,anchor,,f5aca88c-e3c1-4bc2-af33-68a9a9f7b56a,282c764a-5925-3bef-8d6d-20613c602768,Killing Joke,Killing Joke,resolved
+New Order,Power Corruption & Lies,1983,A,UK,anchor,post-punk to synth bridge,f1106b17-dcbb-45f6-b938-199ccfab50cc,16cc9dfc-594d-3fb9-b789-3e1bfcb6f9f8,New Order,"Power, Corruption & Lies",resolved
+Bauhaus,In the Flat Field,1980,B,UK,anchor,goth year zero,0688add2-c282-4ee2-ba61-223ffdb3c201,0fc9f4c7-ee00-39ec-a767-4574823c2064,Bauhaus,In the Flat Field,resolved
+Bauhaus,Mask,1981,B,UK,anchor,,0688add2-c282-4ee2-ba61-223ffdb3c201,b9478bd5-7b9a-326e-8bdf-ad8cf8978f54,Bauhaus,Mask,resolved
+The Sisters of Mercy,First and Last and Always,1985,B,UK,anchor,,553d8166-27b0-49fe-b8e4-89a984e2c375,8dba5572-6b3d-3e31-ab32-51d1f3ed1f69,The Sisters of Mercy,First and Last and Always,resolved
+The Sisters of Mercy,Floodland,1987,B,UK,anchor,,553d8166-27b0-49fe-b8e4-89a984e2c375,d1ae968e-ed20-35a2-9741-17f82e20bd28,The Sisters of Mercy,Floodland,resolved
+The Mission,God's Own Medicine,1986,B,UK,anchor,,d85e95a3-07c7-4c04-a411-234290615113,09c933ae-3a2d-3aab-9bcc-492de5d53eab,The Mission,God’s Own Medicine,resolved
+Fields of the Nephilim,Elizium,1990,B,UK,anchor,,a262543f-6ab4-4ac7-86f3-4fc09ff56f3b,faad1358-de5e-3da7-92b1-a5658d01f3a0,Fields of the Nephilim,Elizium,resolved
+Clan of Xymox,Clan of Xymox,1985,B,Netherlands,anchor,4AD darkwave cornerstone,1fc54353-dcd0-47b1-bb59-7bd2974df829,db4393ee-e33e-340c-b367-c1abf8e40c87,Clan of Xymox,Clan of Xymox,resolved
+Clan of Xymox,Medusa,1986,B,Netherlands,deep_cut,,1fc54353-dcd0-47b1-bb59-7bd2974df829,9a1e189b-3537-3f4a-83c8-e078c441ed3d,Clan of Xymox,Medusa,resolved
+Xmal Deutschland,Fetisch,1983,B,Germany,deep_cut,4AD German goth,4d94cf89-7757-4385-9049-52b7c3509e5f,639262ec-84df-3fac-a643-fd733b97094b,Xmal Deutschland,Fetisch,resolved
+Christian Death,Only Theatre of Pain,1982,B,US,anchor,US deathrock origin,2a09f8e7-1138-4030-96a3-fddfdf82127b,dbde84c8-abd9-3c73-a25c-3acf60754fee,Christian Death,Only Theatre of Pain,resolved
+Virgin Prunes,If I Die I Die,1982,B,Ireland,deep_cut,,16cb5325-3458-4845-b8d6-5933a2ec3166,16f1d84e-cbf5-31ee-9f39-bd09b06c3c9c,Virgin Prunes,"...If I Die, I Die",resolved
+The Cult,Love,1985,B,UK,anchor,goth crossover,8846e4ff-0c19-4af2-872b-7a8dc7497f68,e7d22464-a11e-3ff1-8d97-4af3f0c1aeb2,The Cult,Love,resolved
+Cocteau Twins,Garlands,1982,B,UK,anchor,goth-side debut before ethereal turn,000fc734-b7e1-4a01-92d1-f544261b43f5,9e49ba16-74f0-389e-9b76-7a13c7171a00,Cocteau Twins,Garlands,resolved
+Cocteau Twins,Head Over Heels,1983,C,UK,anchor,,000fc734-b7e1-4a01-92d1-f544261b43f5,91962b6e-34d3-4d3e-87fa-f30c3344a19b,Cocteau Twins,Head Over Heels,resolved
+Cocteau Twins,Treasure,1984,C,UK,anchor,4AD ethereal apex,000fc734-b7e1-4a01-92d1-f544261b43f5,e0023081-c755-377d-9bbf-fd7551d5d14c,Cocteau Twins,Treasure,resolved
+Cocteau Twins,Heaven or Las Vegas,1990,C,UK,anchor,,000fc734-b7e1-4a01-92d1-f544261b43f5,1771d480-d25c-32d4-a489-36488d1f4b03,Cocteau Twins,Heaven or Las Vegas,resolved
+This Mortal Coil,It'll End in Tears,1984,C,UK,anchor,4AD house project,60ef8ddb-7676-4056-a357-9a8c228d03a6,91343ef2-93f7-3128-b83b-a24b11888677,This Mortal Coil,It’ll End in Tears,resolved
+Dead Can Dance,Within the Realm of a Dying Sun,1987,C,Australia,anchor,,ccda046a-2674-4f7d-97e6-f23d6c156432,e1d35c40-2649-3f92-b4da-ff8572d6daa2,Dead Can Dance,Within the Realm of a Dying Sun,resolved
+A.R. Kane,69,1988,C,UK,deep_cut,coined dream pop; Black British innovators,d77abf52-3385-40e1-8bfa-215010814e7a,c85dfe0a-81aa-34dc-ab74-e517ddb3321d,A.R. Kane,69,resolved
+Pale Saints,The Comforts of Madness,1990,C,UK,deep_cut,,1584532a-62ed-4cbe-ad95-6def0af7df35,aa4b3e48-d205-344d-b080-ecbb886a9888,Pale Saints,The Comforts of Madness,resolved
+Cranes,Wings of Joy,1991,C,UK,deep_cut,,f6dfc44d-5da4-4ed1-949b-32715630dff4,1261929a-1bc1-3d31-9a1e-21ef1bed40d9,Cranes,Wings of Joy,resolved
+Mazzy Star,So Tonight That I Might See,1993,C,US,anchor,,c48d4327-8122-4286-af66-05e1ee6ac4d8,2863caa0-14e9-3016-83e4-4f0cdab55f4f,Mazzy Star,So Tonight That I Might See,resolved
+Galaxie 500,On Fire,1989,C,US,anchor,dream pop slowcore hinge,4de3cfed-b459-42bd-bfbb-7a843fbc73df,d25e7bfe-2f10-3413-a8a2-d166784f4994,Galaxie 500,On Fire,resolved
+His Name Is Alive,Livonia,1990,C,US,deep_cut,4AD Michigan,45b675bb-83f5-40e9-bbd4-a597fd9fc6c8,615ef3c8-f8b7-39c0-a7c7-ef4d411aa977,His Name Is Alive,Livonia,resolved
+Julee Cruise,Floating into the Night,1989,C,US,deep_cut,Lynch/Badalamenti dream pop,3b7865df-3c91-48dd-9126-a71e0dfe7f8d,2eaf4eef-f6bb-3fff-a4e2-79d639bde1d0,Julee Cruise,Floating Into the Night,resolved
+The Sundays,Reading Writing and Arithmetic,1990,C,UK,anchor,jangle-dream crossover,9df32318-47d5-4df7-bc68-3ed9e15eb0f6,a3915909-20c5-3dc5-931f-f0f9023bf2d8,The Sundays,"Reading, Writing and Arithmetic",resolved
+My Bloody Valentine,Isn't Anything,1988,D,Ireland,anchor,,8ca01f46-53ac-4af2-8516-55a909c0905e,55a73423-bf7d-3969-b1b2-c34c43140e1a,My Bloody Valentine,Isn’t Anything,resolved
+My Bloody Valentine,Loveless,1991,D,Ireland,anchor,genre keystone,8ca01f46-53ac-4af2-8516-55a909c0905e,cb76227e-3ac0-3002-9a10-615a5b73cc59,My Bloody Valentine,Loveless,resolved
+Slowdive,Just for a Day,1991,D,UK,anchor,,a16371b9-7d36-497a-a9d4-42b0a0440c5e,223866ce-e81a-3120-b215-b7ee69ebbfc7,Slowdive,Just for a Day,resolved
+Slowdive,Souvlaki,1993,D,UK,anchor,,a16371b9-7d36-497a-a9d4-42b0a0440c5e,46482030-ef12-319c-9c5a-5d04c39d574b,Slowdive,Souvlaki,resolved
+Slowdive,Pygmalion,1995,D,UK,deep_cut,ambient turn; bridge to bucket H,a16371b9-7d36-497a-a9d4-42b0a0440c5e,e73fd320-edb5-33f3-95cc-e259f63a0082,Slowdive,Pygmalion,resolved
+Ride,Nowhere,1990,D,UK,anchor,,3f575ecd-627d-4f08-a89f-abd46d469c7e,4ff18a50-33fa-37aa-a355-ea2a70e35ae3,Ride,Nowhere,resolved
+Ride,Going Blank Again,1992,D,UK,anchor,,3f575ecd-627d-4f08-a89f-abd46d469c7e,76692a6f-eba5-3689-8cca-2377162315d1,Ride,Going Blank Again,resolved
+Lush,Gala,1990,D,UK,anchor,compilation-debut; 4AD shoegaze,697801d1-68b2-4413-a7e4-0ef507d21cc1,347e0971-6e5e-3d79-bf6e-d1ffbb2c6bb3,Lush,Gala,resolved
+Lush,Split,1994,D,UK,deep_cut,,697801d1-68b2-4413-a7e4-0ef507d21cc1,150b59e4-9f69-31e9-b6ae-f05512b71580,Lush,Split,resolved
+Chapterhouse,Whirlpool,1991,D,UK,anchor,,c95d5fb3-03d4-4b5e-93da-a57bd7e26db0,d0d9f7ee-8338-4fcb-9257-7bf2f55a4133,Chapterhouse,Whirlpool,resolved
+Swervedriver,Raise,1991,D,UK,anchor,,fa6c7999-ff65-486b-9e18-bcb59d6db2f0,2c4dc084-b053-360e-9ec1-e49cf67756bc,Swervedriver,Raise,resolved
+Swervedriver,Mezcal Head,1993,D,UK,anchor,,fa6c7999-ff65-486b-9e18-bcb59d6db2f0,7433e05c-4a07-3f22-a607-b2aa3f1c86a7,Swervedriver,Mezcal Head,resolved
+Catherine Wheel,Ferment,1992,D,UK,anchor,,37e3dd97-73f9-4c69-b50d-0c0e3c47c40c,ace1c0b3-fe6b-334e-bccd-261235dae291,Catherine Wheel,Ferment,resolved
+Curve,Doppelgänger,1992,D,UK,anchor,industrial-edged shoegaze,104d65cc-ac4e-4351-b62d-32438c84259f,0ed8a922-d124-34b0-bb6b-5489dd5de388,Curve,Doppelgänger,resolved
+Kitchens of Distinction,Strange Free World,1991,D,UK,deep_cut,,edffc348-5d61-4782-ac0b-8cb698810fbe,278a7d7b-8c72-31dd-8626-347188371ab3,Kitchens of Distinction,Strange Free World,resolved
+The Boo Radleys,Everything's Alright Forever,1992,D,UK,deep_cut,,1b5189d8-28fd-4c97-a04a-37c49b1ccfa6,0e774ea9-8b7d-3ea2-93f1-27ae28e0d7ad,The Boo Radleys,Everything’s Alright Forever,resolved
+Adorable,Against Perfection,1993,D,UK,deep_cut,Creation also-rans worth saving,022c85ab-eeed-479c-9679-a0e4b5a6a338,9e937c9f-f9b2-3ffb-84bd-862bdb67a6b8,Adorable,Against Perfection,resolved
+Seefeel,Quique,1993,D,UK,deep_cut,shoegaze-to-electronic bridge; key connector,8ffcd7d7-6293-4fbf-b0f6-46aef9ce9f69,fc2b7f2a-d60f-3c8f-bff3-69f314d665f3,Seefeel,Quique,resolved
+The Jesus and Mary Chain,Psychocandy,1985,N,UK,anchor,noise-pop feeder for bucket D,e938a15c-b17e-4e7a-9f68-ff0d536cab44,7534461f-d5ed-3ab0-b5a8-48d7f9b49c70,The Jesus and Mary Chain,Psychocandy,resolved
+The Jesus and Mary Chain,Darklands,1987,N,UK,anchor,,e938a15c-b17e-4e7a-9f68-ff0d536cab44,cda63ecb-5777-37e2-8aa6-32f5c93e0f9f,The Jesus and Mary Chain,Darklands,resolved
+Sonic Youth,Daydream Nation,1988,E,US,anchor,US noise-guitar context,5cbef01b-cc35-4f52-af7b-d0df0c4f61b9,24769a99-8189-3d8c-947e-dbc8574dad5c,Sonic Youth,Daydream Nation,resolved
+Galaxie 500,Today,1988,E,US,anchor,,4de3cfed-b459-42bd-bfbb-7a843fbc73df,f40da875-567e-363a-89f6-9a4687c4756e,Galaxie 500,Today,resolved
+Medicine,Shot Forth Self Living,1992,E,US,deep_cut,LA shoegaze,0f24bcb0-8d37-409d-aed1-92bd4e5337ed,68467eb9-22ea-391f-9846-956bd87293de,Medicine,Shot Forth Self Living,resolved
+Drop Nineteens,Delaware,1992,E,US,deep_cut,Boston,266f5184-d8ab-40c3-9af2-b0c615b37b53,df8630a6-e0b5-3504-92d3-9f8c474c2da1,Drop Nineteens,Delaware,resolved
+Swirlies,Blonder Tongue Audio Baton,1993,E,US,deep_cut,Boston lo-fi gaze,4ec4a033-ba44-41ca-8e09-3bf94fc08523,689c9051-6047-3999-bbe2-7c6b0b879fc5,Swirlies,Blonder Tongue Audio Baton,resolved
+Lilys,In the Presence of Nothing,1992,E,US,deep_cut,,50ad1cde-1536-4268-a55f-e47a7b8280ab,ef409370-ab42-30d2-81b1-1cb2b0637efc,Lilys,In the Presence of Nothing,resolved
+Velocity Girl,Copacetic,1993,E,US,deep_cut,Slumberland,b199e343-e7f2-4840-8111-6cdb62945025,e11d9884-130e-35f0-92b7-b3d508132405,Velocity Girl,Copacetic,resolved
+Starflyer 59,Silver,1994,E,US,deep_cut,,250c38d6-0353-4c22-a371-f305d908573c,90474ec3-7612-35cd-acfa-afef3adc65d9,Starflyer 59,Starflyer 59,resolved
+Codeine,Frigid Stars LP,1990,F,US,anchor,slowcore origin,cecd5f91-cfdd-45d1-879f-3920c7c76e58,4508a0d1-7e8e-3cf2-8b74-ec943066dc05,Codeine,Frigid Stars LP,resolved
+Codeine,The White Birch,1994,F,US,anchor,,cecd5f91-cfdd-45d1-879f-3920c7c76e58,c17656e4-73dd-3a8b-a415-f092386791eb,Codeine,The White Birch,resolved
+Red House Painters,Down Colorful Hill,1992,F,US,anchor,,06e59c30-5e21-4318-96e8-7a5f7e309af1,2c2ef029-d455-3867-a8a2-defa06f88590,Red House Painters,Down Colorful Hill,resolved
+Red House Painters,Rollercoaster,1993,F,US,anchor,,06e59c30-5e21-4318-96e8-7a5f7e309af1,04a0a433-80bc-3b55-91cd-322a0d644c95,Red House Painters,Red House Painters,resolved
+Low,I Could Live in Hope,1994,F,US,anchor,Duluth,42faad37-8aaa-42e4-a300-5a7dae79ed24,05605e58-2923-319e-87f0-3cdbf97f57f8,Low,I Could Live in Hope,resolved
+Low,Things We Lost in the Fire,2001,F,US,anchor,,42faad37-8aaa-42e4-a300-5a7dae79ed24,71a852c2-60b8-3bea-9e4c-373b1069be28,Low,Things We Lost in the Fire,resolved
+Bedhead,WhatFunLifeWas,1994,F,US,deep_cut,Texas slowcore,07ea84a5-34aa-4766-b6d4-e9462a6220c2,d0ff466b-a297-3eb9-bc31-9a4e24b8dc3e,Bedhead,WhatFunLifeWas,resolved
+Duster,Stratosphere,1998,F,US,anchor,space-slowcore; huge revival currency,879d43c6-13a8-42f6-b8df-a9b7d50aa9e2,764a8c35-aacc-3269-8b10-5972e051815a,Duster,Stratosphere,resolved
+Idaho,Year After Year,1993,F,US,deep_cut,,8b7480fd-4a90-4ada-b8d2-8061307f49c0,20f2e810-f021-3a60-8d9e-eb42ee757b4e,Idaho,Year After Year,resolved
+American Music Club,Everclear,1991,F,US,deep_cut,sadcore adjacent,5837d14e-4d18-49cf-a759-e5818714bce4,74d2b26d-814c-36d0-9993-8cb9e9ba2296,American Music Club,Everclear,resolved
+Mojave 3,Ask Me Tomorrow,1995,F,UK,deep_cut,post-Slowdive; D-to-F bridge,abf74786-2f3e-47e0-ae68-69a55c13909a,225de0e3-30af-3698-9a8f-e393a6abd0bf,Mojave 3,Ask Me Tomorrow,resolved
+Cat Power,Moon Pix,1998,F,US,anchor,,05755bf1-380c-487f-983f-d1a02401fa28,88d34969-dd30-32ee-a28b-eb8015f07116,Cat Power,Moon Pix,resolved
+Sun Kil Moon,Ghosts of the Great Highway,2003,F,US,anchor,,ef2c6449-d02b-415b-ad8c-c14c08266552,41146f8d-3b99-3957-81a3-d8198bb025df,Sun Kil Moon,Ghosts of the Great Highway,resolved
+Massive Attack,Blue Lines,1991,G,UK,anchor,Bristol origin,10adbe5e-a2c0-4bf3-8249-2b4cbf6e6ca8,8b6f133a-2fdf-3cc2-b84d-1c889adc0939,Massive Attack,Blue Lines,resolved
+Massive Attack,Mezzanine,1998,G,UK,anchor,darkest hour; goth-triphop hinge,10adbe5e-a2c0-4bf3-8249-2b4cbf6e6ca8,6f9f6899-c0d3-311d-ae87-a10ae6bc53a9,Massive Attack,Mezzanine,resolved
+Portishead,Dummy,1994,G,UK,anchor,,8f6bd1e4-fbe1-4f50-aa9b-94c450ec0f11,48140466-cff6-3222-bd55-63c27e43190d,Portishead,Dummy,resolved
+Portishead,Portishead,1997,G,UK,anchor,,8f6bd1e4-fbe1-4f50-aa9b-94c450ec0f11,7685a5d0-3dac-40c7-b26d-544636129979,Portishead,Portishead in Portishead,resolved
+Tricky,Maxinquaye,1995,G,UK,anchor,,5bf64d94-efd9-4334-96fd-e6197b0b02b8,9fd2415f-182f-39c1-aa02-5acb36f99bef,Tricky,Maxinquaye,resolved
+Tricky,Pre-Millennium Tension,1996,G,UK,deep_cut,,5bf64d94-efd9-4334-96fd-e6197b0b02b8,5b341168-5273-30a4-8e30-b4d1963a5dd6,Tricky,Pre-Millennium Tension,resolved
+DJ Shadow,Endtroducing.....,1996,G,US,anchor,instrumental hip-hop bridge,efa2c11a-1a35-4b60-bc1b-66d37de88511,4b2186f5-ff00-3227-ae11-783ba93e1089,DJ Shadow,Endtroducing.....,resolved
+Morcheeba,Who Can You Trust?,1996,G,UK,deep_cut,,067102ea-9519-4622-9077-57ca4164cfbb,f571ba0f-7b96-3607-8b46-a5a60e93f5a5,Morcheeba,Who Can You Trust?,resolved
+Lamb,Lamb,1996,G,UK,deep_cut,Manchester,0d4bc6e5-2a3e-4fdf-8bbf-59ad0bc374d7,ec549861-d879-36f7-b02c-1f0b78c265be,Lamb,Lamb,resolved
+Sneaker Pimps,Becoming X,1996,G,UK,deep_cut,,696d8523-39a0-44e2-9add-afaa183a2f46,62c14bd1-2a53-3a69-9b68-c3df4bc61032,Sneaker Pimps,Becoming X,resolved
+UNKLE,Psyence Fiction,1998,G,UK,deep_cut,Mo'Wax,6648391e-7890-4f6c-b939-976f215195d3,17027712-7707-3791-ab65-5320e5ebe501,UNKLE,Psyence Fiction,resolved
+Hooverphonic,A New Stereophonic Sound Spectacular,1996,G,Belgium,deep_cut,continental trip-hop,62dc94cc-f611-4345-87cb-b914796a4a45,d3a86691-d669-368e-bda7-07322b7550e5,Hooverphonic,A New Stereophonic Sound Spectacular,resolved
+Spacemen 3,The Perfect Prescription,1987,H,UK,anchor,drone-psych feeder,19e818e4-0bbe-41fc-9589-c444b4165bf1,d2e3c169-3f87-3ffe-bc88-ad95386cc378,Spacemen 3,The Perfect Prescription,resolved
+Spacemen 3,Playing with Fire,1989,H,UK,anchor,,19e818e4-0bbe-41fc-9589-c444b4165bf1,23e72d60-6199-3f19-b29d-21e460b997ac,Spacemen 3,Playing With Fire,resolved
+Spiritualized,Lazer Guided Melodies,1992,H,UK,anchor,,65041e06-83d2-4987-ae52-c17a915fc82a,e12a1258-c0cf-326d-80c4-782763ff3c46,Spiritualized,Lazer Guided Melodies,resolved
+Spiritualized,Ladies and Gentlemen We Are Floating in Space,1997,H,UK,anchor,,65041e06-83d2-4987-ae52-c17a915fc82a,c88c77da-b9f9-34b9-abdf-ad3cec875aca,Spiritualized,Ladies and Gentlemen We Are Floating in Space,resolved
+Talk Talk,Spirit of Eden,1988,H,UK,anchor,post-rock hinge,a74f43e4-50c4-4b19-a2ce-c05ce9bccb03,fd29e2cd-9bd7-32c6-adf9-ce80ab1cadfc,Talk Talk,Spirit of Eden,resolved
+Talk Talk,Laughing Stock,1991,H,UK,anchor,,a74f43e4-50c4-4b19-a2ce-c05ce9bccb03,3e0de863-6232-3f43-b2a2-7cfbf71b99e9,Talk Talk,Laughing Stock,resolved
+Bark Psychosis,Hex,1994,H,UK,deep_cut,the album post-rock was coined for,1a5c6b6c-3b81-431a-b5d3-15a7698de499,926e41b0-52b6-3234-9f5e-7c9b7e72a85d,Bark Psychosis,Hex,resolved
+Disco Inferno,D.I. Go Pop,1994,H,UK,deep_cut,sampler post-punk futurism,a9301bf4-cd9d-41e6-86f1-20463a9d1292,34cc9df4-a173-3163-b30e-ad3fab1fdaf0,Disco Inferno,D.I. Go Pop,resolved
+Flying Saucer Attack,Further,1995,H,UK,deep_cut,rural psychedelia; Bristol,e40d316c-85f5-42b3-9034-5ecbc38e3285,47148ac1-87ce-36ed-a895-5439f5ea963b,Flying Saucer Attack,Further,resolved
+Labradford,Mi Media Naranja,1997,H,US,deep_cut,Kranky,7cf7ef41-9637-4bf2-ae99-d8d6611ccdc6,544647d8-a475-34e3-9216-77b22dca4085,Labradford,Mi media naranja,resolved
+Windy & Carl,Depths,1998,H,US,deep_cut,ambient guitar duo,1bf10bf6-f9cf-460a-afd1-81a9b1b0128d,3d14856d-9dea-355b-a6b9-6c2f9edfdfc0,Windy & Carl,Depths,resolved
+Stars of the Lid,The Tired Sounds of Stars of the Lid,2001,H,US,anchor,ambient endpoint of corridor,a1154343-1ea1-4007-97d3-2382482a90cd,02e510c3-7aff-39ea-8bb9-45780a390868,Stars of the Lid,The Tired Sounds of Stars of the Lid,resolved
+Trisomie 21,Chapter IV,1986,I,France,deep_cut,French coldwave essential,205dd71b-69bb-4844-8c30-74938eff4cc4,d2f436c5-0bcb-3efd-85a9-621c91ea715c,Trisomie 21,Chapter IV and Wait and Dance Remixed,resolved
+Asylum Party,Borderline,1989,I,France,deep_cut,,e1b01184-814e-44bd-8ff9-48389a71f052,49ee6d2c-2f1b-31e3-9bb7-0fa95b525b26,Asylum Party,Borderline,resolved
+KaS Product,Try Out,1982,I,France,deep_cut,synth coldwave,0450cc6d-6130-41df-bf08-b3a23e333aaf,6ede25d9-e03a-3ddd-b1ac-c7b92dfa0773,KaS Product,Try Out,resolved
+Grauzone,Grauzone,1981,I,Switzerland,deep_cut,NDW-dark,163b54e5-8256-4f35-8c6e-623dccd2fbc2,dc2e19fb-e781-3261-91c0-7adf4a139478,Grauzone,Grauzone,resolved
+Malaria!,Emotion,1982,I,Germany,deep_cut,Berlin all-women post-punk,a81ca3d5-710c-4f09-acc2-9c17abe225a6,a78698cf-1794-3ade-bad3-c33327c3847d,Malaria!,Emotion,resolved
+The Names,Swimming,1982,I,Belgium,deep_cut,Factory Benelux,8bbbbdb3-544d-447a-b22c-327550e157b3,d6a8cf93-3bf4-32c5-b397-9e5108ef31e3,The Names,Swimming,resolved
+Pink Turns Blue,If Two Worlds Kiss,1987,I,Germany,deep_cut,proto-darkwave,66c82752-3488-472e-8bc1-89b853da56df,e192c749-1318-318e-924b-7ee4dfb6180c,Pink Turns Blue,If Two Worlds Kiss,resolved
+Caifanes,Caifanes,1988,J,Mexico,anchor,Mexican dark rock cornerstone,77814bfb-f1b0-47fd-8492-65d6f72c246d,3b2e5354-d3da-36ab-88f9-d33a99db8a8a,Caifanes,Caifanes,resolved
+Caifanes,El Diablito,1990,J,Mexico,anchor,,77814bfb-f1b0-47fd-8492-65d6f72c246d,fcd0586b-b380-3d26-8ea7-be2cc4d3fc39,Caifanes,El diablito,resolved
+Soda Stereo,Signos,1986,J,Argentina,anchor,dark period of LatAm biggest band,3f8a5e5b-c24b-4068-9f1c-afad8829e06b,bb1a9665-7bc4-3224-aa94-6ac6ee9a05fa,Soda Stereo,Signos,resolved
+Santa Sabina,Santa Sabina,1992,J,Mexico,deep_cut,CDMX dark rock; verify title/year,a8542271-1d5a-426e-b098-8aeecd197523,54d75ac2-0000-376b-aed5-11df5f0e931c,Santa Sabina,Santa Sabina,resolved
+Twin Tribes,Ceremony,2019,J,US,anchor,Texas-Mexican darkwave revival,bf629fc0-2d07-4fa3-90dd-1e77629be935,d433512d-ceee-4a7c-95c0-7c3dc13d4b53,Twin Tribes,Ceremony,resolved
+Mint Field,Pasar de las Luces,2018,J,Mexico,deep_cut,Tijuana dream pop; verify,561d322a-4950-4026-99f8-03f7eecbb5cf,5bfa65b7-30fe-4372-a787-1bbbe7f546fe,Mint Field,Pasar de las Luces,resolved
+Rakta,Falha Comum,2019,J,Brazil,deep_cut,São Paulo psych post-punk; verify,117639bf-33d0-4d14-8250-41a92eccc04e,b88d66c8-8799-42d9-9301-955e157f3dd0,Rakta,Falha comum,resolved
+Fishmans,Long Season,1996,K,Japan,anchor,one-song dream masterpiece,d0f25f16-7782-42e8-8047-c16a1cb2b450,fc38cdba-ea52-328c-aa3d-41edf8811a0c,フィッシュマンズ,LONG SEASON,resolved
+Supercar,Three Out Change,1998,K,Japan,deep_cut,Japanese shoegaze pop,371d6599-6292-4f3f-94d2-5b2fd19b089c,6131b89f-5049-36f3-a9dd-9abafd238236,SUPERCAR,スリーアウトチェンジ,resolved
+Kinoko Teikoku,Eureka,2013,K,Japan,deep_cut,verify year,18a15d8d-b7bf-4921-9976-aa6388b99a9a,4fb53064-968c-4822-ba3b-6a350c4d154e,きのこ帝国,eureka,resolved
+Coaltar of the Deepers,Submerge,1998,K,Japan,deep_cut,verify title/year,e031ae5d-db68-4e06-980b-f828fe5b40dd,4befd22f-bd0c-3cb4-8a3a-48ab0297ab13,COALTAR OF THE DEEPERS,SUBMERGE,resolved
+Parannoul,To See the Next Part of the Dream,2021,K,South Korea,anchor,Korean bedroom-gaze breakout,7d517c2e-ea8a-4401-935b-42f9343630c7,74769203-cd8e-409b-912e-f1ec476dd716,파란노을,To See the Next Part of the Dream,resolved
+Asian Glow,Cull Ficle,2021,K,South Korea,deep_cut,verify,416a8fc2-076b-4d9f-b972-a067e6b80e04,be554732-19df-4713-8791-fdc270329370,Asian Glow,Cull Ficle,resolved
+Interpol,Turn On the Bright Lights,2002,L,US,anchor,post-punk revival keystone,b23e8a63-8f47-4882-b55b-df2c92ef400e,e7227840-5ef2-3813-af26-15dab34e1a51,Interpol,Turn On the Bright Lights,resolved
+Editors,The Back Room,2005,L,UK,anchor,,0efe858c-89e5-4e47-906a-356fa953fd6e,afcf1710-40aa-3614-85e4-ab2cf12a7a5a,Editors,The Back Room,resolved
+The Horrors,Primary Colours,2009,L,UK,anchor,goth-gaze revival,00467da8-2a92-498f-8b10-a80889bcded7,3302c1c1-fcc9-37bd-b932-253a85d604c2,The Horrors,Primary Colours,resolved
+White Lies,To Lose My Life...,2009,L,UK,deep_cut,,5bdb38bd-5c5b-4d0f-8901-8bbe1d7062d8,c7469699-3d04-3b68-a75e-3b60deb48ac1,White Lies,To Lose My Life,resolved
+M83,Dead Cities Red Seas & Lost Ghosts,2003,L,France,anchor,electronic nu-gaze,6d7b7cd4-254b-4c25-83f6-dd20f98ceacd,528afc2e-39d4-3e78-bb88-40aeb08bd122,M83,"Dead Cities, Red Seas & Lost Ghosts",resolved
+Ulrich Schnauss,A Strangely Isolated Place,2003,L,Germany,deep_cut,,29f6333a-b4c8-4416-8fdf-598bcef1122a,8400092b-7af0-3fb5-b5ad-17c5800aa371,Ulrich Schnauss,A Strangely Isolated Place,resolved
+Asobi Seksu,Citrus,2006,L,US,anchor,nu-gaze,cc433a77-176b-4d02-857b-2bfb68b3219c,066fe83f-0921-3189-b076-28ae83478a8a,Asobi Seksu,Citrus,resolved
+Serena-Maneesh,Serena-Maneesh,2005,L,Norway,deep_cut,,d577a0cb-1a93-461a-80eb-9da6c094884b,a7d49531-4395-3e63-994c-83fd7798a7a8,Serena-Maneesh,Serena-Maneesh,resolved
+A Place to Bury Strangers,A Place to Bury Strangers,2007,L,US,anchor,,99fe4613-84ec-4f48-bb4f-f036880ed2ac,9631418e-b511-36e2-b065-34d0c8d77d35,A Place to Bury Strangers,A Place to Bury Strangers,resolved
+The Radio Dept.,Lesser Matters,2003,L,Sweden,deep_cut,Labrador,e664d1cd-23ab-48d5-b8fa-e98485daa5be,38befbbe-1168-3fec-9a25-dadf3beaadaa,The Radio Dept.,Lesser Matters,resolved
+The Pains of Being Pure at Heart,The Pains of Being Pure at Heart,2009,L,US,deep_cut,,46f4e349-ddec-4131-9367-91b630a821d0,41016ad6-cad3-410e-ba99-4f11a6aede74,The Pains of Being Pure at Heart,The Pains of Being Pure at Heart,resolved
+Deerhunter,Halcyon Digest,2010,L,US,anchor,,4f416ed7-dda2-45de-a6f1-b986e861cf4b,d03a3ae3-4a33-4c50-8501-00710070549c,Deerhunter,Halcyon Digest,resolved
+Beach House,Teen Dream,2010,L,US,anchor,modern dream pop standard,d5cc67b8-1cc4-453b-96e8-44487acdebea,4114f899-a9d2-48a8-b597-8a5ca8bb6847,Beach House,Teen Dream,resolved
+Beach House,Devotion,2008,L,US,deep_cut,,d5cc67b8-1cc4-453b-96e8-44487acdebea,2717ae60-ecbd-38a8-b8ef-ed1c9f8df908,Beach House,Devotion,resolved
+DIIV,Oshin,2012,M,US,anchor,,b5ff61dd-0154-4e80-b46b-c733f87db602,94a2b79b-6d40-4bcc-af30-7e64595a913b,DIIV,Oshin,resolved
+DIIV,Is the Is Are,2016,M,US,anchor,,b5ff61dd-0154-4e80-b46b-c733f87db602,6c6854aa-aed7-4ce6-af16-363002d32bc7,DIIV,Is the Is Are,resolved
+Nothing,Guilty of Everything,2014,M,US,anchor,heavy-gaze,e86b5e8c-8a11-40ea-9bb0-551df95e99d4,576d7e6d-6bbe-4c4c-a11b-80033755d3f3,Nothing,Guilty of Everything,resolved
+Wild Nothing,Nocturne,2012,M,US,anchor,,a181595e-5b84-4439-a5f4-f548ddfb64df,4898b725-8c73-4b04-888a-c2b9ff28d948,Wild Nothing,Nocturne,resolved
+Cigarettes After Sex,Cigarettes After Sex,2017,M,US,anchor,ambient pop crossover,34557d8f-ee4a-44ab-ae6e-49bb8ac604d0,13cf0499-957e-479a-bc51-46516a57dd01,Cigarettes After Sex,Cigarettes After Sex,resolved
+Alvvays,Blue Rev,2022,M,Canada,anchor,jangle-gaze; Canadian,99450990-b24e-4132-bb68-235f8c3e2564,0e68df76-a5fc-4d70-9ff6-e71e2ad83330,Alvvays,Blue Rev,resolved
+Molchat Doma,Etazhi,2018,M,Belarus,anchor,post-Soviet wave; meme-driven revival,11bcbbf4-1252-496a-b747-06942f3d76db,91843e1b-bce3-47b1-a756-8dd9817bdabc,Molchat Doma,Этажи,resolved
+The Soft Moon,The Soft Moon,2010,M,US,anchor,,93eba14e-f85c-4d39-8412-5e4018c89d75,027cae29-7bb5-40e2-8ca5-4afabc8b021b,The Soft Moon,The Soft Moon,resolved
+Drab Majesty,The Demonstration,2017,M,US,anchor,LA darkwave,284befc2-ac10-47bd-8ac0-c6d2c961ca3f,7685c5f2-9592-4aca-8308-907dc93c6b43,Drab Majesty,The Demonstration,resolved
+Boy Harsher,Careful,2019,M,US,anchor,dark electro-body,6dc9bc09-a0c7-40f9-b491-f90845927533,473c1534-3bf9-4ca3-b22f-1845e8ec4263,Boy Harsher,Careful,resolved
+She Past Away,Belirdi Gece,2012,M,Turkey,anchor,Turkish darkwave; global scene proof,6bbb9ed3-bb91-452f-b801-5c9a511de165,42bee2d7-5620-4f56-9198-ac23ef36cae5,She Past Away,Belirdi Gece,resolved
+Slowdive,Slowdive,2017,M,UK,anchor,reunion era,a16371b9-7d36-497a-a9d4-42b0a0440c5e,9318347d-b4bc-4b50-bd5e-c9a9fcb9aa98,Slowdive,Slowdive,resolved
+Slowdive,everything is alive,2023,M,UK,anchor,post-cutoff-adjacent; freshness test,a16371b9-7d36-497a-a9d4-42b0a0440c5e,0070ec11-d0ef-4df2-9cf8-f8a10f083f27,Slowdive,everything is alive,resolved
+My Bloody Valentine,m b v,2013,M,Ireland,anchor,,8ca01f46-53ac-4af2-8516-55a909c0905e,46211613-b2c8-4a00-a5ac-c6a8c8226119,My Bloody Valentine,m b v,resolved
+Ride,Weather Diaries,2017,M,UK,deep_cut,,3f575ecd-627d-4f08-a89f-abd46d469c7e,8589d191-7d6f-450f-a380-ae9a4a18a8b8,Ride,Weather Diaries,resolved
+Hotline TNT,Cartwheel,2023,M,US,anchor,current wave,229aac0b-3567-4bcc-b57d-76b865eb572e,85b0ea9d-7115-4709-9ab4-85598d0782ce,Hotline TNT,Cartwheel,resolved
+feeble little horse,Girl with Fish,2023,M,US,deep_cut,verify,56252a59-5731-4a3b-96d2-fea7fe88a5d6,eb5864b7-84d7-4621-8f6f-96b71317f9ed,feeble little horse,Girl With Fish,resolved
+Julie,my anti-aircraft friend,2024,M,US,deep_cut,TikTok-era gaze; verify,1e79565e-60d5-498d-aa73-fa24d9065df1,277b1d85-1b36-4f29-86c0-d668f8a41176,julie,my anti-aircraft friend,resolved
+The Smiths,The Queen Is Dead,1986,N,UK,anchor,jangle feeder,40f5d9e4-2de7-4f2d-ad41-e31a9a9fea27,d8dde278-482c-3cc8-a530-fea70476f3a5,The Smiths,The Queen Is Dead,resolved
+Felt,Forever Breathes the Lonely Word,1986,N,UK,deep_cut,,6999f790-25f4-44a3-b745-1e3e01fde0f5,4b8b7911-2fe6-3861-85da-20ad921697d4,Felt,Forever Breathes the Lonely Word,resolved
+The Field Mice,Snowball,1989,N,UK,deep_cut,Sarah Records; verify format,7a86ff6f-cdfc-4ac3-97ca-6a48b8d1b8cd,b345e91e-9cb4-3bc7-ba7f-af5a8e038632,The Field Mice,Snowball,resolved
+The Wedding Present,Seamonsters,1991,N,UK,deep_cut,Albini-era; noise-jangle bridge,707622da-475f-48e1-905d-248718df6521,14152837-f2f2-31d0-aa2e-aaf02ab18aec,The Wedding Present,Seamonsters,resolved
+Depeche Mode,Black Celebration,1986,N,UK,anchor,dark synthpop feeder,8538e728-ca0b-4321-b7e5-cff6565dd4c0,b9c6879f-3a34-3aa0-a68f-73ced2608f7a,Depeche Mode,Black Celebration,resolved
+Depeche Mode,Violator,1990,N,UK,anchor,,8538e728-ca0b-4321-b7e5-cff6565dd4c0,71f1482e-e63f-3b2c-811b-939f62708f2a,Depeche Mode,Violator,resolved
+Chromatics,Kill for Love,2012,N,US,anchor,italo-dark bridge to bucket M,c89ea689-c053-4d97-bada-8b81a6236f58,acd5d00f-6dcb-4339-83d4-c05765586717,Chromatics,Kill for Love,resolved
+Cold Cave,Cherish the Light Years,2011,N,US,deep_cut,,f7f32d93-0801-45cb-9f5a-e68f640649f4,aa095d89-2ff9-4060-b327-3e1285729dda,Cold Cave,Cherish the Light Years,resolved
+The Chills,Submarine Bells,1990,N,New Zealand,deep_cut,Dunedin jangle feeder,90b5813d-fbd7-4539-89d5-034094f64a2e,8540adb4-e189-339f-9904-c2f8a91d9b40,The Chills,Submarine Bells,resolved

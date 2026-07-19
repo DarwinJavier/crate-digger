@@ -1,0 +1,24 @@
+build/
+exports/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+!.env.example
+
+# Local research artifacts. These are not runtime dependencies and may include
+# bulky or redistributability-sensitive source material. See research/README.md.
+research/papers/*.pdf
+research/papers/extracted/
+research/mir/quarantine/
+research/mir/sanitized/
+research/mir/output/
+research/mir/logs/
+research/taxonomies/archive/

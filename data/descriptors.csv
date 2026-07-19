@@ -1,0 +1,37 @@
+artist,album,moods,sonic_traits,scenes,source,confidence,approved
+The Cure,Faith,nocturnal;mournful;desolate;icy,reverb-drenched;sparse;chorused-guitar,batcave-goth,curator,0.85,yes
+The Cure,Pornography,nocturnal;claustrophobic;menacing;feverish,reverb-drenched;cavernous;drum-machine-driven,batcave-goth,curator,0.85,yes
+The Cure,Disintegration,nocturnal;elegant;romantic;yearning,reverb-drenched;widescreen;chorused-guitar,4ad-ethereal,curator,0.85,yes
+Cocteau Twins,Treasure,weightless;elegant;hazy;romantic,reverb-drenched;chorused-guitar;crystalline,4ad-ethereal,curator,0.85,yes
+Cocteau Twins,Heaven or Las Vegas,euphoric;romantic;weightless;warm,reverb-drenched;chorused-guitar;crystalline,4ad-ethereal,curator,0.85,yes
+This Mortal Coil,It'll End in Tears,mournful;elegant;nocturnal;serene,reverb-drenched;string-laden;widescreen,4ad-ethereal,curator,0.85,yes
+Dead Can Dance,Within the Realm of a Dying Sun,elegant;mournful;serene;nocturnal,string-laden;cavernous;widescreen,4ad-ethereal,curator,0.85,yes
+Slowdive,Souvlaki,hazy;yearning;weightless;tender,reverb-drenched;wall-of-guitar;chorused-guitar,thames-valley-shoegaze,curator,0.85,yes
+Slowdive,Just for a Day,hazy;weightless;serene;yearning,reverb-drenched;wall-of-guitar;chorused-guitar,thames-valley-shoegaze,curator,0.85,yes
+My Bloody Valentine,Loveless,euphoric;dissociative;hazy;weightless,wall-of-guitar;reverb-drenched;blown-out,thames-valley-shoegaze,curator,0.85,yes
+Ride,Nowhere,euphoric;yearning;hazy,wall-of-guitar;reverb-drenched;motorik,thames-valley-shoegaze,curator,0.85,yes
+Chapterhouse,Whirlpool,hazy;euphoric;weightless,wall-of-guitar;reverb-drenched;chorused-guitar,thames-valley-shoegaze,curator,0.85,yes
+Lush,Gala,hazy;romantic;weightless,reverb-drenched;chorused-guitar;crystalline,thames-valley-shoegaze,curator,0.85,yes
+Pale Saints,The Comforts of Madness,hazy;tender;yearning,chorused-guitar;reverb-drenched;jangling,4ad-ethereal,curator,0.85,yes
+Mazzy Star,So Tonight That I Might See,nocturnal;tender;hazy;yearning,sparse;reverb-drenched;whispered-vocals,,curator,0.85,yes
+Portishead,Dummy,nocturnal;elegant;menacing;claustrophobic,dubby;drum-machine-driven;widescreen,bristol-triphop,curator,0.85,yes
+Massive Attack,Mezzanine,nocturnal;menacing;claustrophobic;sinister,dubby;bass-led;widescreen,bristol-triphop,curator,0.85,yes
+Tricky,Maxinquaye,nocturnal;claustrophobic;dissociative,dubby;drum-machine-driven;whispered-vocals,bristol-triphop,curator,0.85,yes
+Bark Psychosis,Hex,nocturnal;elegant;serene;desolate,sparse;widescreen;droning,kranky-ambient,curator,0.85,yes
+Talk Talk,Spirit of Eden,serene;desolate;tender;elegant,sparse;widescreen;droning,kranky-ambient,curator,0.85,yes
+Low,I Could Live in Hope,desolate;tender;mournful;serene,glacial-tempo;sparse;whispered-vocals,duluth-slowcore,curator,0.85,yes
+Red House Painters,Down Colorful Hill,mournful;desolate;resigned,glacial-tempo;sparse;widescreen,duluth-slowcore,curator,0.85,yes
+Codeine,Frigid Stars LP,desolate;resigned;mournful,glacial-tempo;sparse;droning,duluth-slowcore,curator,0.85,yes
+Bedhead,WhatFunLifeWas,resigned;tender;desolate,glacial-tempo;jangling;sparse,duluth-slowcore,curator,0.85,yes
+Joy Division,Unknown Pleasures,anxious;nocturnal;claustrophobic;desolate,bass-led;cavernous;drum-machine-driven,manchester-postpunk,curator,0.85,yes
+Joy Division,Closer,mournful;nocturnal;desolate;resigned,bass-led;cavernous;drum-machine-driven,manchester-postpunk,curator,0.85,yes
+Siouxsie and the Banshees,Juju,menacing;nocturnal;defiant,reverb-drenched;bass-led;chorused-guitar,batcave-goth,curator,0.85,yes
+The Chameleons,Script of the Bridge,yearning;elegant;nocturnal,chorused-guitar;reverb-drenched;widescreen,manchester-postpunk,curator,0.85,yes
+The Sound,From the Lions Mouth,defiant;yearning;anxious,bass-led;chorused-guitar;widescreen,manchester-postpunk,curator,0.85,yes
+The Jesus and Mary Chain,Psychocandy,defiant;hazy;romantic,blown-out;wall-of-guitar;jangling,creation-orbit,curator,0.85,yes
+Galaxie 500,On Fire,tender;hazy;yearning;serene,reverb-drenched;sparse;jangling,kranky-ambient,curator,0.85,yes
+Beach House,Teen Dream,romantic;hazy;warm;yearning,reverb-drenched;drum-machine-driven;widescreen,,curator,0.85,yes
+DIIV,Oshin,hazy;yearning;weightless,chorused-guitar;motorik;reverb-drenched,tiktok-gaze-revival,curator,0.85,yes
+Drab Majesty,The Demonstration,icy;nocturnal;elegant;romantic,drum-machine-driven;chorused-guitar;baritone-vocals,belarus-wave,curator,0.85,yes
+Molchat Doma,Etazhi,icy;nocturnal;anxious,drum-machine-driven;baritone-vocals;bass-led,belarus-wave,curator,0.85,yes
+Parannoul,To See the Next Part of the Dream,yearning;euphoric;hazy;dissociative,wall-of-guitar;lo-fi;blown-out,korean-bedroom-gaze,curator,0.85,yes

@@ -184,6 +184,7 @@ class FeatureToggles(BaseModel):
     visual_scoring: bool = True
     frozen_evaluation: bool = True
     outside_discovery: bool = True
+    corpus_candidates: bool = True
 
 
 class ImageFeatures(BaseModel):
@@ -534,7 +535,14 @@ def openai_web_json_response(instructions: str, prompt: str, name: str, schema: 
                         }
     if not raw:
         raise ValueError("OpenAI researcher returned no structured output")
-    return json.loads(raw), list(sources.values())[:12]
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        # Some Responses payloads expose output_text both at the top level and in
+        # content blocks. Accept the first complete JSON value if those copies were
+        # concatenated, while still rejecting genuinely truncated JSON.
+        parsed, _ = json.JSONDecoder().raw_decode(raw.lstrip())
+    return parsed, list(sources.values())[:12]
 
 
 def analyze_calibration(brief: str, has_image: bool = False) -> dict:
@@ -819,7 +827,10 @@ RESEARCHER_INSTRUCTION = (
     "requires evidence for the defining calibrated connection. Also assess artist visibility as "
     "familiar, underheard, or unknown from the available context; do not call a canonical artist "
     "underheard merely because an album is less famous. Return the supported original release year "
-    "when one can be established, so MusicBrainz conflicts can be rejected. Rabbit-hole labels must be selected only "
+    "when one can be established, so MusicBrainz conflicts can be rejected. Return up to three "
+    "evidence-supported genre orientations and one concise sound_preview describing instrumentation, "
+    "rhythm, vocal approach, texture, or production without marketing language. Genre and sound "
+    "remain contextual inferences, not verified identity facts. Rabbit-hole labels must be selected only "
     "from allowed_curated_label_routes. Scene rabbit holes belong to the whole journey and should be "
     "useful research routes, not unverified album metadata."
 )
@@ -925,9 +936,14 @@ def research_album_candidates(req: RecRequest, candidates: list[dict],
                 "type": "string", "enum": ["familiar", "underheard", "unknown"],
             },
             "release_year": {"type": ["integer", "null"]},
+            "genres": {
+                "type": "array", "items": {"type": "string"}, "maxItems": 3,
+            },
+            "sound_preview": {"type": "string"},
         },
         "required": ["candidate_index", "verdict", "bridge_summary",
-                     "supported_requirements", "limitations", "visibility", "release_year"],
+                     "supported_requirements", "limitations", "visibility", "release_year",
+                     "genres", "sound_preview"],
         "additionalProperties": False,
     }
     route = {
@@ -969,7 +985,7 @@ def research_album_candidates(req: RecRequest, candidates: list[dict],
         json.dumps(payload, ensure_ascii=False, indent=2),
         "candidate_context_research",
         schema,
-        3200,
+        5200,
     )
     def clean_research_copy(value: str) -> str:
         value = re.sub(r"\s*\(\[[^\]]+\]\(https?://[^)]+\)\)", "", str(value))
@@ -978,6 +994,8 @@ def research_album_candidates(req: RecRequest, candidates: list[dict],
 
     for item in output["findings"]:
         item["bridge_summary"] = clean_research_copy(item["bridge_summary"])
+        item["genres"] = [clean_research_copy(value) for value in item.get("genres", [])][:3]
+        item["sound_preview"] = clean_research_copy(item.get("sound_preview", ""))
         item["supported_requirements"] = [
             clean_research_copy(value) for value in item["supported_requirements"]
         ]
@@ -1178,6 +1196,8 @@ def verified_candidate_result(candidate: dict) -> dict:
                 value for value in descriptors if value not in set(candidate.get("scenes", []))
             ][:5],
             "scenes": list(dict.fromkeys(candidate.get("scenes", [])))[:2],
+            "genres": list(dict.fromkeys(research.get("genres", [])))[:3],
+            "sound_preview": research.get("sound_preview", ""),
         },
         "labels": [],
         "research": research,
@@ -1264,6 +1284,8 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
         "year": item["entity"]["year"],
         "visibility": result_visibility(item),
         "descriptors": item.get("match", {}).get("matched_descriptors", []),
+        "genres": item.get("descriptor_groups", {}).get("genres", []),
+        "sound_preview": item.get("descriptor_groups", {}).get("sound_preview", ""),
         "evidence": [{
             "claim": reason["claim"],
             "source": reason["provenance"]["source"],
@@ -1538,6 +1560,14 @@ def build_analysis_report(req: RecRequest, intent: dict, coverage: dict, seeds: 
             "scoring_policy": SCORING_POLICY_VERSION,
         },
     ]
+    if not req.features.corpus_candidates:
+        execution_stages = [execution_stages[0], {
+            "stage": "listener_discovery_mode",
+            "instruction": (
+                "Skip corpus album retrieval and scoring. The calibration corpus supplies no runtime "
+                "inventory and reserves no recommendation positions."
+            ),
+        }]
     if scout_payload is not None:
         execution_stages.extend([
             {"stage": "outside_candidate_generation",
@@ -1638,6 +1668,8 @@ def recommend(req: RecRequest) -> dict:
                     albums.role, albums.corpus_status, albums.rg_mbid,
                     artists.name AS artist, artists.id AS artist_id
              FROM albums JOIN artists ON artists.id = albums.artist_id"""
+    if not req.features.corpus_candidates:
+        sql += " WHERE 1=0"
     params: list = []
 
     scored = []
@@ -1985,7 +2017,7 @@ def recommend(req: RecRequest) -> dict:
         except Exception as exc:
             discovery["status"] = "fallback"
             discovery["error"] = type(exc).__name__
-            print(f"Outside discovery failed ({exc}); using curated results")
+            print(f"Outside discovery failed ({exc}); no unverified substitute will be returned")
 
     bridge_abstention = False
     if grounded_reference_required:
@@ -2022,7 +2054,12 @@ def recommend(req: RecRequest) -> dict:
             )
     if not results:
         coverage = "no_match"
-        if bridge_abstention:
+        if not req.features.corpus_candidates:
+            notes.insert(0,
+                "No researched discovery survived identity verification. The listener path does not "
+                "substitute albums from the calibration corpus."
+            )
+        elif bridge_abstention:
             notes.append(
                 "The request compares against a record or artist that is not grounded in the curated "
                 "corpus, and no researched outside candidate was verified. The honest answer is no "

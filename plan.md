@@ -178,6 +178,9 @@ Tasks:
 - [x] Remove inventory-source quotas, add a separate comparative slate pass, make
       visibility a slate requirement, carry explicit reference-record context, and
       reject inconsistent MusicBrainz title/year matches.
+- [x] Make the listener UI discovery-only: skip corpus album scoring and report only
+      proposed, researched, verified, and selected discovery candidates. Preserve
+      corpus retrieval behind an explicit feature toggle for calibration/evaluation.
 
 Exit criteria:
 - [x] Existing Phase 1 smoke checks still pass.

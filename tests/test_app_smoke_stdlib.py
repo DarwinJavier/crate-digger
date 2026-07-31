@@ -95,6 +95,16 @@ class AppSmokeTests(unittest.TestCase):
             for item in report["candidates"]
         ))
 
+    def test_listener_ui_uses_discovery_only_and_places_restart_after_profile(self):
+        page = app.listener_page()
+        self.assertIn("features:{corpus_candidates:false}", page)
+        self.assertIn("Genre orientation", page)
+        profile = page.index('<div class="listening-profile">')
+        restart = page.index('<div class="begin-again-row">')
+        source = page.index('<div class="source">', restart)
+        self.assertLess(profile, restart)
+        self.assertLess(restart, source)
+
     def test_label_catalog_search_and_provenance(self):
         response = app.labels(genre="dream pop")
         self.assertGreater(response["count"], 0)
@@ -146,6 +156,18 @@ class AppSmokeTests(unittest.TestCase):
         self.assertEqual(response["tuning_questions"], [])
         self.assertIsNone(response["slate_diversity"])
         self.assertTrue(all(not values for values in response["external_intent_by_axis"].values()))
+
+    def test_listener_discovery_mode_skips_corpus_inventory(self):
+        toggles = app.FeatureToggles(outside_discovery=False, corpus_candidates=False)
+        response = app.recommend(self.request(features=toggles))
+        self.assertEqual(response["results"], [])
+        self.assertEqual(response["analysis_report"]["candidates"], [])
+        stages = [
+            stage["stage"] for stage in response["analysis_report"]["execution_recipe"]
+        ]
+        self.assertIn("listener_discovery_mode", stages)
+        self.assertNotIn("pull_initial_corpus_list", stages)
+        self.assertIn("does not substitute", response["coverage"]["notes"][0])
 
     def test_impossible_constraint_is_no_match(self):
         response = app.recommend(self.request(hard_constraints=app.HardConstraints(year_min=2030)))
@@ -200,6 +222,10 @@ class AppSmokeTests(unittest.TestCase):
             "confidence": 0.78,
             "visibility": "underheard",
             "verification_score": 0.99,
+            "research": {
+                "genres": ["industrial hip hop", "experimental hip hop"],
+                "sound_preview": "Clipped drums, abrasive electronics, and tightly projected vocals.",
+            },
         })
         self.assertEqual(result["entity"]["corpus_status"], "verified_discovery")
         self.assertEqual(result["match"]["matched_descriptors"], ["nocturnal"])
@@ -207,6 +233,8 @@ class AppSmokeTests(unittest.TestCase):
             [reason["provenance"]["source"] for reason in result["reasons"]],
             ["llm_inferred", "musicbrainz"],
         )
+        self.assertEqual(result["descriptor_groups"]["genres"][0], "industrial hip hop")
+        self.assertIn("Clipped drums", result["descriptor_groups"]["sound_preview"])
 
     def test_identity_cache_avoids_a_repeat_musicbrainz_request(self):
         original_path = app.RUNTIME_DB_PATH

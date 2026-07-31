@@ -263,6 +263,7 @@ operational, and consistent with `AGENTS.md`.
 - Interpret the request before searching. Ask one request-specific question about what must survive, then keep genre distance and artist visibility as independent controls.
 - Genre distance controls movement across genres only. It does not stand for geography, obscurity, scene distance, or cache status.
 - The curated corpus is calibration evidence, never reserved recommendation inventory. Curated and query-time candidates receive no source quota; every displayed album must win on the calibrated bridge.
+- Listener mode disables corpus candidates entirely. Corpus retrieval remains available only as an explicit calibration/evaluation control; discovery failure never triggers a corpus substitution.
 - Artist visibility is a slate requirement. `underheard` excludes familiar artists; `mixed` includes at least one underheard and one recognizable artist whenever evidence-backed candidates of both kinds survive verification.
 - Use separate interpretation, candidate generation, research, identity verification, and comparative selection passes. Structured schemas validate handoffs but do not replace comparative reasoning.
 - Treat proposed outside albums as provisional. Research the defining calibrated bridge first, reject unsupported candidates, and resolve only the shortlist through MusicBrainz.

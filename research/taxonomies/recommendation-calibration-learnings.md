@@ -102,6 +102,65 @@ An environment can qualify a recommendation when it is documented, but it does n
 authorize corresponding album-level descriptors. Scene evidence and album evidence
 must be scored and explained as different branches.
 
+### Visual prompt, sacred solitude
+
+The image round added a non-album seed and used clarification to select exploratory
+distance, sacred solitude, and a multi-state journey. The slate deliberately assigned
+three narrative roles: empty sacred space, solitary presence, and overwhelming
+transformation.
+
+Curator feedback supported the journey more strongly than raw descriptor overlap:
+
+- The Sacrificial Code strongly supported stillness and sacred space through
+  `meditative`, `calm`, `minimalistic`, `sparse`, `spiritual`, and
+  `unaccompanied-solo`, but its profile was softer and cozier than the visual
+  inference anticipated.
+- Desertshore provided the strongest literal match through `lonely`, `desert`,
+  `desolate`, `medieval`, `apocalyptic`, `sparse`, and `cavernous`.
+- Dead Magic fulfilled the final transformation through `ritualistic`, `dense`,
+  `progressive`, `epic`, `suspenseful`, and `cavernous` rather than through all the
+  abrasive descriptors initially predicted.
+
+For visual prompts, image features define user intent and sequencing roles. They do
+not constitute evidence for candidate album descriptors. Evaluate both exact profile
+agreement and role fulfillment within the recommended journey.
+
+### Visual prompt, temporary belonging
+
+The second image round selected a mixed-depth journey around collective anticipation
+and bittersweet belonging that lasts only for an event. Curator feedback confirmed
+the narrative sequence:
+
+- Sound of Silver supported synchronization through rhythm, repetition, friendship,
+  nostalgia, ageing, regret, and dancing.
+- Ere Mela Mela preserved the image's warmth and brightness through `warm`, `summer`,
+  `passionate`, `melodic`, and `rhythmic`, while adding longing and bittersweet memory.
+- Untrue represented the aftermath through urban, nocturnal, lonely, desolate, and
+  nostalgic traits. Its cold enclosed world was a deliberate transformation of the
+  bright open image, not a direct visual match.
+
+This round exposed a missing visual control layer. Future image assessment must
+explicitly record palette temperature, brightness, openness, depth, crowd density,
+and texture before semantic interpretation. Preserve at least one dominant visual
+quality across the slate and declare intentional inversions.
+
+### Visual prompt, ordinary mystery
+
+The third image round selected exploratory discovery, ordinary mystery, and a journey
+from safety into unease. The individual bridges worked: Penguin Cafe preserved warm
+order, The Books made ordinary fragments strange, and Geogaddi strongly fulfilled
+the final transition into claustrophobic unease.
+
+The slate nevertheless clustered around acoustic minimalism, avant-folk, sampling,
+ambient-adjacent experimentation, and art-music audiences. `Exploratory` was applied
+to each image-to-album bridge but not enforced between the three candidates. This is
+a slate-level diversity failure, not an invalidation of the recommendations.
+
+For image prompts without a seed genre, discovery depth must constrain pairwise
+distance among candidates. At exploratory depth, each candidate should normally come
+from a distinguishable musical ecosystem unless the user requests a tightly coherent
+sequence.
+
 ## Descriptor calibration findings
 
 - Candidate discovery is currently stronger than complete descriptor assignment.
@@ -124,6 +183,12 @@ must be scored and explained as different branches.
   A recommendation can be good even when its inferred profile needs correction.
 
 ## Evaluation contract
+
+These completed games are development and calibration evidence because their
+feedback has already influenced the recommendation policy. They should inform the
+rubric, traps, and failure taxonomy in Phase 3, but they must not be reported as an
+unseen holdout test. Final comparative claims require a separately frozen set of new
+briefs that is not used to tune retrieval, scoring, vocabulary, or explanations.
 
 Evaluate each candidate on independent measures:
 

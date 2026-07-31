@@ -23,7 +23,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-import requests
+try:
+    import requests
+except ImportError:  # local build and stats do not require network support
+    requests = None
 
 
 DATA_DIR = Path("data")
@@ -37,11 +40,18 @@ RESOLVED_PATH = DATA_DIR / "resolved_albums.csv"
 UNRESOLVED_PATH = DATA_DIR / "unresolved.csv"
 MB_RELEASES_PATH = DATA_DIR / "musicbrainz_releases.csv"
 MB_RELATIONSHIPS_PATH = DATA_DIR / "musicbrainz_relationships.csv"
+ARTIST_ARCS_PATH = DATA_DIR / "artist_arcs.csv"
+DESCRIPTOR_EVIDENCE_PATH = DATA_DIR / "descriptor_evidence.csv"
+IMAGE_FEATURES_PATH = DATA_DIR / "image_features.csv"
+EXTERNAL_CANDIDATES_PATH = DATA_DIR / "external_candidates.csv"
+EXTERNAL_TAXONOMY_PATH = Path("research/taxonomies/music-descriptor-taxonomy/music-descriptor-taxonomy.json")
+CROSSWALK_PATH = DATA_DIR / "descriptor_crosswalk.csv"
+LABEL_CATALOG_PATH = DATA_DIR / "label_catalog.json"
 DB_PATH = BUILD_DIR / "corpus.db"
 JSONL_PATH = EXPORTS_DIR / "corpus.jsonl"
 
 DEFAULT_USER_AGENT = "MusicCorpusSandbox/0.1"
-ALLOWED_SOURCES = {"curator", "musicbrainz", "last_fm", "llm_inferred"}
+ALLOWED_SOURCES = {"curator", "musicbrainz", "wikidata", "last_fm", "llm_inferred"}
 DESCRIPTOR_KINDS = ("moods", "sonic_traits", "scenes")
 KIND_BY_DESCRIPTOR_COLUMN = {
     "moods": "mood",
@@ -253,6 +263,8 @@ def musicbrainz_user_agent() -> str:
 
 
 def musicbrainz_get(path: str, params: dict[str, object], user_agent: str) -> dict:
+    if requests is None:
+        raise SystemExit("The requests package is required for MusicBrainz commands")
     response = requests.get(
         f"https://musicbrainz.org/ws/2/{path}",
         params={**params, "fmt": "json"},
@@ -519,6 +531,14 @@ def create_schema(con: sqlite3.Connection) -> None:
     con.executescript(
         """
         DROP TABLE IF EXISTS album_tags;
+        DROP TABLE IF EXISTS album_labels;
+        DROP TABLE IF EXISTS label_edges;
+        DROP TABLE IF EXISTS label_terms;
+        DROP TABLE IF EXISTS labels;
+        DROP TABLE IF EXISTS artist_arcs;
+        DROP TABLE IF EXISTS descriptor_evidence;
+        DROP TABLE IF EXISTS external_crosswalk;
+        DROP TABLE IF EXISTS external_descriptors;
         DROP TABLE IF EXISTS musicbrainz_relationships;
         DROP TABLE IF EXISTS musicbrainz_releases;
         DROP TABLE IF EXISTS tags;
@@ -558,6 +578,91 @@ def create_schema(con: sqlite3.Connection) -> None:
             source TEXT NOT NULL,
             confidence REAL NOT NULL,
             PRIMARY KEY (album_id, tag_id)
+        );
+
+        CREATE TABLE labels (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL UNIQUE,
+            status TEXT NOT NULL,
+            reach_tier TEXT NOT NULL,
+            curatorial_strength TEXT NOT NULL,
+            founded_year INTEGER,
+            ended_year INTEGER,
+            country TEXT,
+            label_signal TEXT NOT NULL,
+            official_url TEXT,
+            source TEXT NOT NULL,
+            confidence REAL NOT NULL
+        );
+
+        CREATE TABLE label_terms (
+            label_id TEXT NOT NULL REFERENCES labels(id),
+            kind TEXT NOT NULL CHECK(kind IN ('genre','texture','mood','scene','anchor_artist')),
+            value TEXT NOT NULL,
+            source TEXT NOT NULL,
+            confidence REAL NOT NULL,
+            PRIMARY KEY (label_id, kind, value)
+        );
+
+        CREATE TABLE label_edges (
+            source_label_id TEXT NOT NULL REFERENCES labels(id),
+            relationship_type TEXT NOT NULL CHECK(relationship_type IN ('related','historical_ancestor')),
+            target_label_id TEXT NOT NULL,
+            target_is_modeled INTEGER NOT NULL,
+            source TEXT NOT NULL,
+            confidence REAL NOT NULL,
+            PRIMARY KEY (source_label_id, relationship_type, target_label_id)
+        );
+
+        CREATE TABLE album_labels (
+            album_id INTEGER NOT NULL REFERENCES albums(id),
+            label_id TEXT NOT NULL REFERENCES labels(id),
+            release_label_name TEXT NOT NULL,
+            source TEXT NOT NULL,
+            confidence REAL NOT NULL,
+            PRIMARY KEY (album_id, label_id)
+        );
+
+        CREATE TABLE external_descriptors (
+            descriptor_id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            definition TEXT,
+            root_dimension TEXT NOT NULL,
+            tier INTEGER NOT NULL,
+            parent_id TEXT
+        );
+
+        CREATE TABLE external_crosswalk (
+            project_kind TEXT NOT NULL,
+            project_slug TEXT NOT NULL,
+            external_id TEXT NOT NULL REFERENCES external_descriptors(descriptor_id),
+            relationship TEXT NOT NULL,
+            approved_by TEXT NOT NULL,
+            PRIMARY KEY (project_kind, project_slug, external_id)
+        );
+
+        CREATE TABLE artist_arcs (
+            album_id INTEGER NOT NULL REFERENCES albums(id),
+            stage TEXT NOT NULL,
+            transition_type TEXT,
+            reputation TEXT,
+            context TEXT,
+            source TEXT NOT NULL,
+            confidence REAL NOT NULL,
+            confidence_state TEXT NOT NULL CHECK(confidence_state IN ('core','probable','possible'))
+        );
+
+        CREATE TABLE descriptor_evidence (
+            album_id INTEGER NOT NULL REFERENCES albums(id),
+            track TEXT,
+            scope TEXT NOT NULL CHECK(scope IN ('album','track','scene')),
+            descriptor_system TEXT NOT NULL,
+            descriptor_id TEXT NOT NULL,
+            evidence_text TEXT NOT NULL,
+            evidence_url TEXT,
+            source TEXT NOT NULL,
+            confidence REAL NOT NULL,
+            confidence_state TEXT NOT NULL CHECK(confidence_state IN ('core','probable','possible'))
         );
 
         CREATE TABLE musicbrainz_releases (
@@ -653,21 +758,137 @@ def insert_musicbrainz_enrichment(
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
-                album_id,
-                row.get("release_mbid") or None,
-                row.get("scope") or "",
-                row.get("relationship_type") or "",
-                row.get("target_type") or "",
-                row.get("target_name") or "",
-                row.get("target_mbid") or "",
-                row.get("attributes") or "",
-                row.get("begin_date") or "",
-                row.get("end_date") or "",
-                row.get("source") or "musicbrainz",
+                album_id, row.get("release_mbid") or None, row.get("scope") or "",
+                row.get("relationship_type") or "", row.get("target_type") or "",
+                row.get("target_name") or "", row.get("target_mbid") or "",
+                row.get("attributes") or "", row.get("begin_date") or "",
+                row.get("end_date") or "", row.get("source") or "musicbrainz",
                 float(row.get("confidence") or 0.75),
             ),
         )
 
+
+def confidence_state(value: float) -> str:
+    if value >= 0.85:
+        return "core"
+    if value >= 0.60:
+        return "probable"
+    return "possible"
+
+
+def insert_label_catalog(con: sqlite3.Connection) -> None:
+    """Validate and compile the curator-supplied label graph into SQLite."""
+    if not LABEL_CATALOG_PATH.exists():
+        raise SystemExit(f"Label catalog missing: {LABEL_CATALOG_PATH}")
+    catalog = json.loads(LABEL_CATALOG_PATH.read_text(encoding="utf-8"))
+    labels = catalog.get("labels") or []
+    if catalog.get("record_count") != len(labels):
+        raise SystemExit("Label catalog record_count does not match labels")
+    ids = [str(item.get("id") or "").strip() for item in labels]
+    if not all(ids) or len(ids) != len(set(ids)):
+        raise SystemExit("Label catalog IDs must be present and unique")
+    confidence_values = {"high": 0.9, "medium": 0.7}
+    modeled_ids = set(ids)
+    frontier_ids = set(catalog.get("exploration_frontier_label_ids") or [])
+    for item in labels:
+        confidence_name = item.get("confidence")
+        if confidence_name not in confidence_values:
+            raise SystemExit(f"Invalid label confidence for {item['id']}: {confidence_name}")
+        confidence = confidence_values[confidence_name]
+        location = item.get("location") or {}
+        con.execute(
+            "INSERT INTO labels VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (item["id"], item["name"], item["status"], item["reach_tier"],
+             item["curatorial_strength"], item.get("founded_year"), item.get("ended_year"),
+             location.get("country") or "", item["label_signal"], item.get("official_url") or "",
+             "curator", confidence),
+        )
+        term_fields = (("genre", "genres"), ("texture", "textures"), ("mood", "moods"),
+                       ("scene", "scene_connections"), ("anchor_artist", "anchor_artists"))
+        for kind, field in term_fields:
+            for value in item.get(field) or []:
+                con.execute("INSERT INTO label_terms VALUES (?, ?, ?, ?, ?)",
+                            (item["id"], kind, value, "curator", confidence))
+        for relationship, field in (("related", "related_label_ids"),
+                                    ("historical_ancestor", "historical_ancestor_ids")):
+            for target in item.get(field) or []:
+                if target not in modeled_ids and target not in frontier_ids:
+                    raise SystemExit(f"Unknown label edge target: {item['id']} -> {target}")
+                con.execute("INSERT INTO label_edges VALUES (?, ?, ?, ?, ?, ?)",
+                            (item["id"], relationship, target, int(target in modeled_ids),
+                             "curator", confidence))
+
+
+def link_album_labels(con: sqlite3.Connection) -> None:
+    """Join MusicBrainz release labels to curated labels by conservative exact name."""
+    names = {normalize(row["name"]): row["id"] for row in con.execute("SELECT id, name FROM labels")}
+    releases = con.execute(
+        "SELECT album_id, label, confidence FROM musicbrainz_releases WHERE label != ''"
+    ).fetchall()
+    for release in releases:
+        for release_name in release["label"].split(";"):
+            label_id = names.get(normalize(release_name))
+            if label_id:
+                con.execute(
+                    "INSERT OR REPLACE INTO album_labels VALUES (?, ?, ?, ?, ?)",
+                    (release["album_id"], label_id, release_name.strip(), "musicbrainz",
+                     float(release["confidence"])),
+                )
+
+
+def insert_recommendation_intelligence(con: sqlite3.Connection, album_ids: dict[tuple[str, str], int],
+                                       vocab: dict[str, dict[str, str]]) -> None:
+    taxonomy = json.loads(EXTERNAL_TAXONOMY_PATH.read_text(encoding="utf-8"))
+    nodes = taxonomy.get("nodes", [])
+    if len(nodes) != 477:
+        raise SystemExit(f"External taxonomy must contain 477 nodes, found {len(nodes)}")
+    external_ids = set()
+    for node in nodes:
+        external_ids.add(node["id"])
+        con.execute("INSERT INTO external_descriptors VALUES (?, ?, ?, ?, ?, ?)",
+                    (node["id"], node["name"], node.get("definition"), node["root_dimension"],
+                     node["tier"], node.get("parent_id")))
+    for row in load_optional_csv(CROSSWALK_PATH):
+        if (row.get("approved") or "").lower() != "yes":
+            continue
+        kind, slug, external_id = row["project_kind"], row["project_slug"], row["external_id"]
+        if slug not in vocab.get(kind, {}):
+            raise SystemExit(f"Crosswalk has unknown project term: {kind}/{slug}")
+        if external_id not in external_ids:
+            raise SystemExit(f"Crosswalk has unknown external term: {external_id}")
+        con.execute("INSERT INTO external_crosswalk VALUES (?, ?, ?, ?, ?)",
+                    (kind, slug, external_id, row.get("relationship") or "related",
+                     row.get("approved_by") or "curator"))
+    for row in load_optional_csv(ARTIST_ARCS_PATH):
+        if (row.get("approved") or "").lower() != "yes":
+            continue
+        album_id = album_ids.get(album_key(row.get("artist", ""), row.get("album", "")))
+        if not album_id:
+            raise SystemExit(f"Artist arc target not in seed list: {row.get('artist')} - {row.get('album')}")
+        source = row.get("source") or "curator"
+        confidence = float(row.get("confidence") or 0.85)
+        if source not in ALLOWED_SOURCES:
+            raise SystemExit(f"Invalid artist arc source: {source}")
+        state = row.get("confidence_state") or confidence_state(confidence)
+        con.execute("INSERT INTO artist_arcs VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (album_id, row.get("stage") or "unknown", row.get("transition_type") or "",
+                     row.get("reputation") or "", row.get("context") or "", source, confidence, state))
+    for row in load_optional_csv(DESCRIPTOR_EVIDENCE_PATH):
+        if (row.get("approved") or "").lower() != "yes":
+            continue
+        album_id = album_ids.get(album_key(row.get("artist", ""), row.get("album", "")))
+        if not album_id:
+            raise SystemExit(f"Evidence target not in seed list: {row.get('artist')} - {row.get('album')}")
+        scope = row.get("scope") or "album"
+        if scope not in {"album", "track", "scene"}:
+            raise SystemExit(f"Invalid evidence scope: {scope}")
+        source = row.get("source") or "curator"
+        confidence = float(row.get("confidence") or 0.85)
+        state = row.get("confidence_state") or confidence_state(confidence)
+        con.execute("INSERT INTO descriptor_evidence VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (album_id, row.get("track") or "", scope, row.get("descriptor_system") or "project",
+                     row.get("descriptor_id") or "", row.get("evidence_text") or "",
+                     row.get("evidence_url") or "", source, confidence, state))
 
 def command_build(_args: argparse.Namespace) -> None:
     seeds = load_seeds()
@@ -743,6 +964,9 @@ def command_build(_args: argparse.Namespace) -> None:
                 (album_id, tag_ids[(kind, slug)], source, confidence),
             )
     insert_musicbrainz_enrichment(con, album_ids)
+    insert_label_catalog(con)
+    link_album_labels(con)
+    insert_recommendation_intelligence(con, album_ids, vocab)
     con.commit()
     export_jsonl(con)
     con.close()
@@ -790,6 +1014,14 @@ def export_jsonl(con: sqlite3.Connection) -> None:
                         "confidence": tag["confidence"],
                     }
                     for tag in tags
+                ],
+                "labels": [
+                    {"id": label["id"], "name": label["name"],
+                     "link_source": label["source"], "link_confidence": label["confidence"]}
+                    for label in con.execute(
+                        "SELECT labels.id, labels.name, album_labels.source, album_labels.confidence "
+                        "FROM album_labels JOIN labels ON labels.id=album_labels.label_id "
+                        "WHERE album_labels.album_id=? ORDER BY labels.name", (album["id"],))
                 ],
             }
             handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
@@ -839,6 +1071,30 @@ def command_stats(_args: argparse.Namespace) -> None:
     con.close()
 
 
+def command_scout(args: argparse.Namespace) -> None:
+    """Resolve possible release groups into a quarantine CSV for human review."""
+    user_agent = musicbrainz_user_agent()
+    data = musicbrainz_get("/release-group", {"query": args.query, "limit": args.limit}, user_agent)
+    existing = load_optional_csv(EXTERNAL_CANDIDATES_PATH)
+    seen = {(row.get("release_group_mbid") or "") for row in existing}
+    rows = list(existing)
+    for item in data.get("release-groups", []):
+        rg_mbid = item.get("id") or ""
+        if not rg_mbid or rg_mbid in seen:
+            continue
+        artists = item.get("artist-credit") or []
+        artist = "".join(part.get("name", "") + part.get("joinphrase", "") for part in artists)
+        rows.append({"artist": artist, "album": item.get("title") or "",
+                     "release_group_mbid": rg_mbid, "discovery_source": "musicbrainz",
+                     "discovery_query": args.query, "evidence_url": f"https://musicbrainz.org/release-group/{rg_mbid}",
+                     "status": "pending_review", "confidence": 0.75,
+                     "notes": "Quarantined candidate; cannot be recommended until added to the curated corpus."})
+        seen.add(rg_mbid)
+    write_csv(EXTERNAL_CANDIDATES_PATH, rows, ["artist", "album", "release_group_mbid",
+              "discovery_source", "discovery_query", "evidence_url", "status", "confidence", "notes"])
+    print(f"external candidates: {len(rows)}; all remain quarantined")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Music Context Sandbox corpus tools")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -854,6 +1110,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     stats = subparsers.add_parser("stats", help="Show corpus coverage statistics")
     stats.set_defaults(func=command_stats)
+
+    scout = subparsers.add_parser("scout", help="Find MusicBrainz candidates for human review")
+    scout.add_argument("--query", required=True, help="MusicBrainz release-group search query")
+    scout.add_argument("--limit", type=int, default=10, choices=range(1, 26))
+    scout.set_defaults(func=command_scout)
 
     return parser
 

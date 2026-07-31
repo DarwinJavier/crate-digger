@@ -1,0 +1,3581 @@
+{
+  "schema_version": "1.0.0",
+  "dataset_id": "crate-digger-curated-record-labels",
+  "title": "Crate Digger: Curated Independent Record Labels",
+  "description": "An initial exploration territory of curator-led independent record labels. Reach tier measures historical or market reach, not artistic quality. The dataset is designed for filtering, graph traversal, recommendation explanations, and later entity resolution against MusicBrainz and Discogs.",
+  "generated_on": "2026-07-22",
+  "record_count": 69,
+  "controlled_vocabularies": {
+    "status": [
+      "active",
+      "inactive",
+      "legacy-active",
+      "ceased"
+    ],
+    "reach_tier": {
+      "canonical": "Historically transformative institution with broad international recognition.",
+      "major-tastemaker": "Established contemporary independent label with international reach.",
+      "specialist": "Recognized label with a defined musical or scene territory.",
+      "boutique-caviar": "Small or focused imprint whose catalogue provides an unusually strong curatorial signal.",
+      "legacy": "Inactive or historically transformed label whose catalogue remains essential for musical genealogy."
+    },
+    "curatorial_strength": {
+      "exceptional": "The label name itself is a powerful recommendation and inference signal.",
+      "very-high": "A strong aesthetic identity persists across most of the catalogue.",
+      "high": "A recognizable identity exists, with meaningful stylistic breadth."
+    }
+  },
+  "integration_guidance": {
+    "primary_key": "id",
+    "display_field": "name",
+    "graph_edges": [
+      "related_label_ids",
+      "historical_ancestor_ids"
+    ],
+    "embedding_text": [
+      "name",
+      "label_signal",
+      "genres",
+      "textures",
+      "moods",
+      "scene_connections"
+    ],
+    "filter_fields": [
+      "status",
+      "reach_tier",
+      "curatorial_strength",
+      "location.country",
+      "genres",
+      "textures",
+      "moods"
+    ],
+    "important_note": "Do not interpret reach_tier as a quality ranking. Use curatorial_strength and label_signal when estimating discovery value.",
+    "enrichment_priority": [
+      "MusicBrainz",
+      "Discogs",
+      "official_label_site",
+      "label_Bandcamp",
+      "reputable_music_journalism",
+      "scene_archives_and_fanzines"
+    ],
+    "claim_policy": "Store future factual enrichment as claims with source, retrieval date, and confidence rather than overwriting curated interpretation without evidence.",
+    "exploration_frontier": "Labels referenced as useful next-hop candidates but not yet modeled as full entities in this seed."
+  },
+  "labels": [
+    {
+      "id": "4ad",
+      "name": "4AD",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1980,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "dream pop",
+        "post-punk",
+        "art rock",
+        "experimental pop"
+      ],
+      "textures": [
+        "ethereal",
+        "reverberant",
+        "sculpted",
+        "dark",
+        "tactile"
+      ],
+      "moods": [
+        "otherworldly",
+        "melancholic",
+        "mysterious",
+        "intimate"
+      ],
+      "scene_connections": [
+        "UK post-punk",
+        "dream pop",
+        "shoegaze genealogy"
+      ],
+      "label_signal": "Immersive, art-directed music in which atmosphere and sound design matter as much as conventional genre.",
+      "anchor_artists": [
+        "Cocteau Twins",
+        "This Mortal Coil",
+        "Dead Can Dance",
+        "Pixies",
+        "Lush",
+        "Deerhunter"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "creation-records",
+        "bella-union",
+        "kranky",
+        "sonic-cathedral"
+      ],
+      "official_url": "https://4ad.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "rough-trade-records",
+      "name": "Rough Trade Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1978,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "post-punk",
+        "indie rock",
+        "art pop"
+      ],
+      "textures": [
+        "angular",
+        "literate",
+        "wiry",
+        "idiosyncratic"
+      ],
+      "moods": [
+        "restless",
+        "defiant",
+        "cerebral"
+      ],
+      "scene_connections": [
+        "UK punk",
+        "UK post-punk",
+        "independent distribution"
+      ],
+      "label_signal": "Artist-led, nonconformist music with cultural character and a strong point of view.",
+      "anchor_artists": [
+        "The Smiths",
+        "Young Marble Giants",
+        "Scritti Politti",
+        "The Strokes",
+        "Dean Blunt",
+        "black midi"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "factory-records",
+        "mute",
+        "domino",
+        "matador"
+      ],
+      "official_url": "https://roughtraderecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "sub-pop",
+      "name": "Sub Pop",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "high",
+      "founded_year": 1986,
+      "location": {
+        "city": "Seattle",
+        "region": "Washington",
+        "country": "United States"
+      },
+      "genres": [
+        "alternative rock",
+        "indie rock",
+        "punk",
+        "experimental hip-hop",
+        "folk"
+      ],
+      "textures": [
+        "raw",
+        "distorted",
+        "regional",
+        "personality-forward"
+      ],
+      "moods": [
+        "rebellious",
+        "earthy",
+        "wry"
+      ],
+      "scene_connections": [
+        "Seattle grunge",
+        "Pacific Northwest indie"
+      ],
+      "label_signal": "A strong artist-development label rooted in regional guitar culture but now open to distinctive voices across genres.",
+      "anchor_artists": [
+        "Nirvana",
+        "Mudhoney",
+        "Beach House",
+        "Low",
+        "Fleet Foxes",
+        "Shabazz Palaces"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "sst-records",
+        "touch-and-go",
+        "matador"
+      ],
+      "official_url": "https://www.subpop.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "matador",
+      "name": "Matador Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "high",
+      "founded_year": 1989,
+      "location": {
+        "city": "New York",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "indie rock",
+        "post-punk",
+        "experimental rock"
+      ],
+      "textures": [
+        "guitar-led",
+        "intelligent",
+        "dry",
+        "unvarnished"
+      ],
+      "moods": [
+        "cool",
+        "restless",
+        "introspective"
+      ],
+      "scene_connections": [
+        "US indie rock",
+        "1990s alternative"
+      ],
+      "label_signal": "Independent guitar music with personality, longevity, and room for eccentricity.",
+      "anchor_artists": [
+        "Pavement",
+        "Yo La Tengo",
+        "Cat Power",
+        "Interpol",
+        "Perfume Genius"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "merge",
+        "rough-trade-records",
+        "sub-pop",
+        "domino"
+      ],
+      "official_url": "https://matadorrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "merge",
+      "name": "Merge Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "high",
+      "founded_year": 1989,
+      "location": {
+        "city": "Durham",
+        "region": "North Carolina",
+        "country": "United States"
+      },
+      "genres": [
+        "indie rock",
+        "indie pop",
+        "singer-songwriter"
+      ],
+      "textures": [
+        "warm",
+        "handmade",
+        "melodic",
+        "direct"
+      ],
+      "moods": [
+        "earnest",
+        "joyful",
+        "wistful"
+      ],
+      "scene_connections": [
+        "US DIY indie",
+        "North Carolina indie"
+      ],
+      "label_signal": "Durable, human-scale indie music built around songs, artist autonomy, and long relationships.",
+      "anchor_artists": [
+        "Superchunk",
+        "Neutral Milk Hotel",
+        "The Magnetic Fields",
+        "Arcade Fire",
+        "Waxahatchee"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "matador",
+        "secretly-canadian"
+      ],
+      "official_url": "https://www.mergerecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "domino",
+      "name": "Domino Recording Co.",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "high",
+      "founded_year": 1993,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "indie rock",
+        "electronic",
+        "art pop"
+      ],
+      "textures": [
+        "wiry",
+        "cerebral",
+        "inventive",
+        "polished"
+      ],
+      "moods": [
+        "restless",
+        "playful",
+        "enigmatic"
+      ],
+      "scene_connections": [
+        "UK indie",
+        "art pop"
+      ],
+      "label_signal": "Ambitious independent music spanning sharp guitar bands, experimental songwriters, and electronic innovators.",
+      "anchor_artists": [
+        "Arctic Monkeys",
+        "Franz Ferdinand",
+        "Animal Collective",
+        "Julia Holter",
+        "Tirzah"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "rough-trade-records",
+        "warp",
+        "xl-recordings",
+        "matador"
+      ],
+      "official_url": "https://www.dominomusic.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "xl-recordings",
+      "name": "XL Recordings",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "high",
+      "founded_year": 1989,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "alternative pop",
+        "electronic",
+        "indie rock",
+        "experimental music"
+      ],
+      "textures": [
+        "bold",
+        "modern",
+        "high-definition",
+        "artist-led"
+      ],
+      "moods": [
+        "immediate",
+        "adventurous",
+        "dramatic"
+      ],
+      "scene_connections": [
+        "UK rave genealogy",
+        "global alternative pop"
+      ],
+      "label_signal": "Singular artists given enough space and resources to make culturally large but unconventional records.",
+      "anchor_artists": [
+        "The Prodigy",
+        "Radiohead",
+        "The xx",
+        "FKA twigs",
+        "Jai Paul"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "warp",
+        "domino",
+        "ninja-tune"
+      ],
+      "official_url": "https://xlrecordings.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "warp",
+      "name": "Warp Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1989,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom",
+        "founded_in": "Sheffield"
+      },
+      "genres": [
+        "electronic",
+        "IDM",
+        "experimental pop",
+        "alternative hip-hop"
+      ],
+      "textures": [
+        "synthetic",
+        "futuristic",
+        "fractured",
+        "uncanny",
+        "detailed"
+      ],
+      "moods": [
+        "cerebral",
+        "alien",
+        "dreamlike",
+        "anxious"
+      ],
+      "scene_connections": [
+        "Sheffield electronic music",
+        "UK IDM",
+        "electronica"
+      ],
+      "label_signal": "Future-facing music where sound design, technology, and unconventional structure are primary compositional forces.",
+      "anchor_artists": [
+        "Aphex Twin",
+        "Autechre",
+        "Boards of Canada",
+        "Broadcast",
+        "Flying Lotus"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "ninja-tune",
+        "hyperdub",
+        "pan",
+        "ghostly-international"
+      ],
+      "official_url": "https://warp.net/",
+      "confidence": "high"
+    },
+    {
+      "id": "mute",
+      "name": "Mute",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1978,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "industrial",
+        "electronic",
+        "synth-pop",
+        "experimental rock"
+      ],
+      "textures": [
+        "mechanical",
+        "minimalist",
+        "dark",
+        "abrasive"
+      ],
+      "moods": [
+        "alienated",
+        "severe",
+        "transgressive",
+        "nocturnal"
+      ],
+      "scene_connections": [
+        "UK industrial",
+        "synth-pop",
+        "post-punk"
+      ],
+      "label_signal": "Experimental electronic and rock music that turns machinery, repetition, and extremity into a distinct emotional language.",
+      "anchor_artists": [
+        "Fad Gadget",
+        "Depeche Mode",
+        "Einsturzende Neubauten",
+        "Nick Cave and the Bad Seeds",
+        "Liars"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "factory-records",
+        "rough-trade-records",
+        "dais",
+        "sacred-bones"
+      ],
+      "official_url": "https://mute.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "ninja-tune",
+      "name": "Ninja Tune",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "high",
+      "founded_year": 1990,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "electronic",
+        "instrumental hip-hop",
+        "bass music",
+        "jazz-adjacent"
+      ],
+      "textures": [
+        "cinematic",
+        "beat-driven",
+        "bass-heavy",
+        "exploratory"
+      ],
+      "moods": [
+        "kinetic",
+        "moody",
+        "futuristic"
+      ],
+      "scene_connections": [
+        "UK electronic",
+        "beat culture",
+        "club culture"
+      ],
+      "label_signal": "Rhythm-forward electronic music connecting underground club systems, instrumental experimentation, and visual culture.",
+      "anchor_artists": [
+        "Amon Tobin",
+        "The Cinematic Orchestra",
+        "Bonobo",
+        "Floating Points",
+        "Young Fathers"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "warp",
+        "brainfeeder",
+        "hyperdub",
+        "brownswood"
+      ],
+      "official_url": "https://ninjatune.net/",
+      "confidence": "high"
+    },
+    {
+      "id": "constellation",
+      "name": "Constellation Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1997,
+      "location": {
+        "city": "Montreal",
+        "region": "Quebec",
+        "country": "Canada"
+      },
+      "genres": [
+        "post-rock",
+        "experimental rock",
+        "drone",
+        "political folk"
+      ],
+      "textures": [
+        "patient",
+        "monumental",
+        "austere",
+        "organic"
+      ],
+      "moods": [
+        "apocalyptic",
+        "communal",
+        "mournful",
+        "resolute"
+      ],
+      "scene_connections": [
+        "Montreal post-rock",
+        "Canadian experimental music"
+      ],
+      "label_signal": "Politically conscious, album-oriented music with patient structures, handmade presentation, and resistance to conventional industry logic.",
+      "anchor_artists": [
+        "Godspeed You! Black Emperor",
+        "Thee Silver Mt. Zion",
+        "Do Make Say Think",
+        "Colin Stetson"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "kranky",
+        "the-flenser",
+        "room40"
+      ],
+      "official_url": "https://cstrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "secretly-canadian",
+      "name": "Secretly Canadian",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "high",
+      "founded_year": 1996,
+      "location": {
+        "city": "Bloomington",
+        "region": "Indiana",
+        "country": "United States"
+      },
+      "genres": [
+        "indie rock",
+        "folk",
+        "alternative pop"
+      ],
+      "textures": [
+        "literate",
+        "emotionally-open",
+        "melodic",
+        "eccentric"
+      ],
+      "moods": [
+        "earnest",
+        "reflective",
+        "bittersweet"
+      ],
+      "scene_connections": [
+        "Bloomington indie",
+        "Secretly Group"
+      ],
+      "label_signal": "Patient artist development centered on distinctive songwriting and emotionally legible records.",
+      "anchor_artists": [
+        "Songs: Ohia",
+        "Jens Lekman",
+        "Antony and the Johnsons",
+        "The War on Drugs"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "jagjaguwar",
+        "dead-oceans",
+        "merge"
+      ],
+      "official_url": "https://secretlycanadian.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "jagjaguwar",
+      "name": "Jagjaguwar",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "high",
+      "founded_year": 1996,
+      "location": {
+        "city": "Bloomington",
+        "region": "Indiana",
+        "country": "United States"
+      },
+      "genres": [
+        "art rock",
+        "indie folk",
+        "experimental pop"
+      ],
+      "textures": [
+        "expansive",
+        "earthy",
+        "introspective",
+        "ambitious"
+      ],
+      "moods": [
+        "yearning",
+        "spiritual",
+        "melancholic"
+      ],
+      "scene_connections": [
+        "Bloomington indie",
+        "Secretly Group"
+      ],
+      "label_signal": "Large-scale emotional and sonic ambition without abandoning independent eccentricity.",
+      "anchor_artists": [
+        "Bon Iver",
+        "Sharon Van Etten",
+        "Angel Olsen",
+        "Dinosaur Jr.",
+        "Moses Sumney"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "secretly-canadian",
+        "dead-oceans",
+        "4ad",
+        "partisan"
+      ],
+      "official_url": "https://jagjaguwar.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "dead-oceans",
+      "name": "Dead Oceans",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "high",
+      "founded_year": 2007,
+      "location": {
+        "city": "Bloomington",
+        "region": "Indiana",
+        "country": "United States"
+      },
+      "genres": [
+        "indie rock",
+        "singer-songwriter",
+        "art pop"
+      ],
+      "textures": [
+        "atmospheric",
+        "song-centered",
+        "dynamic",
+        "polished"
+      ],
+      "moods": [
+        "introspective",
+        "dramatic",
+        "warm"
+      ],
+      "scene_connections": [
+        "Secretly Group",
+        "international indie"
+      ],
+      "label_signal": "Strong songwriting presented through atmospheric, contemporary production and distinctive artist narratives.",
+      "anchor_artists": [
+        "Mitski",
+        "Japanese Breakfast",
+        "Phoebe Bridgers",
+        "Khruangbin",
+        "Slowdive"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "secretly-canadian",
+        "jagjaguwar",
+        "partisan",
+        "bella-union"
+      ],
+      "official_url": "https://deadoceans.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "sacred-bones",
+      "name": "Sacred Bones Records",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2007,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "post-punk",
+        "industrial",
+        "darkwave",
+        "experimental soundtrack"
+      ],
+      "textures": [
+        "severe",
+        "nocturnal",
+        "ritualistic",
+        "analog",
+        "cinematic"
+      ],
+      "moods": [
+        "ominous",
+        "mysterious",
+        "alienated",
+        "hypnotic"
+      ],
+      "scene_connections": [
+        "Brooklyn underground",
+        "darkwave revival",
+        "cult cinema"
+      ],
+      "label_signal": "Dark, art-directed music where sound, cinema, mysticism, and physical design form a single world.",
+      "anchor_artists": [
+        "Zola Jesus",
+        "Moon Duo",
+        "Jenny Hval",
+        "John Carpenter",
+        "SPELLLING"
+      ],
+      "historical_ancestor_ids": [
+        "mute",
+        "industrial-records"
+      ],
+      "related_label_ids": [
+        "dais",
+        "mexican-summer",
+        "pan",
+        "the-flenser"
+      ],
+      "official_url": "https://www.sacredbonesrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "mexican-summer",
+      "name": "Mexican Summer",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 2008,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "psychedelia",
+        "experimental pop",
+        "ambient",
+        "outsider music"
+      ],
+      "textures": [
+        "hazy",
+        "sun-bleached",
+        "exploratory",
+        "disorienting"
+      ],
+      "moods": [
+        "dreamlike",
+        "languid",
+        "uncanny"
+      ],
+      "scene_connections": [
+        "Brooklyn experimental",
+        "neo-psychedelia"
+      ],
+      "label_signal": "Exploratory music with psychedelic openness, strong visual framing, and porous boundaries between pop and experiment.",
+      "anchor_artists": [
+        "Ariel Pink",
+        "Oneohtrix Point Never",
+        "Jessica Pratt",
+        "Cate Le Bon",
+        "L'Rain"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "sacred-bones",
+        "rvng-intl",
+        "captured-tracks"
+      ],
+      "official_url": "https://mexicansummer.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "captured-tracks",
+      "name": "Captured Tracks",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 2008,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "jangle pop",
+        "dream pop",
+        "post-punk",
+        "indie rock"
+      ],
+      "textures": [
+        "nostalgic",
+        "melodic",
+        "faded",
+        "cassette-like"
+      ],
+      "moods": [
+        "wistful",
+        "youthful",
+        "romantic"
+      ],
+      "scene_connections": [
+        "Brooklyn indie",
+        "2010s jangle revival"
+      ],
+      "label_signal": "Melodic guitar music filtered through DIY production, memory, and archival curiosity.",
+      "anchor_artists": [
+        "Beach Fossils",
+        "DIIV",
+        "Mac DeMarco",
+        "Wild Nothing",
+        "Craft Spells"
+      ],
+      "historical_ancestor_ids": [
+        "flying-nun",
+        "sarah-records"
+      ],
+      "related_label_ids": [
+        "kanine",
+        "shelflife",
+        "mexican-summer",
+        "fire-talk"
+      ],
+      "official_url": "https://capturedtracks.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "kranky",
+      "name": "Kranky",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1993,
+      "location": {
+        "city": "Chicago",
+        "region": "Illinois",
+        "country": "United States"
+      },
+      "genres": [
+        "ambient",
+        "drone",
+        "dream pop",
+        "experimental electronic"
+      ],
+      "textures": [
+        "spacious",
+        "slow",
+        "immersive",
+        "microscopic",
+        "nocturnal"
+      ],
+      "moods": [
+        "contemplative",
+        "lonely",
+        "weightless",
+        "sublime"
+      ],
+      "scene_connections": [
+        "Chicago experimental",
+        "ambient",
+        "post-rock genealogy"
+      ],
+      "label_signal": "Deep-listening records that privilege space, duration, resonance, and subtle changes in texture.",
+      "anchor_artists": [
+        "Labradford",
+        "Stars of the Lid",
+        "Grouper",
+        "Tim Hecker",
+        "Deerhunter"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "4ad",
+        "constellation",
+        "room40",
+        "geographic-north"
+      ],
+      "official_url": "https://kranky.net/",
+      "confidence": "high"
+    },
+    {
+      "id": "dais",
+      "name": "Dais Records",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2007,
+      "location": {
+        "city": "Los Angeles",
+        "region": "California",
+        "country": "United States"
+      },
+      "genres": [
+        "industrial",
+        "darkwave",
+        "post-punk",
+        "ambient"
+      ],
+      "textures": [
+        "cold",
+        "metallic",
+        "architectural",
+        "shadowy"
+      ],
+      "moods": [
+        "nocturnal",
+        "severe",
+        "alienated",
+        "sensual"
+      ],
+      "scene_connections": [
+        "US darkwave",
+        "industrial revival"
+      ],
+      "label_signal": "Precisely art-directed dark music connecting industrial history, post-punk physicality, and contemporary electronic atmosphere.",
+      "anchor_artists": [
+        "Cold Cave",
+        "Drab Majesty",
+        "TR/ST",
+        "Choir Boy",
+        "CoH"
+      ],
+      "historical_ancestor_ids": [
+        "mute",
+        "industrial-records"
+      ],
+      "related_label_ids": [
+        "sacred-bones",
+        "night-school",
+        "ad-93",
+        "pan"
+      ],
+      "official_url": "https://www.daisrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "partisan",
+      "name": "Partisan Records",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "high",
+      "founded_year": 2007,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States",
+        "additional_base": "London"
+      },
+      "genres": [
+        "indie rock",
+        "post-punk",
+        "singer-songwriter"
+      ],
+      "textures": [
+        "muscular",
+        "serious",
+        "articulate",
+        "dynamic"
+      ],
+      "moods": [
+        "urgent",
+        "reflective",
+        "defiant"
+      ],
+      "scene_connections": [
+        "international indie",
+        "modern post-punk"
+      ],
+      "label_signal": "Artist-forward records with emotional or political weight and enough scale to travel internationally.",
+      "anchor_artists": [
+        "IDLES",
+        "Fontaines D.C.",
+        "Beth Orton",
+        "Cigarettes After Sex"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "dead-oceans",
+        "jagjaguwar",
+        "rough-trade-records",
+        "so-young"
+      ],
+      "official_url": "https://partisanrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "bella-union",
+      "name": "Bella Union",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 1997,
+      "location": {
+        "city": "Brighton",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "dream pop",
+        "chamber pop",
+        "indie rock"
+      ],
+      "textures": [
+        "lush",
+        "ornate",
+        "celestial",
+        "reverberant"
+      ],
+      "moods": [
+        "romantic",
+        "melancholic",
+        "transportive"
+      ],
+      "scene_connections": [
+        "UK dream pop",
+        "art pop"
+      ],
+      "label_signal": "Atmospheric, emotionally generous records with elegant arrangements and a sense of wonder.",
+      "anchor_artists": [
+        "Beach House",
+        "Fleet Foxes",
+        "Midlake",
+        "John Grant",
+        "Ezra Furman"
+      ],
+      "historical_ancestor_ids": [
+        "4ad"
+      ],
+      "related_label_ids": [
+        "4ad",
+        "dead-oceans",
+        "fatcat",
+        "sonic-cathedral"
+      ],
+      "official_url": "https://bellaunion.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "heavenly",
+      "name": "Heavenly Recordings",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 1990,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "psychedelia",
+        "electronic",
+        "indie rock",
+        "pop"
+      ],
+      "textures": [
+        "colourful",
+        "communal",
+        "euphoric",
+        "eccentric"
+      ],
+      "moods": [
+        "joyful",
+        "dreamlike",
+        "rebellious"
+      ],
+      "scene_connections": [
+        "UK indie dance",
+        "neo-psychedelia"
+      ],
+      "label_signal": "Characterful British records that often connect pop immediacy, psychedelia, club culture, and communal energy.",
+      "anchor_artists": [
+        "Saint Etienne",
+        "Doves",
+        "The Orielles",
+        "Working Men's Club",
+        "Gwenno"
+      ],
+      "historical_ancestor_ids": [
+        "factory-records",
+        "creation-records"
+      ],
+      "related_label_ids": [
+        "bella-union",
+        "rocket-recordings",
+        "domino",
+        "rough-trade-records"
+      ],
+      "official_url": "https://heavenlyrecordings.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "fatcat",
+      "name": "FatCat Records",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 1997,
+      "location": {
+        "city": "Brighton",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "indie rock",
+        "post-rock",
+        "electronic",
+        "experimental"
+      ],
+      "textures": [
+        "textural",
+        "exploratory",
+        "intimate",
+        "handmade"
+      ],
+      "moods": [
+        "fragile",
+        "restless",
+        "expansive"
+      ],
+      "scene_connections": [
+        "UK experimental indie",
+        "post-rock"
+      ],
+      "label_signal": "Music that treats texture and process as pathways into emotion, from intimate songcraft to abstraction.",
+      "anchor_artists": [
+        "Sigur Ros",
+        "Animal Collective",
+        "Mum",
+        "Frightened Rabbit"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "bella-union",
+        "kranky",
+        "constellation",
+        "erased-tapes"
+      ],
+      "official_url": "https://fat-cat.co.uk/",
+      "confidence": "high"
+    },
+    {
+      "id": "ghostly-international",
+      "name": "Ghostly International",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 1999,
+      "location": {
+        "city": "New York",
+        "region": "New York",
+        "country": "United States",
+        "founded_in": "Ann Arbor, Michigan"
+      },
+      "genres": [
+        "electronic",
+        "ambient",
+        "art pop"
+      ],
+      "textures": [
+        "precise",
+        "elegant",
+        "digital",
+        "contemplative"
+      ],
+      "moods": [
+        "futuristic",
+        "reflective",
+        "cool"
+      ],
+      "scene_connections": [
+        "Midwest electronic",
+        "design culture"
+      ],
+      "label_signal": "Design-conscious electronic music balancing technological precision with introspection and melody.",
+      "anchor_artists": [
+        "Matthew Dear",
+        "Tycho",
+        "Telefon Tel Aviv",
+        "Com Truise",
+        "Mary Lattimore"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "warp",
+        "rvng-intl",
+        "ninja-tune"
+      ],
+      "official_url": "https://ghostly.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "international-anthem",
+      "name": "International Anthem",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2014,
+      "location": {
+        "city": "Chicago",
+        "region": "Illinois",
+        "country": "United States"
+      },
+      "genres": [
+        "contemporary jazz",
+        "improvisation",
+        "experimental music"
+      ],
+      "textures": [
+        "live",
+        "communal",
+        "spiritual",
+        "rhythmically-alive"
+      ],
+      "moods": [
+        "urgent",
+        "transcendent",
+        "searching"
+      ],
+      "scene_connections": [
+        "Chicago jazz",
+        "creative music"
+      ],
+      "label_signal": "Community-rooted modern jazz where improvisation, politics, beat culture, and spiritual searching remain inseparable.",
+      "anchor_artists": [
+        "Makaya McCraven",
+        "Angel Bat Dawid",
+        "Jeff Parker",
+        "Jaimie Branch",
+        "Irreversible Entanglements"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "brownswood",
+        "gondwana",
+        "brainfeeder",
+        "constellation"
+      ],
+      "official_url": "https://www.intlanthem.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "brainfeeder",
+      "name": "Brainfeeder",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "very-high",
+      "founded_year": 2008,
+      "location": {
+        "city": "Los Angeles",
+        "region": "California",
+        "country": "United States"
+      },
+      "genres": [
+        "experimental electronic",
+        "jazz",
+        "hip-hop"
+      ],
+      "textures": [
+        "cosmic",
+        "hyper-detailed",
+        "psychedelic",
+        "fluid"
+      ],
+      "moods": [
+        "futuristic",
+        "ecstatic",
+        "dreamlike"
+      ],
+      "scene_connections": [
+        "Los Angeles beat scene",
+        "future jazz"
+      ],
+      "label_signal": "Boundary-free rhythm music where beat science, jazz improvisation, and cosmic electronic production intersect.",
+      "anchor_artists": [
+        "Flying Lotus",
+        "Thundercat",
+        "Kamasi Washington",
+        "The Gaslamp Killer"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "ninja-tune",
+        "stones-throw",
+        "international-anthem",
+        "brownswood"
+      ],
+      "official_url": "https://brainfeedersite.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "stones-throw",
+      "name": "Stones Throw Records",
+      "status": "active",
+      "reach_tier": "major-tastemaker",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1996,
+      "location": {
+        "city": "Los Angeles",
+        "region": "California",
+        "country": "United States"
+      },
+      "genres": [
+        "alternative hip-hop",
+        "soul",
+        "funk",
+        "electronic"
+      ],
+      "textures": [
+        "dusty",
+        "crate-dug",
+        "eccentric",
+        "rhythmic"
+      ],
+      "moods": [
+        "playful",
+        "laid-back",
+        "strange"
+      ],
+      "scene_connections": [
+        "Los Angeles beat scene",
+        "underground hip-hop"
+      ],
+      "label_signal": "Deep record knowledge transformed into idiosyncratic beat music, soul, funk, and outsider pop.",
+      "anchor_artists": [
+        "J Dilla",
+        "Madlib",
+        "Madvillain",
+        "Peanut Butter Wolf",
+        "Mayer Hawthorne"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "brainfeeder",
+        "ninja-tune"
+      ],
+      "official_url": "https://www.stonesthrow.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "sonic-cathedral",
+      "name": "Sonic Cathedral",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2004,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "shoegaze",
+        "dream pop",
+        "psychedelia"
+      ],
+      "textures": [
+        "immersive",
+        "reverberant",
+        "luminous",
+        "distorted"
+      ],
+      "moods": [
+        "ecstatic",
+        "dreamlike",
+        "melancholic"
+      ],
+      "scene_connections": [
+        "shoegaze revival",
+        "UK psych"
+      ],
+      "label_signal": "Shoegaze understood as a living continuum of volume, repetition, psychedelia, and emotional immersion.",
+      "anchor_artists": [
+        "bdrmm",
+        "Lorelle Meets the Obsolete",
+        "Andy Bell",
+        "deary"
+      ],
+      "historical_ancestor_ids": [
+        "creation-records",
+        "4ad"
+      ],
+      "related_label_ids": [
+        "club-ac30",
+        "fuzz-club",
+        "julias-war",
+        "bella-union"
+      ],
+      "official_url": "https://soniccathedral.co.uk/",
+      "confidence": "high"
+    },
+    {
+      "id": "club-ac30",
+      "name": "Club AC30",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 2004,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "shoegaze",
+        "dream pop",
+        "noise pop"
+      ],
+      "textures": [
+        "dense",
+        "reverberant",
+        "soft-focus",
+        "melodic"
+      ],
+      "moods": [
+        "yearning",
+        "romantic",
+        "immersive"
+      ],
+      "scene_connections": [
+        "UK shoegaze revival"
+      ],
+      "label_signal": "Melodic guitar music where layers of noise and reverb create emotional softness rather than aggression.",
+      "anchor_artists": [
+        "Ringo Deathstarr",
+        "Pinkshinyultrablast",
+        "Air Formation",
+        "Flyying Colours"
+      ],
+      "historical_ancestor_ids": [
+        "creation-records"
+      ],
+      "related_label_ids": [
+        "sonic-cathedral",
+        "shelflife",
+        "julias-war",
+        "fuzz-club"
+      ],
+      "official_url": "https://www.clubac30.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "kanine",
+      "name": "Kanine Records",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "high",
+      "founded_year": 2003,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "indie pop",
+        "dream pop",
+        "shoegaze",
+        "indie rock"
+      ],
+      "textures": [
+        "energetic",
+        "melodic",
+        "youthful",
+        "fuzzy"
+      ],
+      "moods": [
+        "bright",
+        "wistful",
+        "restless"
+      ],
+      "scene_connections": [
+        "Brooklyn indie"
+      ],
+      "label_signal": "Immediate emerging guitar music with hooks, haze, and a strong sense of scene discovery.",
+      "anchor_artists": [
+        "Grizzly Bear",
+        "Chairlift",
+        "Surfer Blood",
+        "Beach Day",
+        "Pearl Charles"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "captured-tracks",
+        "shelflife",
+        "fire-talk"
+      ],
+      "official_url": "https://kaninerecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "shelflife",
+      "name": "Shelflife Records",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 1995,
+      "location": {
+        "city": "Portland",
+        "region": "Oregon",
+        "country": "United States"
+      },
+      "genres": [
+        "indie pop",
+        "dream pop",
+        "shoegaze"
+      ],
+      "textures": [
+        "delicate",
+        "jangly",
+        "soft-focus",
+        "melodic"
+      ],
+      "moods": [
+        "wistful",
+        "tender",
+        "romantic"
+      ],
+      "scene_connections": [
+        "international indie pop",
+        "twee and dream pop"
+      ],
+      "label_signal": "Tender, carefully selected indie pop in which melody, atmosphere, and emotional understatement dominate.",
+      "anchor_artists": [
+        "The Radio Dept.",
+        "Daysleepers",
+        "Airiel",
+        "Pia Fraus"
+      ],
+      "historical_ancestor_ids": [
+        "sarah-records"
+      ],
+      "related_label_ids": [
+        "club-ac30",
+        "captured-tracks",
+        "kanine",
+        "sonic-cathedral"
+      ],
+      "official_url": "https://www.shelflife.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "fire-talk",
+      "name": "Fire Talk",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 2009,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "experimental indie rock",
+        "noise pop",
+        "post-punk"
+      ],
+      "textures": [
+        "frayed",
+        "restless",
+        "abrasive",
+        "art-school"
+      ],
+      "moods": [
+        "anxious",
+        "playful",
+        "volatile"
+      ],
+      "scene_connections": [
+        "Brooklyn underground",
+        "US experimental indie"
+      ],
+      "label_signal": "Restless contemporary guitar music whose rough edges and unconventional structures feel intentional rather than unfinished.",
+      "anchor_artists": [
+        "Dehd",
+        "Mandy, Indiana",
+        "Cola",
+        "Bnny",
+        "Mamalarky"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "wharf-cat",
+        "captured-tracks",
+        "kanine"
+      ],
+      "official_url": "https://firetalkrecs.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "speedy-wunderground",
+      "name": "Speedy Wunderground",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2012,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "post-punk",
+        "experimental rock",
+        "indie rock"
+      ],
+      "textures": [
+        "live-room",
+        "urgent",
+        "wiry",
+        "repetitive"
+      ],
+      "moods": [
+        "tense",
+        "kinetic",
+        "restless"
+      ],
+      "scene_connections": [
+        "South London guitar scene",
+        "UK post-punk revival"
+      ],
+      "label_signal": "Fast, producer-shaped recordings that preserve the instability and physical energy of a new band in a room.",
+      "anchor_artists": [
+        "Squid",
+        "black midi",
+        "Black Country, New Road",
+        "The Lounge Society"
+      ],
+      "historical_ancestor_ids": [
+        "rough-trade-records",
+        "factory-records"
+      ],
+      "related_label_ids": [
+        "so-young",
+        "rough-trade-records",
+        "upset-the-rhythm"
+      ],
+      "official_url": "https://www.speedywunderground.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "wharf-cat",
+      "name": "Wharf Cat Records",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 2012,
+      "location": {
+        "city": "Brooklyn",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "post-punk",
+        "experimental rock",
+        "noise rock"
+      ],
+      "textures": [
+        "angular",
+        "urban",
+        "tense",
+        "damaged"
+      ],
+      "moods": [
+        "alienated",
+        "nervous",
+        "confrontational"
+      ],
+      "scene_connections": [
+        "Brooklyn underground"
+      ],
+      "label_signal": "Art-damaged city music with sharp edges, rhythmic tension, and resistance to easy polish.",
+      "anchor_artists": [
+        "Bambara",
+        "Public Practice",
+        "Palberta",
+        "Water From Your Eyes"
+      ],
+      "historical_ancestor_ids": [
+        "touch-and-go"
+      ],
+      "related_label_ids": [
+        "fire-talk",
+        "sacred-bones",
+        "feel-it"
+      ],
+      "official_url": "https://www.wharfcatrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "feel-it",
+      "name": "Feel It Records",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 2010,
+      "location": {
+        "city": "Cincinnati",
+        "region": "Ohio",
+        "country": "United States"
+      },
+      "genres": [
+        "punk",
+        "garage rock",
+        "post-punk"
+      ],
+      "textures": [
+        "nervous",
+        "direct",
+        "compact",
+        "physical"
+      ],
+      "moods": [
+        "urgent",
+        "irreverent",
+        "volatile"
+      ],
+      "scene_connections": [
+        "US DIY punk",
+        "garage underground"
+      ],
+      "label_signal": "Immediate underground rock selected for energy, character, and economy rather than studio refinement.",
+      "anchor_artists": [
+        "The Drin",
+        "Lifeguard",
+        "Optic Sink",
+        "Sweeping Promises"
+      ],
+      "historical_ancestor_ids": [
+        "sst-records"
+      ],
+      "related_label_ids": [
+        "wharf-cat"
+      ],
+      "official_url": "https://www.feelitrecordshop.com/",
+      "confidence": "medium"
+    },
+    {
+      "id": "rvng-intl",
+      "name": "RVNG Intl.",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2003,
+      "location": {
+        "city": "New York",
+        "region": "New York",
+        "country": "United States"
+      },
+      "genres": [
+        "electronic",
+        "ambient",
+        "archival",
+        "interdisciplinary"
+      ],
+      "textures": [
+        "conceptual",
+        "exploratory",
+        "organic-electronic",
+        "historically-aware"
+      ],
+      "moods": [
+        "curious",
+        "contemplative",
+        "uncanny"
+      ],
+      "scene_connections": [
+        "New York experimental",
+        "sound art",
+        "archival rediscovery"
+      ],
+      "label_signal": "Research-minded releases that connect contemporary experiments with overlooked histories and interdisciplinary practice.",
+      "anchor_artists": [
+        "Bing & Ruth",
+        "Visible Cloaks",
+        "Kate NV",
+        "Craig Leon"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "mexican-summer",
+        "pan",
+        "efficient-space"
+      ],
+      "official_url": "https://rvng.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "pan",
+      "name": "PAN",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2008,
+      "location": {
+        "city": "Berlin",
+        "region": "Berlin",
+        "country": "Germany"
+      },
+      "genres": [
+        "experimental electronic",
+        "sound art",
+        "avant-pop"
+      ],
+      "textures": [
+        "hypermodern",
+        "abstract",
+        "synthetic",
+        "dislocated"
+      ],
+      "moods": [
+        "alien",
+        "cerebral",
+        "unsettling"
+      ],
+      "scene_connections": [
+        "Berlin experimental",
+        "post-club"
+      ],
+      "label_signal": "Radical digital music and visual culture that challenge stable distinctions between club, composition, sound art, and pop.",
+      "anchor_artists": [
+        "Lee Gamble",
+        "Yves Tumor",
+        "M.E.S.H.",
+        "Amnesia Scanner"
+      ],
+      "historical_ancestor_ids": [
+        "editions-mego"
+      ],
+      "related_label_ids": [
+        "ad-93",
+        "rvng-intl",
+        "dais",
+        "hyperdub"
+      ],
+      "official_url": "https://p-a-n.org/",
+      "confidence": "high"
+    },
+    {
+      "id": "ad-93",
+      "name": "AD 93",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2016,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "experimental electronic",
+        "ambient",
+        "avant-pop",
+        "post-club"
+      ],
+      "textures": [
+        "sparse",
+        "eerie",
+        "intimate",
+        "deconstructed"
+      ],
+      "moods": [
+        "uncanny",
+        "melancholic",
+        "suspended"
+      ],
+      "scene_connections": [
+        "London post-club",
+        "experimental electronic"
+      ],
+      "label_signal": "Intimate, enigmatic electronic work that often feels suspended between club space, chamber music, and private interior worlds.",
+      "anchor_artists": [
+        "Nicolas Jaar",
+        "Moin",
+        "Coby Sey",
+        "Aya"
+      ],
+      "historical_ancestor_ids": [
+        "warp"
+      ],
+      "related_label_ids": [
+        "pan",
+        "hyperdub",
+        "dais",
+        "world-of-echo"
+      ],
+      "official_url": "https://ad93.bandcamp.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "hyperdub",
+      "name": "Hyperdub",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2004,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "dubstep",
+        "bass music",
+        "footwork",
+        "experimental electronic"
+      ],
+      "textures": [
+        "sub-bass",
+        "digital",
+        "urban",
+        "fractured"
+      ],
+      "moods": [
+        "nocturnal",
+        "melancholic",
+        "futuristic",
+        "tense"
+      ],
+      "scene_connections": [
+        "UK bass",
+        "dubstep",
+        "footwork"
+      ],
+      "label_signal": "Bass-driven electronic music where urban atmosphere, rhythmic mutation, and digital melancholy carry equal weight.",
+      "anchor_artists": [
+        "Burial",
+        "Kode9",
+        "DJ Rashad",
+        "Laurel Halo",
+        "Fatima Al Qadiri"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "warp",
+        "pan",
+        "ad-93",
+        "ninja-tune"
+      ],
+      "official_url": "https://hyperdub.net/",
+      "confidence": "high"
+    },
+    {
+      "id": "erased-tapes",
+      "name": "Erased Tapes",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 2007,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "modern classical",
+        "ambient",
+        "experimental"
+      ],
+      "textures": [
+        "cinematic",
+        "intimate",
+        "acoustic-electronic",
+        "spacious"
+      ],
+      "moods": [
+        "contemplative",
+        "tender",
+        "sublime"
+      ],
+      "scene_connections": [
+        "modern composition",
+        "ambient"
+      ],
+      "label_signal": "Emotionally accessible contemporary composition built from patient arrangements, acoustic detail, and electronic space.",
+      "anchor_artists": [
+        "Nils Frahm",
+        "Olafur Arnalds",
+        "A Winged Victory for the Sullen",
+        "Kiasmos"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "kranky",
+        "gondwana",
+        "room40",
+        "fatcat"
+      ],
+      "official_url": "https://www.erasedtapes.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "room40",
+      "name": "Room40",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2000,
+      "location": {
+        "city": "Brisbane",
+        "region": "Queensland",
+        "country": "Australia"
+      },
+      "genres": [
+        "ambient",
+        "drone",
+        "sound art"
+      ],
+      "textures": [
+        "environmental",
+        "slowly-evolving",
+        "immersive",
+        "spatial"
+      ],
+      "moods": [
+        "contemplative",
+        "uncanny",
+        "sublime"
+      ],
+      "scene_connections": [
+        "Australian sound art",
+        "deep listening"
+      ],
+      "label_signal": "Sound as physical environment: records attentive to space, duration, resonance, and the act of listening itself.",
+      "anchor_artists": [
+        "Lawrence English",
+        "Ben Frost",
+        "Rafael Anton Irisarri",
+        "Norman Westberg"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "kranky",
+        "past-inside-the-present"
+      ],
+      "official_url": "https://room40.org/",
+      "confidence": "high"
+    },
+    {
+      "id": "gondwana",
+      "name": "Gondwana Records",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2008,
+      "location": {
+        "city": "Manchester",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "contemporary jazz",
+        "ambient jazz",
+        "modern classical"
+      ],
+      "textures": [
+        "spacious",
+        "meditative",
+        "elegant",
+        "acoustic"
+      ],
+      "moods": [
+        "serene",
+        "searching",
+        "uplifting"
+      ],
+      "scene_connections": [
+        "Manchester jazz",
+        "European ambient jazz"
+      ],
+      "label_signal": "Meditative modern jazz that uses repetition, silence, and elegant production to make improvisation feel architectural.",
+      "anchor_artists": [
+        "GoGo Penguin",
+        "Matthew Halsall",
+        "Hania Rani",
+        "Portico Quartet"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "international-anthem",
+        "brownswood",
+        "erased-tapes",
+        "brainfeeder"
+      ],
+      "official_url": "https://www.gondwanarecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "brownswood",
+      "name": "Brownswood Recordings",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "very-high",
+      "founded_year": 2006,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "jazz",
+        "broken beat",
+        "global electronic"
+      ],
+      "textures": [
+        "rhythmic",
+        "cosmopolitan",
+        "future-facing",
+        "warm"
+      ],
+      "moods": [
+        "kinetic",
+        "communal",
+        "exploratory"
+      ],
+      "scene_connections": [
+        "London jazz",
+        "broken beat",
+        "Worldwide FM ecosystem"
+      ],
+      "label_signal": "Contemporary jazz and global rhythm music selected through a DJ's ear for movement, connection, and emerging scenes.",
+      "anchor_artists": [
+        "Yussef Kamaal",
+        "Kokoroko",
+        "Shabaka and the Ancestors",
+        "Skinny Pelembe"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "international-anthem",
+        "gondwana",
+        "brainfeeder",
+        "ninja-tune"
+      ],
+      "official_url": "https://brownswoodrecordings.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "julias-war",
+      "name": "Julia's War Recordings",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2020,
+      "location": {
+        "city": "Philadelphia",
+        "region": "Pennsylvania",
+        "country": "United States"
+      },
+      "genres": [
+        "shoegaze",
+        "noise pop",
+        "alternative rock"
+      ],
+      "textures": [
+        "overloaded",
+        "hazy",
+        "grainy",
+        "distorted",
+        "intimate"
+      ],
+      "moods": [
+        "yearning",
+        "anxious",
+        "cathartic",
+        "melancholic"
+      ],
+      "scene_connections": [
+        "Philadelphia underground",
+        "contemporary shoegaze revival"
+      ],
+      "label_signal": "Young guitar music whose emotional vulnerability is intensified by overload, buried vocals, and tactile distortion.",
+      "anchor_artists": [
+        "They Are Gutting a Body of Water",
+        "feeble little horse",
+        "Her New Knife",
+        "Full Body 2"
+      ],
+      "historical_ancestor_ids": [
+        "creation-records",
+        "4ad"
+      ],
+      "related_label_ids": [
+        "sonic-cathedral",
+        "club-ac30",
+        "fire-talk"
+      ],
+      "official_url": "https://juliaswar.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "so-young",
+      "name": "So Young Records",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2020,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "post-punk",
+        "indie rock",
+        "art punk"
+      ],
+      "textures": [
+        "urgent",
+        "youthful",
+        "graphic",
+        "live"
+      ],
+      "moods": [
+        "restless",
+        "excited",
+        "defiant"
+      ],
+      "scene_connections": [
+        "UK new guitar music",
+        "So Young Magazine",
+        "London club circuit"
+      ],
+      "label_signal": "Emerging UK bands encountered as a complete culture of records, live rooms, illustration, print, and scene documentation.",
+      "anchor_artists": [
+        "Been Stellar",
+        "Humour",
+        "Martha Skye Murphy",
+        "Lilo"
+      ],
+      "historical_ancestor_ids": [
+        "rough-trade-records"
+      ],
+      "related_label_ids": [
+        "speedy-wunderground",
+        "partisan",
+        "upset-the-rhythm"
+      ],
+      "official_url": "https://soyoungrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "world-of-echo",
+      "name": "World of Echo",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2018,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "post-punk",
+        "dub",
+        "DIY electronic",
+        "ambient"
+      ],
+      "textures": [
+        "dubwise",
+        "minimal",
+        "obscure",
+        "handmade"
+      ],
+      "moods": [
+        "mysterious",
+        "intimate",
+        "nocturnal"
+      ],
+      "scene_connections": [
+        "London experimental",
+        "record shop culture"
+      ],
+      "label_signal": "Difficult-to-classify music united by dub space, DIY intelligence, deep listening, and a record collector's instinct for hidden connections.",
+      "anchor_artists": [
+        "Various underground and archival artists"
+      ],
+      "historical_ancestor_ids": [
+        "rough-trade-records",
+        "postcard-records"
+      ],
+      "related_label_ids": [
+        "night-school",
+        "ad-93",
+        "rvng-intl",
+        "efficient-space"
+      ],
+      "official_url": "https://worldofechomusic.com/",
+      "confidence": "medium"
+    },
+    {
+      "id": "night-school",
+      "name": "Night School Records",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2011,
+      "location": {
+        "city": "Glasgow",
+        "region": "Scotland",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "minimal wave",
+        "experimental pop",
+        "electronic",
+        "reissues"
+      ],
+      "textures": [
+        "cold",
+        "minimal",
+        "outsider",
+        "analog"
+      ],
+      "moods": [
+        "nocturnal",
+        "enigmatic",
+        "intimate"
+      ],
+      "scene_connections": [
+        "Glasgow underground",
+        "minimal synth"
+      ],
+      "label_signal": "Oblique pop and electronic music selected for personality, scarcity, intimacy, and resistance to standard genre lanes.",
+      "anchor_artists": [
+        "Molly Nilsson",
+        "Ela Orleans",
+        "Happy Meals",
+        "Rose McDowall"
+      ],
+      "historical_ancestor_ids": [
+        "postcard-records"
+      ],
+      "related_label_ids": [
+        "dais",
+        "world-of-echo",
+        "sacred-bones",
+        "pan"
+      ],
+      "official_url": "https://night-school.bandcamp.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "geographic-north",
+      "name": "Geographic North",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2008,
+      "location": {
+        "city": "Atlanta",
+        "region": "Georgia",
+        "country": "United States"
+      },
+      "genres": [
+        "ambient",
+        "experimental",
+        "drone",
+        "conceptual music"
+      ],
+      "textures": [
+        "atmospheric",
+        "limited-edition",
+        "textural",
+        "patient"
+      ],
+      "moods": [
+        "contemplative",
+        "mysterious",
+        "suspended"
+      ],
+      "scene_connections": [
+        "US ambient underground"
+      ],
+      "label_signal": "Conceptually framed small-edition releases where physical design, sequence, and sonic atmosphere reinforce one another.",
+      "anchor_artists": [
+        "A Sunny Day in Glasgow",
+        "Jefre Cantu-Ledesma",
+        "Mary Lattimore",
+        "Fennesz"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "kranky",
+        "room40",
+        "past-inside-the-present"
+      ],
+      "official_url": "https://geographic-north.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "past-inside-the-present",
+      "name": "Past Inside the Present",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "very-high",
+      "founded_year": 2018,
+      "location": {
+        "city": "Indianapolis",
+        "region": "Indiana",
+        "country": "United States"
+      },
+      "genres": [
+        "ambient",
+        "drone",
+        "contemplative electronic"
+      ],
+      "textures": [
+        "immersive",
+        "slow",
+        "reverberant",
+        "cinematic"
+      ],
+      "moods": [
+        "meditative",
+        "nostalgic",
+        "sublime"
+      ],
+      "scene_connections": [
+        "online ambient community",
+        "physical-edition culture"
+      ],
+      "label_signal": "Emotionally direct ambient music designed for immersion, reflection, and carefully produced physical editions.",
+      "anchor_artists": [
+        "Zakè",
+        "36",
+        "Benoit Pioulard",
+        "Black Swan"
+      ],
+      "historical_ancestor_ids": [
+        "kranky"
+      ],
+      "related_label_ids": [
+        "geographic-north",
+        "room40"
+      ],
+      "official_url": "https://pitp.bandcamp.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "efficient-space",
+      "name": "Efficient Space",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2014,
+      "location": {
+        "city": "Melbourne",
+        "region": "Victoria",
+        "country": "Australia"
+      },
+      "genres": [
+        "archival",
+        "ambient",
+        "experimental pop",
+        "compilations"
+      ],
+      "textures": [
+        "obscure",
+        "atmospheric",
+        "private-press",
+        "warm"
+      ],
+      "moods": [
+        "nostalgic",
+        "uncanny",
+        "dreamlike"
+      ],
+      "scene_connections": [
+        "Australian archival culture",
+        "deep record collecting"
+      ],
+      "label_signal": "Recontextualized neglected music whose emotional and aesthetic connections become visible through expert sequencing and archival research.",
+      "anchor_artists": [
+        "Various archival artists",
+        "Wilson Tanner",
+        "Waak Waak Djungi"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "a-colourful-storm",
+        "rvng-intl",
+        "world-of-echo"
+      ],
+      "official_url": "https://efficientspace.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "a-colourful-storm",
+      "name": "A Colourful Storm",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2016,
+      "location": {
+        "city": "Melbourne",
+        "region": "Victoria",
+        "country": "Australia"
+      },
+      "genres": [
+        "experimental pop",
+        "ambient",
+        "archival",
+        "outsider music"
+      ],
+      "textures": [
+        "private-press",
+        "elliptical",
+        "delicate",
+        "strange"
+      ],
+      "moods": [
+        "enigmatic",
+        "wistful",
+        "uncanny"
+      ],
+      "scene_connections": [
+        "Australian experimental",
+        "archival rediscovery"
+      ],
+      "label_signal": "Quietly radical music whose oddness emerges through intimacy, unusual provenance, and careful contextual framing.",
+      "anchor_artists": [
+        "Various contemporary and archival artists"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "efficient-space",
+        "world-of-echo",
+        "rvng-intl",
+        "night-school"
+      ],
+      "official_url": "https://acolourfulstorm.com/",
+      "confidence": "medium"
+    },
+    {
+      "id": "motion-ward",
+      "name": "Motion Ward",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2016,
+      "location": {
+        "city": "Los Angeles",
+        "region": "California",
+        "country": "United States"
+      },
+      "genres": [
+        "ambient",
+        "experimental electronic"
+      ],
+      "textures": [
+        "immersive",
+        "organic-digital",
+        "liquid",
+        "spatial"
+      ],
+      "moods": [
+        "weightless",
+        "introspective",
+        "dreamlike"
+      ],
+      "scene_connections": [
+        "Los Angeles ambient",
+        "contemporary digital ambient"
+      ],
+      "label_signal": "Detailed ambient environments in which digital surfaces feel organic, fluid, and emotionally ambiguous.",
+      "anchor_artists": [
+        "Ulla",
+        "Pendant",
+        "Perila",
+        "Special Guest DJ"
+      ],
+      "historical_ancestor_ids": [
+        "kranky"
+      ],
+      "related_label_ids": [
+        "room40",
+        "pan",
+        "past-inside-the-present"
+      ],
+      "official_url": "https://motionward.bandcamp.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "the-flenser",
+      "name": "The Flenser",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2010,
+      "location": {
+        "city": "San Francisco Bay Area",
+        "region": "California",
+        "country": "United States"
+      },
+      "genres": [
+        "experimental heavy music",
+        "post-rock",
+        "shoegaze",
+        "blackgaze"
+      ],
+      "textures": [
+        "massive",
+        "abrasive",
+        "atmospheric",
+        "emotionally-severe"
+      ],
+      "moods": [
+        "cathartic",
+        "desolate",
+        "overwhelming"
+      ],
+      "scene_connections": [
+        "Bay Area experimental heavy music",
+        "post-metal"
+      ],
+      "label_signal": "Heavy music selected for emotional extremity, conceptual ambition, and the collapse of boundaries between metal, noise, shoegaze, and art rock.",
+      "anchor_artists": [
+        "Have a Nice Life",
+        "Chat Pile",
+        "Midwife",
+        "Mamaleek",
+        "Sprain"
+      ],
+      "historical_ancestor_ids": [
+        "touch-and-go"
+      ],
+      "related_label_ids": [
+        "sacred-bones",
+        "constellation",
+        "julias-war"
+      ],
+      "official_url": "https://www.theflenser.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "telephone-explosion",
+      "name": "Telephone Explosion Records",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2007,
+      "location": {
+        "city": "Toronto",
+        "region": "Ontario",
+        "country": "Canada"
+      },
+      "genres": [
+        "psychedelia",
+        "electronic",
+        "post-punk",
+        "archival"
+      ],
+      "textures": [
+        "analog",
+        "eccentric",
+        "exploratory",
+        "raw"
+      ],
+      "moods": [
+        "hypnotic",
+        "playful",
+        "uncanny"
+      ],
+      "scene_connections": [
+        "Toronto underground",
+        "Canadian experimental music"
+      ],
+      "label_signal": "Adventurous Canadian music connected by curiosity, analog character, and indifference to rigid genre boundaries.",
+      "anchor_artists": [
+        "U.S. Girls",
+        "Badge Epoque Ensemble",
+        "Bruce Haack",
+        "Beverly Glenn-Copeland"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "arbutus",
+        "constellation",
+        "rvng-intl"
+      ],
+      "official_url": "https://www.telephoneexplosion.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "arbutus",
+      "name": "Arbutus Records",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "very-high",
+      "founded_year": 2009,
+      "location": {
+        "city": "Montreal",
+        "region": "Quebec",
+        "country": "Canada"
+      },
+      "genres": [
+        "art pop",
+        "electronic pop",
+        "experimental pop"
+      ],
+      "textures": [
+        "synthetic",
+        "DIY",
+        "colourful",
+        "eccentric"
+      ],
+      "moods": [
+        "playful",
+        "dreamlike",
+        "alien"
+      ],
+      "scene_connections": [
+        "Montreal loft scene",
+        "Canadian art pop"
+      ],
+      "label_signal": "Montreal art-pop in which homemade electronics, visual identity, and eccentric personalities become a shared scene language.",
+      "anchor_artists": [
+        "Grimes",
+        "TOPS",
+        "Blue Hawaii",
+        "Sean Nicholas Savage"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "telephone-explosion",
+        "constellation",
+        "paper-bag",
+        "ghostly-international"
+      ],
+      "official_url": "https://arbutusrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "paper-bag",
+      "name": "Paper Bag Records",
+      "status": "active",
+      "reach_tier": "specialist",
+      "curatorial_strength": "high",
+      "founded_year": 2002,
+      "location": {
+        "city": "Toronto",
+        "region": "Ontario",
+        "country": "Canada"
+      },
+      "genres": [
+        "Canadian indie rock",
+        "synth-pop",
+        "art pop"
+      ],
+      "textures": [
+        "urban",
+        "melodic",
+        "cool-toned",
+        "polished"
+      ],
+      "moods": [
+        "wistful",
+        "energetic",
+        "introspective"
+      ],
+      "scene_connections": [
+        "Toronto indie",
+        "2000s Canadian indie"
+      ],
+      "label_signal": "A broad but recognizable gateway into melodic, urban Canadian independent music.",
+      "anchor_artists": [
+        "Broken Social Scene",
+        "Stars",
+        "Austra",
+        "Young Galaxy",
+        "Frog Eyes"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "arbutus",
+        "telephone-explosion"
+      ],
+      "official_url": "https://paperbagrecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "fuzz-club",
+      "name": "Fuzz Club",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "very-high",
+      "founded_year": 2012,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "neo-psychedelia",
+        "shoegaze",
+        "drone rock",
+        "motorik"
+      ],
+      "textures": [
+        "fuzzy",
+        "repetitive",
+        "reverberant",
+        "hypnotic"
+      ],
+      "moods": [
+        "trance-like",
+        "dark",
+        "expansive"
+      ],
+      "scene_connections": [
+        "European psych",
+        "shoegaze revival"
+      ],
+      "label_signal": "Modern psychedelic guitar music built from repetition, volume, studio haze, and strong physical-edition culture.",
+      "anchor_artists": [
+        "The Underground Youth",
+        "Singapore Sling",
+        "The Gluts",
+        "Night Beats"
+      ],
+      "historical_ancestor_ids": [
+        "creation-records"
+      ],
+      "related_label_ids": [
+        "sonic-cathedral",
+        "rocket-recordings",
+        "club-ac30",
+        "mexican-summer"
+      ],
+      "official_url": "https://fuzzclub.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "rocket-recordings",
+      "name": "Rocket Recordings",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1998,
+      "location": {
+        "city": "Bristol",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "heavy psychedelia",
+        "noise rock",
+        "kosmische",
+        "experimental rock"
+      ],
+      "textures": [
+        "ritualistic",
+        "repetitive",
+        "dense",
+        "feral"
+      ],
+      "moods": [
+        "hypnotic",
+        "overwhelming",
+        "ecstatic"
+      ],
+      "scene_connections": [
+        "Bristol underground",
+        "UK psych"
+      ],
+      "label_signal": "Psychedelia treated as physical ritual: repetition, noise, communal energy, and strange visual worlds.",
+      "anchor_artists": [
+        "Goat",
+        "Gnod",
+        "Teeth of the Sea",
+        "Josefin Ohrn + The Liberation"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "fuzz-club",
+        "heavenly",
+        "sacred-bones",
+        "the-flenser"
+      ],
+      "official_url": "https://rocketrecordings.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "upset-the-rhythm",
+      "name": "Upset the Rhythm",
+      "status": "active",
+      "reach_tier": "boutique-caviar",
+      "curatorial_strength": "exceptional",
+      "founded_year": 2003,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "art punk",
+        "experimental pop",
+        "DIY"
+      ],
+      "textures": [
+        "angular",
+        "playful",
+        "raw",
+        "unpredictable"
+      ],
+      "moods": [
+        "restless",
+        "joyful",
+        "strange"
+      ],
+      "scene_connections": [
+        "London DIY",
+        "promoter-label ecosystem"
+      ],
+      "label_signal": "Idiosyncratic DIY music chosen for invention, live energy, and refusal of normal professional polish.",
+      "anchor_artists": [
+        "Deerhoof",
+        "Trash Kit",
+        "Robert Sotelo",
+        "Kaputt"
+      ],
+      "historical_ancestor_ids": [
+        "rough-trade-records"
+      ],
+      "related_label_ids": [
+        "so-young",
+        "speedy-wunderground",
+        "fire-talk"
+      ],
+      "official_url": "https://upsettherhythm.co.uk/",
+      "confidence": "high"
+    },
+    {
+      "id": "factory-records",
+      "name": "Factory Records",
+      "status": "ceased",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1978,
+      "ended_year": 1992,
+      "location": {
+        "city": "Manchester",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "post-punk",
+        "electronic",
+        "indie dance"
+      ],
+      "textures": [
+        "industrial-modernist",
+        "spacious",
+        "austere",
+        "rhythmic"
+      ],
+      "moods": [
+        "alienated",
+        "urban",
+        "euphoric",
+        "melancholic"
+      ],
+      "scene_connections": [
+        "Manchester post-punk",
+        "Hacienda",
+        "Madchester"
+      ],
+      "label_signal": "A total cultural system in which music, architecture, nightlife, graphic design, and city mythology reinforced one another.",
+      "anchor_artists": [
+        "Joy Division",
+        "New Order",
+        "A Certain Ratio",
+        "The Durutti Column",
+        "Happy Mondays"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "mute",
+        "rough-trade-records",
+        "postcard-records",
+        "heavenly"
+      ],
+      "official_url": null,
+      "confidence": "high"
+    },
+    {
+      "id": "creation-records",
+      "name": "Creation Records",
+      "status": "ceased",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1983,
+      "ended_year": 1999,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "shoegaze",
+        "noise pop",
+        "neo-psychedelia",
+        "indie rock"
+      ],
+      "textures": [
+        "saturated",
+        "melodic",
+        "ecstatic",
+        "excessive"
+      ],
+      "moods": [
+        "euphoric",
+        "dreamlike",
+        "rebellious"
+      ],
+      "scene_connections": [
+        "UK shoegaze",
+        "C86 aftermath",
+        "Britpop"
+      ],
+      "label_signal": "Guitar music in which pop melody, noise, psychedelia, ambition, and chaos could coexist at enormous scale.",
+      "anchor_artists": [
+        "My Bloody Valentine",
+        "Ride",
+        "Slowdive",
+        "Primal Scream",
+        "Teenage Fanclub",
+        "Oasis"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "4ad",
+        "sonic-cathedral",
+        "club-ac30",
+        "fuzz-club"
+      ],
+      "official_url": null,
+      "confidence": "high"
+    },
+    {
+      "id": "sarah-records",
+      "name": "Sarah Records",
+      "status": "ceased",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1987,
+      "ended_year": 1995,
+      "location": {
+        "city": "Bristol",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "indie pop",
+        "jangle pop",
+        "twee pop"
+      ],
+      "textures": [
+        "delicate",
+        "jangly",
+        "DIY",
+        "understated"
+      ],
+      "moods": [
+        "tender",
+        "wistful",
+        "idealistic"
+      ],
+      "scene_connections": [
+        "UK indie pop",
+        "fanzine culture"
+      ],
+      "label_signal": "Tenderness and DIY ethics used as a deliberate resistance to macho rock culture and commercial cynicism.",
+      "anchor_artists": [
+        "The Field Mice",
+        "Heavenly",
+        "Blueboy",
+        "The Orchids"
+      ],
+      "historical_ancestor_ids": [
+        "postcard-records"
+      ],
+      "related_label_ids": [
+        "shelflife",
+        "captured-tracks",
+        "flying-nun",
+        "rough-trade-records"
+      ],
+      "official_url": null,
+      "confidence": "high"
+    },
+    {
+      "id": "postcard-records",
+      "name": "Postcard Records",
+      "status": "ceased",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1979,
+      "ended_year": 1981,
+      "location": {
+        "city": "Glasgow",
+        "region": "Scotland",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "post-punk",
+        "indie pop",
+        "jangle pop"
+      ],
+      "textures": [
+        "wiry",
+        "rhythmic",
+        "literate",
+        "minimal"
+      ],
+      "moods": [
+        "playful",
+        "romantic",
+        "cool"
+      ],
+      "scene_connections": [
+        "Glasgow post-punk",
+        "Scottish indie"
+      ],
+      "label_signal": "Brief but foundational Scottish pop that joined post-punk economy, literary wit, rhythm, and melody.",
+      "anchor_artists": [
+        "Orange Juice",
+        "Josef K",
+        "Aztec Camera",
+        "The Go-Betweens"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "factory-records",
+        "sarah-records",
+        "night-school",
+        "flying-nun"
+      ],
+      "official_url": null,
+      "confidence": "high"
+    },
+    {
+      "id": "industrial-records",
+      "name": "Industrial Records",
+      "status": "ceased",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1976,
+      "ended_year": 1981,
+      "location": {
+        "city": "London",
+        "region": "England",
+        "country": "United Kingdom"
+      },
+      "genres": [
+        "industrial",
+        "noise",
+        "experimental"
+      ],
+      "textures": [
+        "mechanical",
+        "abrasive",
+        "collage-like",
+        "confrontational"
+      ],
+      "moods": [
+        "unsettling",
+        "alienated",
+        "transgressive"
+      ],
+      "scene_connections": [
+        "UK industrial",
+        "performance art"
+      ],
+      "label_signal": "A foundational multimedia language of machinery, provocation, tape, noise, and anti-entertainment strategy.",
+      "anchor_artists": [
+        "Throbbing Gristle",
+        "Monte Cazazza",
+        "Clock DVA",
+        "Cabaret Voltaire"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "mute",
+        "dais",
+        "sacred-bones",
+        "editions-mego"
+      ],
+      "official_url": null,
+      "confidence": "high"
+    },
+    {
+      "id": "sst-records",
+      "name": "SST Records",
+      "status": "legacy-active",
+      "reach_tier": "legacy",
+      "curatorial_strength": "very-high",
+      "founded_year": 1978,
+      "location": {
+        "city": "Lawndale",
+        "region": "California",
+        "country": "United States"
+      },
+      "genres": [
+        "hardcore punk",
+        "alternative rock",
+        "experimental rock"
+      ],
+      "textures": [
+        "raw",
+        "urgent",
+        "guitar-heavy",
+        "DIY"
+      ],
+      "moods": [
+        "defiant",
+        "restless",
+        "intense"
+      ],
+      "scene_connections": [
+        "Southern California hardcore",
+        "US underground touring network"
+      ],
+      "label_signal": "The moment American hardcore expanded into stranger, slower, jazzier, and more ambitious forms of underground rock.",
+      "anchor_artists": [
+        "Black Flag",
+        "Minutemen",
+        "Husker Du",
+        "Meat Puppets",
+        "Sonic Youth"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "dischord",
+        "touch-and-go",
+        "sub-pop",
+        "feel-it"
+      ],
+      "official_url": "https://www.sstsuperstore.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "dischord",
+      "name": "Dischord Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1980,
+      "location": {
+        "city": "Washington",
+        "region": "District of Columbia",
+        "country": "United States"
+      },
+      "genres": [
+        "hardcore punk",
+        "post-hardcore",
+        "indie rock"
+      ],
+      "textures": [
+        "direct",
+        "dry",
+        "physical",
+        "unembellished"
+      ],
+      "moods": [
+        "urgent",
+        "principled",
+        "communal"
+      ],
+      "scene_connections": [
+        "Washington DC hardcore",
+        "DIY ethics"
+      ],
+      "label_signal": "Regional community, fair practice, and artistic evolution treated as inseparable parts of the music.",
+      "anchor_artists": [
+        "Minor Threat",
+        "Rites of Spring",
+        "Fugazi",
+        "Nation of Ulysses",
+        "The Evens"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "sst-records",
+        "touch-and-go"
+      ],
+      "official_url": "https://dischord.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "touch-and-go",
+      "name": "Touch and Go Records",
+      "status": "legacy-active",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1981,
+      "location": {
+        "city": "Chicago",
+        "region": "Illinois",
+        "country": "United States"
+      },
+      "genres": [
+        "noise rock",
+        "post-hardcore",
+        "indie rock"
+      ],
+      "textures": [
+        "abrasive",
+        "physical",
+        "dry",
+        "uncompromising"
+      ],
+      "moods": [
+        "tense",
+        "confrontational",
+        "bleak"
+      ],
+      "scene_connections": [
+        "Midwest punk",
+        "Chicago noise rock"
+      ],
+      "label_signal": "Uncompromising guitar music built on trust, underground networks, and a taste for abrasion with structural intelligence.",
+      "anchor_artists": [
+        "Big Black",
+        "The Jesus Lizard",
+        "Slint",
+        "Shellac",
+        "Blonde Redhead"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "sst-records",
+        "dischord",
+        "the-flenser",
+        "wharf-cat"
+      ],
+      "official_url": "https://www.touchandgorecords.com/",
+      "confidence": "high"
+    },
+    {
+      "id": "flying-nun",
+      "name": "Flying Nun Records",
+      "status": "active",
+      "reach_tier": "canonical",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1981,
+      "location": {
+        "city": "Auckland",
+        "region": "Auckland",
+        "country": "New Zealand",
+        "founded_in": "Christchurch"
+      },
+      "genres": [
+        "Dunedin sound",
+        "jangle pop",
+        "indie rock"
+      ],
+      "textures": [
+        "jangly",
+        "homemade",
+        "melodic",
+        "slightly-fuzzy"
+      ],
+      "moods": [
+        "wistful",
+        "bright",
+        "eccentric"
+      ],
+      "scene_connections": [
+        "Dunedin sound",
+        "New Zealand indie"
+      ],
+      "label_signal": "Regional guitar music whose homemade texture, melody, and distance from industry centers became its identity.",
+      "anchor_artists": [
+        "The Clean",
+        "The Chills",
+        "The Bats",
+        "Straitjacket Fits",
+        "Aldous Harding"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "postcard-records",
+        "sarah-records",
+        "captured-tracks",
+        "merge"
+      ],
+      "official_url": "https://www.flyingnun.co.nz/",
+      "confidence": "high"
+    },
+    {
+      "id": "editions-mego",
+      "name": "Editions Mego",
+      "status": "ceased",
+      "reach_tier": "legacy",
+      "curatorial_strength": "exceptional",
+      "founded_year": 1995,
+      "ended_year": 2021,
+      "location": {
+        "city": "Vienna",
+        "region": "Vienna",
+        "country": "Austria"
+      },
+      "genres": [
+        "digital noise",
+        "electroacoustic",
+        "experimental electronic"
+      ],
+      "textures": [
+        "glitching",
+        "abrasive",
+        "microscopic",
+        "radical"
+      ],
+      "moods": [
+        "alien",
+        "cerebral",
+        "overwhelming"
+      ],
+      "scene_connections": [
+        "Vienna experimental electronic",
+        "laptop music"
+      ],
+      "label_signal": "Digital sound treated as raw material for radical composition, noise, spatial illusion, and technological critique.",
+      "anchor_artists": [
+        "Fennesz",
+        "Pita",
+        "KTL",
+        "Oren Ambarchi",
+        "Oneohtrix Point Never"
+      ],
+      "historical_ancestor_ids": [],
+      "related_label_ids": [
+        "pan",
+        "room40",
+        "industrial-records"
+      ],
+      "official_url": "https://editionsmego.com/",
+      "confidence": "high"
+    }
+  ],
+  "exploration_frontier_label_ids": [
+    "arts-and-crafts",
+    "bayonet",
+    "dandy-boy",
+    "flemish-eye",
+    "hardly-art",
+    "la-vida-es-un-mus",
+    "leaving-records",
+    "longform-editions",
+    "luaka-bop",
+    "polyvinyl",
+    "profound-lore",
+    "run-for-cover",
+    "saddle-creek",
+    "static-shock",
+    "students-of-decay",
+    "touch",
+    "tough-love",
+    "young",
+    "youve-changed"
+  ]
+}

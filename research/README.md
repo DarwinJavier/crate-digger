@@ -15,6 +15,8 @@ the appropriate source-of-truth CSV.
 - `taxonomies/recommendation-calibration-*.csv` and
   `taxonomies/recommendation-calibration-learnings.md`: recommendation-game cases,
   curator profiles by semantic axis, and accumulated inference corrections.
+- `taxonomies/visual-prompt-assessment.md`: observable visual controls, adaptive
+  interpretation, robustness checks, and image-to-music journey evaluation.
 - `taxonomies/archive/`: original supplied archives retained for provenance.
 
 ## Boundaries

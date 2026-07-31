@@ -50,7 +50,7 @@ Tasks:
 - [x] Gate MusicBrainz calls on a real User-Agent contact.
 - [x] Run `python build_corpus.py resolve` after `$env:MUSICBRAINZ_CONTACT` is set.
 - [x] Review and fix any rows in `data/unresolved.csv` after live resolution.
-- [ ] Confirm Last.fm signal path with `$env:LASTFM_API_KEY`.
+- [x] Keep Last.fm as an optional query-time adapter, not a Phase 1 dependency.
 
 Exit criteria:
 1. [x] `/health` returns `ok: true` with nonzero album and core counts.
@@ -64,7 +64,8 @@ Exit criteria:
 5. [x] Hard mood exclusion removes matching albums from results.
 6. [x] Live MusicBrainz resolution has run with a real contact and unresolved rows
    have been reviewed.
-7. [ ] Last.fm signal path works and is never persisted to `corpus.db`.
+7. [x] Core recommendations work without optional Last.fm or LLM credentials;
+   Last.fm remains query-time only when configured.
 
 Current Phase 1 corpus:
 - 177 albums.
@@ -82,7 +83,9 @@ spread across the 14 buckets and decades per the corpus playbook allocation tabl
 Tasks:
 - [ ] Resolve all seed albums against MusicBrainz.
 - [ ] Fix or discard everything in `data/unresolved.csv`; rerun until clean.
-- [ ] Add label expansion support when needed: 4AD, Factory, Creation, Sarah Records,
+- [~] Add label expansion support when needed: integrated a curated 69-label graph for
+      label lookup, genre/scene traversal, and verified release-label reasoning; catalog-based
+      MusicBrainz expansion remains to be implemented. Initial targets include 4AD, Factory, Creation, Sarah Records,
       Kranky, Projekt, Sacred Bones, Captured Tracks, Dais, Slumberland, Mo'Wax.
 - [ ] Manual research passes for hard buckets J, K, and M.
 - [ ] Review and tighten `data/vocab.csv`.
@@ -111,37 +114,102 @@ Then stop for human review.
 
 ---
 
-## Phase 3 - Signals and relationships
-
-**Goal:** deepen the reasoning layer beyond tags: typed album-to-album relationships
-and better ranking.
-
-Tasks:
-- [ ] Populate verified album-to-album relationship edges.
-- [ ] Use relationship edges in scoring and reasons.
-- [ ] Add descriptor soft-matching if needed.
-- [ ] Add `POST /feedback` writing to a local log.
-
-Exit criteria:
-- [ ] At least 100 verified relationship edges.
-- [ ] At least one brief is demonstrably answered better via an edge than via tags alone.
-- [ ] Feedback endpoint logging works.
-
----
-
-## Phase 4 - Mini evaluation harness
+## Phase 3 - Evaluation harness
 
 **Goal:** honestly test whether the platform beats an LLM alone.
 
 Tasks:
-- [ ] Write and freeze 25 test briefs.
+- [ ] Treat the completed recommendation games as a development/calibration set;
+      preserve their cases, curator profiles, corrections, and known failure modes.
+- [ ] Turn the game-derived evaluation contract into a scored rubric covering intent
+      fidelity, evidence confidence, discovery distance, visibility, bridge
+      legibility, descriptor precision/recall, axis coverage, and slate diversity.
+- [ ] Write and freeze 25 new holdout briefs that were not used to tune the system.
 - [ ] Run 3 arms: LLM alone, platform, platform plus LLM summary.
 - [ ] Blind-rate with 2-3 friends.
 - [ ] Add automated checks for entity existence, constraints, and traps.
 
 Exit criteria:
+- [ ] Game results are reported as calibration evidence, separate from holdout results.
 - [ ] Results are written up honestly, including where the LLM alone won.
 - [ ] Decision recorded: continue, adjust corpus, or rethink.
+
+---
+
+## Experimental track R - Recommendation intelligence (explicitly authorized 2026-07-19)
+
+**Goal:** implement the game-derived recommendation controls and evidence model now,
+without claiming Phase 2 corpus readiness or weakening the provenance boundary.
+
+This track was explicitly authorized by the human while Phase 2 remains open. It is
+an experimental track, not a silent transition into Phase 3 or Phase 4. Features may
+operate over the current corpus, but quality claims must wait for the frozen harness.
+
+Tasks:
+- [x] Add adaptive tuning questions plus independent discovery-depth and visibility controls.
+- [x] Add artist-arc, scoped evidence, confidence-state, and completeness schemas.
+- [x] Load the 477-term external taxonomy for optional active brief retrieval.
+- [x] Add an explicit, approval-gated project/external descriptor crosswalk.
+- [x] Add optional axis-by-axis intent inference and pairwise slate-diversity scoring.
+- [x] Add image feature input/extraction and preservation/transformation scoring.
+- [x] Add quarantined external candidate scouting that cannot bypass corpus verification.
+- [x] Freeze a versioned evaluation harness with feature toggles and deterministic checks.
+- [x] Add a local brief-entry and one-at-a-time listening interface with immutable
+      freezing, autosaved ratings, and required qualitative justification.
+- [x] Reframe the hand-curated corpus as a calibration anchor set rather than a
+      recommendation ceiling (explicitly authorized 2026-07-23).
+- [x] Add optional brain-guided OpenAI candidate discovery with strict structured
+      output, query-time MusicBrainz verification, provenance-labeled inference,
+      and deterministic fallback to calibrated anchors.
+- [x] Add a listener-facing prompt calibration round with genre-boundary guidance,
+      five discovery-depth levels, independent visibility controls, compact intent
+      titles, editorial explanations, and grouped descriptor/label/scene context.
+- [x] Replace generic meaning controls with one request-specific interpretive question,
+      five genre-distance levels, independent visibility, and arbitrary named-artist
+      seed extraction constrained to the listener's own wording.
+- [x] Add a web-enabled Researcher pass before final MusicBrainz resolution, reject
+      unsupported contextual bridges, and expose answer-level label and scene routes.
+- [x] Add a disposable MusicBrainz identity cache plus context-aware listener exposure
+      history; cached status is never a ranking feature, and strong records may return
+      for materially different journeys.
+- [x] Add a complete per-request analysis report with the exact execution recipe,
+      every considered corpus and outside candidate, selection dispositions, weak-bridge
+      warnings, and fields aligned to the recommendation-game comparison axes.
+- [x] Remove inventory-source quotas, add a separate comparative slate pass, make
+      visibility a slate requirement, carry explicit reference-record context, and
+      reject inconsistent MusicBrainz title/year matches.
+
+Exit criteria:
+- [x] Existing Phase 1 smoke checks still pass.
+- [x] Every new inference exposes source, numeric confidence, and Core/Probable/Possible state.
+- [x] Disabling optional features reproduces the legacy controlled-vocabulary path.
+- [x] External taxonomy and crosswalk validation pass without unknown identifiers.
+- [x] Scouted entities never appear as recommendations until resolved and curated.
+- [ ] Frozen cases are immutable by convention and calibration cases remain separate.
+      Harness exists, but zero genuinely new holdout prompts have been approved.
+- [x] Current limitations are reported without claiming Phase 2 or Phase 3 completion.
+
+---
+
+## Phase 4 - Targeted enrichment, conditional
+
+**Goal:** address only the recommendation failures demonstrated by Phase 3.
+
+Candidate tasks, selected from evaluation evidence:
+- [ ] Add verified album-to-album relationship edges when a failed brief needs them.
+- [ ] Evaluate Wikidata's CC0 structured data for those relationship edges, joined
+      through stable MusicBrainz or Wikidata identifiers.
+- [ ] Use relationship edges in scoring and reasons only when they demonstrably
+      improve a frozen failure case.
+- [ ] Add descriptor soft-matching when vocabulary misses justify it.
+- [ ] Add local feedback logging when continued human evaluation needs it.
+
+Exit criteria:
+- [ ] Every implemented enrichment traces to a documented Phase 3 failure.
+- [ ] Re-evaluation shows whether each enrichment improved that failure without
+      weakening constraints, provenance, or explanation fidelity.
+- [ ] If Phase 3 demonstrates no material enrichment need, record that decision and
+      close this phase without adding machinery.
 
 ---
 
@@ -156,7 +224,7 @@ Candidate tasks:
 - [ ] First outreach conversations.
 
 Exit criteria:
-- [ ] Defined after Phase 4.
+- [ ] Defined after the Phase 3 evaluation and any required Phase 4 enrichment.
 
 ---
 

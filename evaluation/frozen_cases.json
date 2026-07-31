@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "frozen_on": "2026-07-19",
+  "status": "frozen",
+  "note": "Holdout prompts. Do not tune against expected outcomes.",
+  "cases": []
+}

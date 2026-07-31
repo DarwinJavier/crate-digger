@@ -31,36 +31,42 @@ AGENTS.md                 # this file
 
 ## Hard rules (non-negotiable)
 
-1. **Never invent albums, artists, years, or relationships.** All facts enter via
-   MusicBrainz resolution or explicit human curation. If a task seems to require
-   inventing a music fact, stop and ask the human.
+1. **Verify entities; label interpretations.** LLMs may propose candidate artists and
+   albums when guided by the recommendation brain. A candidate must resolve against
+   MusicBrainz before it can be displayed. MusicBrainz supplies entity identity and
+   release dates; LLM-proposed musical relationships remain `llm_inferred` with
+   numeric confidence and must never be presented as verified facts.
 2. **CSV files are the source of truth; `build/` and `exports/` are disposable.**
    Fix data problems in the CSVs and rebuild; never patch the DB directly.
 3. **Controlled vocabulary only.** Descriptors must exist in `data/vocab.csv` before
    they are used in `data/descriptors.csv`. New terms require human approval.
 4. **Provenance on everything.** Any new signal or reason added to API responses must
-   carry a `source` label (curator | musicbrainz | last_fm | llm_inferred) and a
+   carry a `source` label (curator | musicbrainz | wikidata | last_fm | llm_inferred) and a
    confidence value. A recommendation with an empty `reasons` list must never be
    returned (enforced in `app.py`; keep it enforced).
-5. **Data rights lines:** MusicBrainz (CC0) and human curation may be stored.
-   Last.fm data is query-time signal only, never written to the corpus.
+5. **Data rights lines:** MusicBrainz (CC0), Wikidata structured data (CC0), and
+   human curation may be stored. Last.fm data is an optional query-time signal
+   only, never written to the corpus.
    Do not add Spotify API, Apple Music API, or Rate Your Music data in any form.
 6. **MusicBrainz etiquette:** max 1 request/second, descriptive User-Agent. Never
    parallelize MusicBrainz calls.
 7. **Keep it one-person simple.** SQLite not Postgres, no Docker, no graph DB, no
    LangChain, no new frameworks, minimal dependencies (fastapi, uvicorn, requests,
    optional anthropic). If a change requires a new dependency, propose it and wait.
-8. **LLM quarantine.** LLM calls may only (a) map briefs onto the controlled
-   vocabulary and (b) compose prose over retrieved results. LLMs must never
-   introduce entities, facts, or relationships into responses or the corpus.
+8. **LLM provenance boundary.** LLM calls may (a) map briefs onto the controlled
+   vocabulary, (b) propose candidate entities for independent resolution, (c) infer
+   recommendation fit using the brain engine's axes, and (d) compose prose over
+   supplied evidence. They must not create verified facts. Query-time inferences are
+   labeled `llm_inferred` and do not silently become curator data.
 
 ## Environment
 
 - Windows 11, PowerShell, VS Code, Python 3.12. Use PowerShell syntax in instructions
   (`$env:VAR = "..."`, not `export`). Paths may contain spaces; quote them.
 - Run commands from the repo root.
-- Secrets come from environment variables only (`LASTFM_API_KEY`, `ANTHROPIC_API_KEY`).
-  Never write keys into files or commit them.
+- Local secrets may be loaded from the ignored `.env` file into environment variables
+  (`OPENAI_API_KEY`, `MUSICBRAINZ_CONTACT`, optional `LASTFM_API_KEY`). Never commit
+  `.env`, expose keys to browser code, or place real credentials in `.env.example`.
 
 ## Commands
 

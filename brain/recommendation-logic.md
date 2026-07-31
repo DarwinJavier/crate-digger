@@ -157,6 +157,29 @@ External-taxonomy experiments must compare assignments by semantic axis. Mood,
 atmosphere, style, theme, lyrics, vocals, form, and technique are not interchangeable.
 Complete profile accuracy and recommendation quality are evaluated separately.
 
+### Visual prompts require explicit perceptual controls
+
+Before interpreting an image semantically, record observable palette temperature,
+brightness, saturation, contrast, spatial openness, depth, density, texture, geometry,
+human arrangement, and motion cues. These observations define visual constraints but
+do not prove musical descriptors.
+
+Ask the user to choose among materially different semantic readings. Then state which
+visual properties each recommendation preserves, transforms, or deliberately opposes.
+Unless contrast is requested, at least one candidate should preserve the dominant
+palette and spatial quality. A cold, nocturnal, or claustrophobic candidate may follow
+a bright, warm, open image when it serves a declared narrative role such as aftermath.
+
+The local SimCLR research supports keeping appearance and spatial information
+available and testing robustness across altered views. It does not authorize direct
+image-to-music semantics or make visual similarity recommendation evidence.
+
+For visual prompts without a seed genre, apply discovery distance between candidates
+as well as between each candidate and the interpreted image. An exploratory slate
+should normally span distinct musical ecosystems. Three individually persuasive
+bridges do not satisfy exploration when they cluster around the same genre lineage,
+production vocabulary, audience, or cultural conversation.
+
 ### Explanations must be faithful to ranking
 
 An explanation may mention only evidence that actually contributed to the result.
@@ -237,6 +260,14 @@ operational, and consistent with `AGENTS.md`.
 - Every positive ranking contribution must appear in structured evidence with its weight, provenance, and confidence.
 - Corpus quality and novelty may reorder relevant candidates, but neither may qualify an otherwise irrelevant album.
 - Diversify only within equally scored evidence tiers so variety cannot outrank stronger support.
+- Interpret the request before searching. Ask one request-specific question about what must survive, then keep genre distance and artist visibility as independent controls.
+- Genre distance controls movement across genres only. It does not stand for geography, obscurity, scene distance, or cache status.
+- The curated corpus is calibration evidence, never reserved recommendation inventory. Curated and query-time candidates receive no source quota; every displayed album must win on the calibrated bridge.
+- Artist visibility is a slate requirement. `underheard` excludes familiar artists; `mixed` includes at least one underheard and one recognizable artist whenever evidence-backed candidates of both kinds survive verification.
+- Use separate interpretation, candidate generation, research, identity verification, and comparative selection passes. Structured schemas validate handoffs but do not replace comparative reasoning.
+- Treat proposed outside albums as provisional. Research the defining calibrated bridge first, reject unsupported candidates, and resolve only the shortlist through MusicBrainz.
+- MusicBrainz cache presence is a performance detail and must never contribute to relevance. Prefer unseen records when evidence is comparable, but allow a returning album when it has a substantially different or uniquely strong role.
+- Record labels and music scenes are journey-level exploration routes. Do not present them as album metadata unless the specific relationship is independently supported.
 <!-- RUNTIME_POLICY_END -->
 
 ## 4. Implementation priorities

@@ -1,0 +1,12 @@
+project_kind,project_slug,external_id,relationship,approved,approved_by,notes
+mood,nocturnal,nocturnal,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,anxious,anxious,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,warm,warm,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,menacing,menacing,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,hypnotic,hypnotic,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,desolate,desolate,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,romantic,romantic,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+mood,hazy,hazy,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+sonic_trait,sparse,sparse,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+sonic_trait,cavernous,cavernous,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review
+sonic_trait,lo-fi,lo-fi,exact,yes,implementation_authorization,Exact identifier match; definitions require ongoing curator review

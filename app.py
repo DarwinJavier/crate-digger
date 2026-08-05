@@ -87,6 +87,7 @@ if os.environ.get("CRATE_DIGGER_SKIP_DOTENV") != "1":
 DB_PATH = PROJECT_ROOT / "build/corpus.db"
 RUNTIME_DB_PATH = PROJECT_ROOT / "build/runtime_cache.db"
 RECOMMENDATION_LOGIC_PATH = PROJECT_ROOT / "brain/recommendation-logic.md"
+FRONTIER_GENRE_GUIDE_PATH = PROJECT_ROOT / "brain/crate-digger-frontier-genre-exploration.md"
 EXTERNAL_TAXONOMY_PATH = PROJECT_ROOT / "research/taxonomies/music-descriptor-taxonomy/music-descriptor-taxonomy.json"
 CROSSWALK_PATH = PROJECT_ROOT / "data/descriptor_crosswalk.csv"
 ARTIST_ARCS_PATH = PROJECT_ROOT / "data/artist_arcs.csv"
@@ -122,6 +123,16 @@ def load_runtime_policy() -> str:
 
 
 RUNTIME_POLICY = load_runtime_policy()
+
+
+def load_frontier_genre_guide() -> str:
+    """Load the read-only exploration guide supplied only to explicit Frontier scouting."""
+    if not FRONTIER_GENRE_GUIDE_PATH.exists():
+        return ""
+    return FRONTIER_GENRE_GUIDE_PATH.read_text(encoding="utf-8-sig").strip()
+
+
+FRONTIER_GENRE_GUIDE = load_frontier_genre_guide()
 
 
 def musicbrainz_get(path: str, params: dict, timeout: int = 12):
@@ -304,6 +315,20 @@ def runtime_db() -> sqlite3.Connection:
 
 def normalized_identity(value: str) -> str:
     return " ".join(re.findall(r"[a-z0-9]+", value.casefold()))
+
+
+def calibration_display_copy(value: str) -> str:
+    """Keep model interpretation copy direct instead of narrating about a user persona."""
+    text = str(value or "").strip()
+    for pattern in (
+        r"^the listener (?:wants|is looking for|seeks|is after)\s+",
+        r"^the user (?:wants|is looking for|seeks|is after)\s+",
+        r"^they (?:want|are looking for|seek|are after)\s+",
+    ):
+        revised = re.sub(pattern, "", text, flags=re.IGNORECASE)
+        if revised != text:
+            return revised[:1].upper() + revised[1:]
+    return text
 
 
 def genre_distance(req: RecRequest) -> int:
@@ -545,8 +570,75 @@ def openai_web_json_response(instructions: str, prompt: str, name: str, schema: 
     return parsed, list(sources.values())[:12]
 
 
-def analyze_calibration(brief: str, has_image: bool = False) -> dict:
+def needs_musical_orientation(brief: str) -> bool:
+    """Conservatively detect cold-start prompts that describe a use or scene, not music."""
+    text = normalized_identity(brief)
+    if not text:
+        return False
+    reference_markers = (
+        " similar to ", " like ", " sounds like ", " start with ", " by ",
+        " artist ", " album ", " record ",
+    )
+    padded = f" {text} "
+    if any(marker in padded for marker in reference_markers):
+        return False
+    explicit_genres = {
+        "ambient", "blues", "classical", "country", "dancehall", "disco", "drone",
+        "dub", "electronic", "folk", "funk", "gospel", "hip hop", "house", "industrial",
+        "jazz", "metal", "pop", "post punk", "punk", "r b", "rap", "reggae", "rock",
+        "shoegaze", "slowcore", "soul", "techno", "trip hop",
+    }
+    if any(re.search(rf"(?:^| ){re.escape(genre)}(?: |$)", text) for genre in explicit_genres):
+        return False
+    situational_terms = {
+        "rain", "rainy", "storm", "snow", "walk", "walking", "drive", "driving",
+        "dinner", "cooking", "study", "studying", "work", "working", "sleep", "sleeping",
+        "morning", "night", "party", "gym", "road trip", "sunset", "sunrise", "weather",
+    }
+    return (text.startswith("music for ") or text.startswith("soundtrack for ") or
+            any(re.search(rf"(?:^| ){re.escape(term)}(?: |$)", text)
+                for term in situational_terms))
+
+
+def fallback_orientation_question() -> dict:
+    """Offer concrete musical starting worlds when no model interpretation is available."""
+    return {
+        "id": "musical_orientation",
+        "question": "What should this sound like in your head?",
+        "help": "Choose a musical starting world, not a final genre restriction.",
+        "options": [{
+            "value": "spacious_immersive",
+            "label": "Spacious and immersive",
+            "description": "Blurred textures, patient movement, and room to breathe.",
+            "interpretation": "Begin in a spacious, texture-led, rhythm-light musical world.",
+        }, {
+            "value": "rhythmic_physical",
+            "label": "Rhythmic and physical",
+            "description": "Bass weight, pulse, momentum, and sharper edges.",
+            "interpretation": "Begin with a rhythm-led, bass-weighted, physically immediate sound.",
+        }, {
+            "value": "intimate_organic",
+            "label": "Intimate and organic",
+            "description": "Close voices, acoustic detail, and emotional stillness.",
+            "interpretation": "Begin with sparse, intimate, organic instrumentation and close presence.",
+        }, {
+            "value": "custom_orientation",
+            "label": "Something else",
+            "description": "Name an artist, record, genre, or describe the sound in your head.",
+            "interpretation": "Use the listener's own musical orientation as the starting point.",
+        }, {
+            "value": "open_orientation",
+            "label": "Keep it open",
+            "description": "Proceed without choosing a musical starting point.",
+            "interpretation": "Do not impose a reference world; preserve only the original request.",
+        }],
+    }
+
+
+def analyze_calibration(brief: str, has_image: bool = False,
+                        musical_orientation: str = "") -> dict:
     """Form a request-specific hypothesis, then add stable genre/visibility controls."""
+    awaiting_orientation = needs_musical_orientation(brief) and not musical_orientation.strip()
     fallback = {
         "interpretation": "The request may be about sound, feeling, or cultural context.",
         "must_preserve": [],
@@ -554,7 +646,8 @@ def analyze_calibration(brief: str, has_image: bool = False) -> dict:
         "detected_genres": [],
         "seed_artists": [],
         "reference": {"artist": "", "album": ""},
-        "questions": tuning_questions(brief, has_image, None, None),
+        "questions": ([fallback_orientation_question()] if awaiting_orientation
+                      else tuning_questions(brief, has_image, None, None)),
         "source": "deterministic_policy",
     }
     if not OPENAI_KEY or not brief.strip():
@@ -566,8 +659,11 @@ def analyze_calibration(brief: str, has_image: bool = False) -> dict:
             "label": {"type": "string"},
             "description": {"type": "string"},
             "interpretation": {"type": "string"},
+            "exemplar_artist": {"type": "string"},
+            "exemplar_album": {"type": "string"},
         },
-        "required": ["value", "label", "description", "interpretation"],
+        "required": ["value", "label", "description", "interpretation",
+                     "exemplar_artist", "exemplar_album"],
         "additionalProperties": False,
     }
     schema = {
@@ -612,18 +708,33 @@ def analyze_calibration(brief: str, has_image: bool = False) -> dict:
     try:
         output = openai_json_response(
             "You are the interpretive calibration stage of a music discovery engine. "
-            "Infer a concise hypothesis about what the listener wants, then ask one "
-            "questions whose answers would materially change the recommendation path. Questions "
+            "Infer a concise hypothesis about the musical goal, then ask one "
+            "question whose answers would materially change the recommendation path. Questions "
             "must be specific to this request, not reusable preference controls. If the request "
+            "primarily describes weather, an activity, a place, a visual scene, a function, or an "
+            "emotion and names no artist, record, or explicit genre, and the prompt supplies no "
+            "selected musical orientation, you MUST make the question id "
+            "musical_orientation. This rule has priority over asking what role the music should play "
+            "or which emotional shade matters. Offer "
+            "three contrasting sonic directions stated in concrete language. Each direction may "
+            "include one real exemplar artist and album, or empty exemplar strings when an example "
+            "would not clarify it. The exemplar establishes orientation only; it is not a seed or "
+            "recommendation. If the request already names a useful artist, record, or sufficiently "
+            "specific genre, do not ask musical_orientation. If the request "
             "names a genre, ask what quality of the reference should survive; genre travel is "
             "handled separately. If it points to a social environment, scene, era, lyrical stance, "
             "production detail, rhythm, or emotional contradiction, test that specific ambiguity. "
             "Only copy seed artist names explicitly present in the request. Separately extract one "
             "named reference record when present; do not treat it as recommendation inventory. "
-            "Do not recommend albums "
+            "Write the interpretation as direct, neutral product copy that begins with the musical "
+            "goal itself. Never say 'the listener', 'the user', 'they want', or similar third-person "
+            "framing. Do not recommend albums "
             "or introduce music facts. Each option's interpretation must be a direct instruction "
             "that can guide candidate eligibility.",
-            brief,
+            (f"Listener brief:\n{brief}\n\n"
+             f"Selected musical orientation:\n{musical_orientation or '(none yet)'}\n\n"
+             "When a selected musical orientation is present, do not ask musical_orientation again. "
+             "Ask which defining quality inside that selected musical world should matter most."),
             "adaptive_music_calibration",
             schema,
             1400,
@@ -637,8 +748,53 @@ def analyze_calibration(brief: str, has_image: bool = False) -> dict:
         if normalized_identity(artist) in normalized_identity(brief_folded)
     ]
     output.setdefault("reference", {"artist": "", "album": ""})
-    stable = tuning_questions(brief, has_image, None, None, include_interpretation=False)
-    output["questions"] = output["questions"] + stable
+    if awaiting_orientation and output["questions"]:
+        output["questions"][0]["id"] = "musical_orientation"
+        output["questions"] = output["questions"][:1]
+    elif musical_orientation and output["questions"] and output["questions"][0]["id"] == "musical_orientation":
+        output["questions"][0]["id"] = "interpretation_focus"
+    for question in output["questions"]:
+        if question["id"] != "musical_orientation":
+            for option in question["options"]:
+                option.pop("exemplar_artist", None)
+                option.pop("exemplar_album", None)
+            continue
+        verified_options = []
+        for option in question["options"][:3]:
+            artist = option.pop("exemplar_artist", "").strip()
+            album = option.pop("exemplar_album", "").strip()
+            if artist and album:
+                resolved = verify_release_group({"artist": artist, "album": album, "year": None})
+                if resolved:
+                    option["exemplar"] = {
+                        "artist": resolved["artist"],
+                        "album": resolved["album"],
+                        "rg_mbid": resolved["rg_mbid"],
+                        "provenance": {
+                            "source": "musicbrainz",
+                            "confidence": resolved["verification_score"],
+                        },
+                    }
+            verified_options.append(option)
+        verified_options.extend([
+            {
+                "value": "custom_orientation",
+                "label": "Something else",
+                "description": "Name an artist, record, genre, or describe the sound in your head.",
+                "interpretation": "Use the listener's own musical orientation as the starting point.",
+            },
+            {
+                "value": "open_orientation",
+                "label": "Keep it open",
+                "description": "Proceed without choosing a musical starting point.",
+                "interpretation": "Do not impose a reference world; preserve only the original request.",
+            },
+        ])
+        question["options"] = verified_options
+    if not awaiting_orientation:
+        stable = tuning_questions(brief, has_image, None, None, include_interpretation=False)
+        output["questions"] = output["questions"] + stable
+    output["interpretation"] = calibration_display_copy(output.get("interpretation", ""))
     output["source"] = "openai_interpretation"
     return output
 
@@ -810,7 +966,13 @@ CANDIDATE_SCOUT_INSTRUCTION = (
     "The reference record is context, never reserved inventory. For mixed visibility, propose at "
     "least eight genuinely underheard artists plus several recognizable anchors. For underheard "
     "visibility, every proposal must be underheard. Prefer 12-15 varied hypotheses across distinct traditions "
-    "over canonical near-neighbors. An obvious candidate must earn its place through the calibrated "
+    "over canonical near-neighbors. When genre_distance is 4, Frontier is a slate-level cross-genre "
+    "requirement, not a synonym for obscure adjacent rock: propose candidates across at least four "
+    "materially distinct genre families and at least three route types, with no more than two proposals "
+    "from one family. Preserve the calibrated quality while allowing instrumentation, rhythm, lineage, "
+    "and scene to change. Consider defensible leaps into traditions such as jazz, Latin and salsa, pop, "
+    "electronic, folk, soul and funk, dub, or other relevant families instead of forcing those examples. "
+    "An obvious candidate must earn its place through the calibrated "
     "bridge. Do not claim that an album is on a label unless that relationship appears in the supplied "
     "context. Your candidates are provisional hypotheses: a Researcher will test the bridge, and "
     "MusicBrainz will verify only shortlisted identities. Keep each connection specific to the "
@@ -839,7 +1001,7 @@ RESEARCHER_INSTRUCTION = (
 def candidate_scout_payload(req: RecRequest, intent: dict, seeds: list[dict],
                             label_context: list[dict], existing_entities: list[dict]) -> dict:
     """Return the exact structured input used by optional outside-corpus scouting."""
-    return {
+    payload = {
         "listener_brief": req.brief,
         "reference_record": model_values(req.reference),
         "controlled_intent": intent,
@@ -858,6 +1020,22 @@ def candidate_scout_payload(req: RecRequest, intent: dict, seeds: list[dict],
         ],
         "hard_constraints": model_values(req.hard_constraints),
     }
+    if genre_distance(req) == 4 and FRONTIER_GENRE_GUIDE:
+        payload["frontier_exploration"] = {
+            "namespace": "frontier_exploration",
+            "activation": "explicit_genre_distance_4",
+            "persistence": "none",
+            "engine_authority": "unchanged",
+            "slate_contract": {
+                "minimum_distinct_genre_families": min(3, req.n_results),
+                "candidate_target_genre_families": 4,
+                "maximum_final_records_per_genre_family": 2,
+                "minimum_route_types": min(3, req.n_results),
+                "fallback": "Keep only evidence-supported routes; never invent breadth to satisfy the quota.",
+            },
+            "guide": FRONTIER_GENRE_GUIDE,
+        }
+    return payload
 
 
 def generate_album_candidates(req: RecRequest, intent: dict, seeds: list[dict],
@@ -893,9 +1071,17 @@ def generate_album_candidates(req: RecRequest, intent: dict, seeds: list[dict],
                             "type": "string",
                             "enum": ["familiar", "mixed", "underheard", "unknown"],
                         },
+                        "genre_family": {
+                            "type": "string",
+                            "description": "One broad destination family, such as jazz, salsa, pop, punk, electronic, folk, soul/funk, dub, or metal.",
+                        },
+                        "frontier_route": {
+                            "type": "string",
+                            "enum": ["adjacent_step", "bridge_chain", "shared_property_leap", "lineage_route", "scene_route"],
+                        },
                     },
                     "required": ["artist", "album", "year", "connection", "matched_descriptors", "scenes",
-                                 "confidence", "visibility"],
+                                 "confidence", "visibility", "genre_family", "frontier_route"],
                     "additionalProperties": False,
                 },
             },
@@ -1199,6 +1385,11 @@ def verified_candidate_result(candidate: dict) -> dict:
             "genres": list(dict.fromkeys(research.get("genres", [])))[:3],
             "sound_preview": research.get("sound_preview", ""),
         },
+        "frontier_context": {
+            "genre_family": candidate.get("genre_family", ""),
+            "route": candidate.get("frontier_route", ""),
+            "provenance": {"source": "llm_inferred", "confidence": confidence},
+        } if candidate.get("genre_family") or candidate.get("frontier_route") else None,
         "labels": [],
         "research": research,
         "visual_match": None,
@@ -1214,6 +1405,88 @@ def result_visibility(result: dict) -> str:
     if value in {"familiar", "anchor", "bridge", "core"}:
         return "familiar"
     return "unknown"
+
+
+def normalized_genre_family(value: str) -> str:
+    """Collapse genre labels into broad families used only for slate diversity."""
+    folded = normalized_identity(value)
+    families = (
+        ("salsa", ("salsa", "son", "mambo", "timba")),
+        ("jazz", ("jazz", "free improvisation", "spiritual jazz")),
+        ("soul/funk", ("soul", "funk", "r b", "rhythm and blues")),
+        ("reggae/dub", ("reggae", "dub", "dancehall", "ska")),
+        ("hip-hop", ("hip hop", "rap", "grime", "trap")),
+        ("electronic", ("electronic", "techno", "house", "ambient", "industrial", "trip hop")),
+        ("folk/country", ("folk", "country", "americana", "bluegrass")),
+        ("metal", ("metal", "doom", "sludge")),
+        ("punk", ("punk", "deathrock", "hardcore")),
+        ("pop", ("pop", "new wave", "synthpop")),
+        ("Latin", ("latin", "cumbia", "bolero", "bossa", "tango")),
+        ("rock", ("rock", "blues", "garage", "psychedelic")),
+        ("classical/modern composition", ("classical", "chamber", "minimalism", "composition")),
+    )
+    for family, signals in families:
+        if any(signal in folded for signal in signals):
+            return family
+    return folded or "unknown"
+
+
+def candidate_genre_family(candidate: dict) -> str:
+    return normalized_genre_family(candidate.get("genre_family", ""))
+
+
+def result_genre_family(result: dict) -> str:
+    frontier = result.get("frontier_context") or {}
+    explicit = normalized_genre_family(frontier.get("genre_family", ""))
+    if explicit != "unknown":
+        return explicit
+    groups = result.get("descriptor_groups", {})
+    genres = groups.get("genres", [])
+    return normalized_genre_family(genres[0] if genres else "")
+
+
+def diversify_frontier_research_pool(candidates: list[dict], limit: int) -> list[dict]:
+    """Research distinct Frontier families before spending slots on repeated moves."""
+    diverse, remainder, seen = [], [], set()
+    for candidate in candidates:
+        family = candidate_genre_family(candidate)
+        if family not in seen and family != "unknown":
+            diverse.append(candidate)
+            seen.add(family)
+        else:
+            remainder.append(candidate)
+    return (diverse + remainder)[:limit]
+
+
+def enforce_frontier_genre_diversity(results: list[dict], pool: list[dict],
+                                     preference: str, n_results: int) -> list[dict]:
+    """Meet the Frontier family target when verified, evidence-backed options permit it."""
+    selected = results[:n_results]
+    target = min(3, n_results, len({result_genre_family(item) for item in pool}
+                                   - {"unknown"}))
+    while len({result_genre_family(item) for item in selected} - {"unknown"}) < target:
+        selected_families = {result_genre_family(item) for item in selected}
+        replacement = next(
+            (item for item in pool
+             if item not in selected and result_genre_family(item) not in selected_families
+             and result_genre_family(item) != "unknown"),
+            None,
+        )
+        if not replacement:
+            break
+        counts = {family: sum(result_genre_family(item) == family for item in selected)
+                  for family in selected_families}
+        replace_index = next(
+            (index for index in range(len(selected) - 1, -1, -1)
+             if counts.get(result_genre_family(selected[index]), 0) > 1
+             and ((preference or "any").casefold() not in {"mixed", "underheard"}
+                  or result_visibility(selected[index]) == result_visibility(replacement))),
+            None,
+        )
+        if replace_index is None:
+            break
+        selected[replace_index] = replacement
+    return selected
 
 
 def enforce_visibility(results: list[dict], pool: list[dict], preference: str,
@@ -1275,6 +1548,10 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
     if not candidates:
         return []
     fallback = deterministic_slate(candidates, req.visibility or "any", req.n_results)
+    if genre_distance(req) == 4:
+        fallback = enforce_frontier_genre_diversity(
+            fallback, candidates, req.visibility or "any", req.n_results,
+        )
     if not OPENAI_KEY:
         return fallback
     candidate_payload = [{
@@ -1285,6 +1562,8 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
         "visibility": result_visibility(item),
         "descriptors": item.get("match", {}).get("matched_descriptors", []),
         "genres": item.get("descriptor_groups", {}).get("genres", []),
+        "genre_family": result_genre_family(item),
+        "frontier_route": (item.get("frontier_context") or {}).get("route", ""),
         "sound_preview": item.get("descriptor_groups", {}).get("sound_preview", ""),
         "evidence": [{
             "claim": reason["claim"],
@@ -1296,11 +1575,13 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
     try:
         output = openai_json_response(
             "You are the final comparative selector in a conversational music-discovery process. "
-            "Compare every candidate against the listener's exact calibrated bridge. No candidate "
+            "Compare every candidate against the exact calibrated bridge. No candidate "
             "receives a place because it came from a curated corpus or from live discovery. Preserve "
             "the requested visibility: underheard means select only underheard artists; mixed means "
             "include at least one underheard and one recognizable artist when evidence-backed examples "
-            "of both are available. Select "
+            "of both are available. When genre_distance is 4, select at least three distinct broad "
+            "genre families for a five-record slate when the verified evidence supports them, with "
+            "no more than two records representing the same move. Select "
             "a varied slate only after intent fidelity. Use only supplied evidence. Think through the "
             "comparison before returning the machine-readable selection.",
             json.dumps({
@@ -1341,7 +1622,12 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
             selected.append(item)
     if len(selected) < req.n_results:
         selected.extend(item for item in fallback if item not in selected)
-    return enforce_visibility(selected, candidates, req.visibility or "any", req.n_results)
+    selected = enforce_visibility(selected, candidates, req.visibility or "any", req.n_results)
+    if genre_distance(req) == 4:
+        selected = enforce_frontier_genre_diversity(
+            selected, candidates, req.visibility or "any", req.n_results,
+        )
+    return selected
 
 
 def apply_freshness(results: list[dict], req: RecRequest, signature: str) -> list[dict]:
@@ -1883,6 +2169,8 @@ def recommend(req: RecRequest) -> dict:
                 req, intent, seeds, vocab, label_context,
                 [result["entity"] for result in results],
             )
+            for proposal_index, candidate in enumerate(proposed):
+                candidate["_proposal_index"] = proposal_index
             outside_audit = []
             for index, candidate in enumerate(proposed):
                 item = {
@@ -1896,6 +2184,11 @@ def recommend(req: RecRequest) -> dict:
                     "matched_descriptors": candidate["matched_descriptors"],
                     "proposal_confidence": candidate["confidence"],
                     "visibility": candidate["visibility"],
+                    "genre_family": candidate.get("genre_family", ""),
+                    "frontier_route": candidate.get("frontier_route", ""),
+                    "frontier_provenance": {
+                        "source": "llm_inferred", "confidence": candidate["confidence"],
+                    },
                 }
                 candidate_ledger.append(item)
                 outside_audit.append(item)
@@ -1906,12 +2199,23 @@ def recommend(req: RecRequest) -> dict:
                 candidate for candidate in proposed if candidate.get("visibility") == "underheard"
             ]
             proposed_other = [candidate for candidate in proposed if candidate not in proposed_underheard]
+            if genre_distance(req) == 4:
+                proposed_underheard = diversify_frontier_research_pool(
+                    proposed_underheard, len(proposed_underheard),
+                )
+                proposed_other = diversify_frontier_research_pool(
+                    proposed_other, len(proposed_other),
+                )
             if preference == "mixed":
                 provisional_research_pool = (proposed_underheard[:5] + proposed_other[:3])[:8]
             elif preference == "underheard":
                 provisional_research_pool = proposed_underheard[:8]
             else:
                 provisional_research_pool = proposed[:8]
+            if genre_distance(req) == 4:
+                provisional_research_pool = diversify_frontier_research_pool(
+                    provisional_research_pool, 8,
+                )
             research = research_album_candidates(req, provisional_research_pool, label_context)
             findings = {
                 item["candidate_index"]: item for item in research["findings"]
@@ -1920,14 +2224,17 @@ def recommend(req: RecRequest) -> dict:
             }
             for index, audit in enumerate(outside_audit):
                 finding = next(
-                    (item for item in research["findings"] if item["candidate_index"] == index),
+                    (item for item in research["findings"]
+                     if 0 <= item["candidate_index"] < len(provisional_research_pool)
+                     and provisional_research_pool[item["candidate_index"]].get("_proposal_index") == index),
                     None,
                 )
                 if finding:
                     audit["research"] = finding
                     audit["decision_reasons"].append(finding["bridge_summary"])
                     audit["disposition"] = (
-                        "research_supported" if index in findings else f"research_{finding['verdict']}"
+                        "research_supported" if finding["candidate_index"] in findings
+                        else f"research_{finding['verdict']}"
                     )
                 else:
                     audit["disposition"] = "not_researched_or_no_finding"
@@ -1955,6 +2262,7 @@ def recommend(req: RecRequest) -> dict:
             ][:max(req.n_results + 2, 6)]
             for candidate_index, candidate in shortlist:
                 finding = findings[candidate_index]
+                audit = outside_audit[candidate.get("_proposal_index", candidate_index)]
                 candidate = {
                     **candidate,
                     "year": finding.get("release_year") or candidate.get("year"),
@@ -1962,22 +2270,20 @@ def recommend(req: RecRequest) -> dict:
                     "research": finding,
                     "research_sources": research.get("sources", []),
                 }
-                outside_audit[candidate_index]["visibility"] = candidate["visibility"]
+                audit["visibility"] = candidate["visibility"]
                 if (req.visibility or "").casefold() == "underheard" \
                         and candidate["visibility"] != "underheard":
-                    outside_audit[candidate_index]["disposition"] = "rejected_visibility_mismatch"
-                    outside_audit[candidate_index]["decision_reasons"].append(
-                        "The listener requested underheard artists"
-                    )
+                    audit["disposition"] = "rejected_visibility_mismatch"
+                    audit["decision_reasons"].append("Underheard visibility was required")
                     continue
                 resolved = verify_release_group(candidate)
                 if not resolved:
-                    outside_audit[candidate_index]["disposition"] = "rejected_identity_unverified"
-                    outside_audit[candidate_index]["decision_reasons"].append(
+                    audit["disposition"] = "rejected_identity_unverified"
+                    audit["decision_reasons"].append(
                         "MusicBrainz did not verify the proposed artist/album identity"
                     )
                     continue
-                outside_audit[candidate_index].update(
+                audit.update(
                     disposition="identity_verified", year=resolved["year"],
                     rg_mbid=resolved["rg_mbid"], corpus_status="verified_discovery",
                 )
@@ -1988,23 +2294,23 @@ def recommend(req: RecRequest) -> dict:
                 )
                 identity = (resolved["artist"].casefold(), resolved["album"].casefold())
                 if identity in existing:
-                    outside_audit[candidate_index]["disposition"] = "rejected_duplicate"
+                    audit["disposition"] = "rejected_duplicate"
                     continue
                 if hc.year_min and (resolved["year"] is None or resolved["year"] < hc.year_min):
-                    outside_audit[candidate_index]["disposition"] = "excluded_by_hard_constraint"
+                    audit["disposition"] = "excluded_by_hard_constraint"
                     continue
                 if hc.year_max and (resolved["year"] is None or resolved["year"] > hc.year_max):
-                    outside_audit[candidate_index]["disposition"] = "excluded_by_hard_constraint"
+                    audit["disposition"] = "excluded_by_hard_constraint"
                     continue
                 if hc.exclude_seed_artists and resolved["artist"].casefold() in {
                         seed["artist"].casefold() for seed in seeds}:
-                    outside_audit[candidate_index]["disposition"] = "excluded_by_hard_constraint"
+                    audit["disposition"] = "excluded_by_hard_constraint"
                     continue
                 if set(resolved["matched_descriptors"]) & set(hc.exclude_moods):
-                    outside_audit[candidate_index]["disposition"] = "excluded_by_hard_constraint"
+                    audit["disposition"] = "excluded_by_hard_constraint"
                     continue
                 verified.append(verified_candidate_result(resolved))
-                outside_audit[candidate_index]["disposition"] = "verified_discovery_reserve"
+                audit["disposition"] = "verified_discovery_reserve"
                 existing.add(identity)
                 verification_target = max(req.n_results + 2, 5) if preference == "mixed" else req.n_results
                 if len(verified) >= verification_target:
@@ -2055,10 +2361,23 @@ def recommend(req: RecRequest) -> dict:
     if not results:
         coverage = "no_match"
         if not req.features.corpus_candidates:
-            notes.insert(0,
-                "No researched discovery survived identity verification. The listener path does not "
-                "substitute albums from the calibration corpus."
-            )
+            if discovery["status"] == "fallback":
+                failure = (
+                    f"Discovery could not complete during {discovery['stage'].replace('_', ' ')}. "
+                    "No unverified albums were substituted."
+                )
+            elif discovery["proposed"] == 0:
+                failure = "No candidates were proposed strongly enough to research."
+            elif discovery["researched"] == 0:
+                failure = (
+                    f"Research did not support any of the {discovery['proposed']} proposed candidates."
+                )
+            else:
+                failure = (
+                    f"None of the {discovery['researched']} research-supported candidates passed "
+                    "identity verification and the selected visibility requirement."
+                )
+            notes.insert(0, failure + " The calibration corpus remains separate from discovery results.")
         elif bridge_abstention:
             notes.append(
                 "The request compares against a record or artist that is not grounded in the curated "
@@ -2218,7 +2537,11 @@ def recommendations(req: RecRequest):
 
 @app.post("/tuning-questions")
 def get_tuning_questions(req: RecRequest):
-    calibration = analyze_calibration(req.brief, bool(req.image_features))
+    orientation = next((
+        answer.interpretation for answer in req.calibration_answers
+        if answer.question_id == "musical_orientation"
+    ), "")
+    calibration = analyze_calibration(req.brief, bool(req.image_features), orientation)
     return {**calibration, "schema_version": "2.0"}
 
 

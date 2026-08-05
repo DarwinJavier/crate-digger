@@ -181,6 +181,10 @@ Tasks:
 - [x] Make the listener UI discovery-only: skip corpus album scoring and report only
       proposed, researched, verified, and selected discovery candidates. Preserve
       corpus retrieval behind an explicit feature toggle for calibration/evaluation.
+- [x] Add conditional musical-orientation calibration for ambiguous reference-free
+      requests without turning verified exemplars into recommendation inventory.
+- [x] Split situational calibration into an orientation stage followed by interpretation,
+      genre-distance, and visibility questions generated from the selected world.
 
 Exit criteria:
 - [x] Existing Phase 1 smoke checks still pass.

@@ -149,6 +149,111 @@ class AppSmokeTests(unittest.TestCase):
             ["environment_focus", "genre_distance", "visibility"],
         )
 
+    def test_reference_free_prompt_gets_verified_musical_orientation(self):
+        original_key = app.OPENAI_KEY
+        original_call = app.openai_json_response
+        original_verify = app.verify_release_group
+        app.OPENAI_KEY = "test-key"
+        app.openai_json_response = lambda *_args: {
+            "interpretation": "Heavy rain could imply several very different musical worlds.",
+            "must_preserve": ["rain-soaked atmosphere"],
+            "may_change": ["genre", "instrumentation"],
+            "detected_genres": [],
+            "seed_artists": [],
+            "reference": {"artist": "", "album": ""},
+            "questions": [{
+                "id": "musical_orientation",
+                "question": "What does heavy rain sound like in your head?",
+                "help": "This establishes a musical starting point.",
+                "options": [{
+                    "value": "weightless",
+                    "label": "Weightless and immersive",
+                    "description": "Long tones and blurred edges.",
+                    "interpretation": "Begin in an ambient, rhythm-light musical world.",
+                    "exemplar_artist": "Grouper",
+                    "exemplar_album": "Ruins",
+                }, {
+                    "value": "physical",
+                    "label": "Dark and physical",
+                    "description": "Heavy bass and insistent rhythm.",
+                    "interpretation": "Begin with bass weight, rhythm, and urban tension.",
+                    "exemplar_artist": "",
+                    "exemplar_album": "",
+                }, {
+                    "value": "intimate",
+                    "label": "Intimate and reflective",
+                    "description": "Sparse and emotionally close.",
+                    "interpretation": "Begin with sparse, intimate music.",
+                    "exemplar_artist": "",
+                    "exemplar_album": "",
+                }],
+            }],
+        }
+        app.verify_release_group = lambda candidate: {
+            **candidate, "artist": "Grouper", "album": "Ruins", "year": 2014,
+            "rg_mbid": "verified-orientation", "verification_score": 1.0,
+        }
+        try:
+            output = app.analyze_calibration("music for heavy rain")
+        finally:
+            app.OPENAI_KEY = original_key
+            app.openai_json_response = original_call
+            app.verify_release_group = original_verify
+        question = output["questions"][0]
+        self.assertEqual(question["id"], "musical_orientation")
+        self.assertEqual(len(question["options"]), 5)
+        self.assertEqual(question["options"][0]["exemplar"]["rg_mbid"], "verified-orientation")
+        self.assertEqual(question["options"][3]["value"], "custom_orientation")
+        self.assertEqual(question["options"][4]["value"], "open_orientation")
+        self.assertEqual(output["seed_artists"], [])
+        self.assertEqual(output["reference"], {"artist": "", "album": ""})
+
+    def test_orientation_detection_is_conditional_and_has_a_model_free_fallback(self):
+        original_key = app.OPENAI_KEY
+        app.OPENAI_KEY = ""
+        try:
+            rain = app.analyze_calibration("music for heavy rain")
+            anchored = app.analyze_calibration("music for heavy rain like Burial")
+            genre = app.analyze_calibration("ambient music for heavy rain")
+        finally:
+            app.OPENAI_KEY = original_key
+        self.assertEqual(rain["questions"][0]["id"], "musical_orientation")
+        self.assertEqual(len(rain["questions"]), 1)
+        self.assertEqual(len(rain["questions"][0]["options"]), 5)
+        self.assertEqual(anchored["questions"][0]["id"], "interpretation_focus")
+        self.assertEqual(genre["questions"][0]["id"], "interpretation_focus")
+
+    def test_orientation_answer_unlocks_second_calibration_stage(self):
+        original_key = app.OPENAI_KEY
+        app.OPENAI_KEY = ""
+        try:
+            response = app.get_tuning_questions(app.RecRequest(
+                brief="music for heavy rain",
+                calibration_answers=[app.CalibrationAnswer(
+                    question_id="musical_orientation",
+                    question="What should this sound like in your head?",
+                    selected_label="Rhythmic and physical",
+                    interpretation="Begin with a rhythm-led, bass-weighted sound.",
+                )],
+            ))
+        finally:
+            app.OPENAI_KEY = original_key
+        self.assertEqual(
+            [question["id"] for question in response["questions"]],
+            ["interpretation_focus", "genre_distance", "visibility"],
+        )
+
+    def test_listener_ui_supports_custom_orientation_without_making_it_a_seed(self):
+        page = app.listener_page()
+        self.assertIn("custom-orientation", page)
+        self.assertIn("custom_orientation_text", page)
+        self.assertIn("listener-supplied musical orientation", page)
+        self.assertIn("const seeds=(calibrationData.seed_artists||[])", page)
+        self.assertIn("Listening inside that world", page)
+        self.assertIn("calibration_answers:orientationAnswers", page)
+        self.assertIn("calibrationAnswers=[...orientationAnswers,...stageAnswers]", page)
+        self.assertIn("orientationAnswers.length?'3'", page)
+
     def test_optional_intelligence_can_be_disabled(self):
         toggles = app.FeatureToggles(external_taxonomy=False, axis_inference=False,
                                      slate_diversity=False, adaptive_questions=False)
@@ -167,7 +272,58 @@ class AppSmokeTests(unittest.TestCase):
         ]
         self.assertIn("listener_discovery_mode", stages)
         self.assertNotIn("pull_initial_corpus_list", stages)
-        self.assertIn("does not substitute", response["coverage"]["notes"][0])
+        self.assertIn("calibration corpus remains separate", response["coverage"]["notes"][0])
+
+    def test_frontier_guide_is_isolated_to_explicit_frontier_scouting(self):
+        intent = {"moods": [], "sonic_traits": [], "scenes": [], "unmapped_terms": []}
+        frontier = app.candidate_scout_payload(
+            self.request(discovery_depth=None, genre_distance=4), intent, [], [], [],
+        )
+        deep = app.candidate_scout_payload(
+            self.request(discovery_depth=None, genre_distance=3), intent, [], [], [],
+        )
+        open_translation = app.candidate_scout_payload(
+            self.request(discovery_depth=None, genre_distance=5), intent, [], [], [],
+        )
+        context = frontier["frontier_exploration"]
+        self.assertEqual(context["namespace"], "frontier_exploration")
+        self.assertEqual(context["activation"], "explicit_genre_distance_4")
+        self.assertEqual(context["persistence"], "none")
+        self.assertEqual(context["engine_authority"], "unchanged")
+        self.assertEqual(context["slate_contract"]["minimum_distinct_genre_families"], 3)
+        self.assertEqual(context["slate_contract"]["maximum_final_records_per_genre_family"], 2)
+        self.assertIn("# Frontier Genre Exploration", context["guide"])
+        self.assertNotIn("frontier_exploration", deep)
+        self.assertNotIn("frontier_exploration", open_translation)
+
+    def test_calibration_copy_removes_third_person_product_language(self):
+        self.assertEqual(
+            app.calibration_display_copy(
+                "The listener wants boundary-crossing rock with a volatile underground identity."
+            ),
+            "Boundary-crossing rock with a volatile underground identity.",
+        )
+
+    def test_frontier_slate_uses_three_genre_families_when_pool_supports_it(self):
+        def result(name, family):
+            return {
+                "entity": {"artist": name, "title": name, "rg_mbid": name},
+                "match": {"novelty_tier": "underheard"},
+                "descriptor_groups": {"genre_family": family, "genres": [family]},
+                "reasons": [{"provenance": {"confidence": 0.8}}],
+            }
+
+        pool = [
+            result("Punk 1", "punk"), result("Punk 2", "post-punk"),
+            result("Rock 1", "garage rock"), result("Rock 2", "punk blues"),
+            result("Jazz 1", "spiritual jazz"), result("Salsa 1", "salsa"),
+        ]
+        selected = app.enforce_frontier_genre_diversity(
+            pool[:5], pool, "underheard", 5,
+        )
+        families = {app.result_genre_family(item) for item in selected}
+        self.assertGreaterEqual(len(families), 3)
+        self.assertTrue({"jazz", "salsa"} & families)
 
     def test_impossible_constraint_is_no_match(self):
         response = app.recommend(self.request(hard_constraints=app.HardConstraints(year_min=2030)))

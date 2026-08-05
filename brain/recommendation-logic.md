@@ -261,6 +261,7 @@ operational, and consistent with `AGENTS.md`.
 - Corpus quality and novelty may reorder relevant candidates, but neither may qualify an otherwise irrelevant album.
 - Diversify only within equally scored evidence tiers so variety cannot outrank stronger support.
 - Interpret the request before searching. Ask one request-specific question about what must survive, then keep genre distance and artist visibility as independent controls.
+- For reference-free situational, functional, visual, or emotional requests with several plausible musical readings, use two calibration stages. Ask only for a musical orientation first. After selection, generate the interpretation question inside that musical world, followed by genre distance and artist visibility. Offer three contrasting sonic directions, an open path, and a listener-supplied alternative. Any displayed exemplar must be identity-verified and remains orientation context, never seed inventory or an automatic recommendation.
 - Genre distance controls movement across genres only. It does not stand for geography, obscurity, scene distance, or cache status.
 - The curated corpus is calibration evidence, never reserved recommendation inventory. Curated and query-time candidates receive no source quota; every displayed album must win on the calibrated bridge.
 - Listener mode disables corpus candidates entirely. Corpus retrieval remains available only as an explicit calibration/evaluation control; discovery failure never triggers a corpus substitution.

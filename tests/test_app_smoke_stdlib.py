@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import types
 import unittest
 from pathlib import Path
@@ -94,6 +95,26 @@ class AppSmokeTests(unittest.TestCase):
             "weak_bridge" in " ".join(item["risk_flags"])
             for item in report["candidates"]
         ))
+
+    def test_progress_callback_and_background_job_report_real_stages(self):
+        events = []
+        app.recommend(
+            self.request(),
+            lambda stage, message, **details: events.append((stage, message, details)),
+        )
+        self.assertEqual(events[0][0], "request_understood")
+        self.assertIn("quality_selection", [event[0] for event in events])
+        self.assertEqual(events[-1][0], "complete")
+
+        created = app.create_recommendation_job(self.request())
+        deadline = time.time() + 2
+        status = app.recommendation_job_status(created["job_id"])
+        while status["status"] == "running" and time.time() < deadline:
+            time.sleep(0.01)
+            status = app.recommendation_job_status(created["job_id"])
+        self.assertEqual(status["status"], "complete")
+        self.assertTrue(status["result"]["results"])
+        self.assertEqual(status["events"][0]["stage"], "request_understood")
 
     def test_listener_ui_uses_discovery_only_and_places_restart_after_profile(self):
         page = app.listener_page()
@@ -222,6 +243,22 @@ class AppSmokeTests(unittest.TestCase):
         self.assertEqual(len(rain["questions"][0]["options"]), 5)
         self.assertEqual(anchored["questions"][0]["id"], "interpretation_focus")
         self.assertEqual(genre["questions"][0]["id"], "interpretation_focus")
+
+    def test_abstract_comparison_gets_orientation_but_musical_reference_does_not(self):
+        original_key = app.OPENAI_KEY
+        app.OPENAI_KEY = ""
+        try:
+            purple = app.analyze_calibration("I want music that sounds like the color purple")
+            painting = app.analyze_calibration("music that feels like a faded painting")
+            artist = app.analyze_calibration("I want music that sounds like Burial")
+            concrete = app.analyze_calibration("purple-toned psychedelic soul")
+        finally:
+            app.OPENAI_KEY = original_key
+        self.assertEqual(purple["stage"], "orientation")
+        self.assertEqual(purple["questions"][0]["id"], "musical_orientation")
+        self.assertEqual(painting["stage"], "orientation")
+        self.assertEqual(artist["stage"], "calibration")
+        self.assertEqual(concrete["stage"], "calibration")
 
     def test_orientation_answer_unlocks_second_calibration_stage(self):
         original_key = app.OPENAI_KEY
@@ -553,6 +590,99 @@ class AppSmokeTests(unittest.TestCase):
         self.assertEqual(len(path), 4)
         self.assertTrue(all(item["entity"]["corpus_status"] == "verified_discovery" for item in path))
 
+    def test_final_selector_rejects_weak_fit_and_allows_one_qualified_result(self):
+        original_key = app.OPENAI_KEY
+        original_call = app.openai_json_response
+        app.OPENAI_KEY = "test-key"
+
+        def candidate(index):
+            return {
+                "entity": {
+                    "artist": f"Artist {index}", "title": f"Album {index}",
+                    "year": 2000 + index, "rg_mbid": f"mbid-{index}",
+                    "corpus_status": "verified_discovery",
+                },
+                "match": {
+                    "score": 4.0 - index / 10, "matched_descriptors": ["nocturnal"],
+                    "novelty_tier": "underheard",
+                },
+                "descriptor_groups": {"genres": ["ambient"]},
+                "reasons": [{
+                    "relationship_type": "researched_inferred_fit", "claim": "Supported bridge",
+                    "provenance": {"source": "llm_inferred", "confidence": 0.8},
+                }],
+            }
+
+        candidates = [candidate(index) for index in range(4)]
+        assessments = [
+            ("strong", [], 0.9),
+            ("qualified", ["limited forward motion"], 0.75),
+            ("qualified", ["limited warmth"], 0.7),
+            ("reject", ["contradicts the essential mood"], 0.9),
+        ]
+        def quality_response(*args, **_kwargs):
+            self.assertEqual(args[-1], 3600)
+            return {"assessments": [{
+                "rg_mbid": f"mbid-{index}", "fit": fit,
+                "satisfied_requirements": ["alert solitude"],
+                "weaknesses": weaknesses, "selection_reason": "Test assessment",
+                "confidence": confidence,
+            } for index, (fit, weaknesses, confidence) in enumerate(assessments)],
+                    "selected_rg_mbids": ["mbid-0", "mbid-1", "mbid-2", "mbid-3"]}
+        app.openai_json_response = quality_response
+        try:
+            selected = app.select_recommendation_slate(
+                self.request(n_results=4, visibility="any"), candidates,
+            )
+        finally:
+            app.OPENAI_KEY = original_key
+            app.openai_json_response = original_call
+        self.assertEqual(
+            [item["entity"]["rg_mbid"] for item in selected],
+            ["mbid-0", "mbid-1"],
+        )
+        self.assertEqual(selected[1]["quality_assessment"]["fit"], "qualified")
+        self.assertEqual(
+            selected[1]["quality_assessment"]["provenance"]["source"], "llm_inferred",
+        )
+        summary = app.quality_gate_summary(candidates)
+        self.assertEqual(
+            summary["counts"],
+            {"strong": 1, "qualified": 2, "reject": 1, "unassessed": 0},
+        )
+        self.assertEqual(summary["status"], "complete")
+
+    def test_failed_quality_gate_returns_no_unassessed_substitute(self):
+        original_key = app.OPENAI_KEY
+        original_call = app.openai_json_response
+        app.OPENAI_KEY = "test-key"
+        app.openai_json_response = lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            RuntimeError("quality gate unavailable")
+        )
+        candidate = {
+            "entity": {
+                "artist": "Artist", "title": "Album", "year": 2001,
+                "rg_mbid": "mbid", "corpus_status": "verified_discovery",
+            },
+            "match": {"score": 4.0, "matched_descriptors": ["nocturnal"]},
+            "descriptor_groups": {"genres": ["ambient"]},
+            "reasons": [{
+                "claim": "Supported bridge", "relationship_type": "researched_inferred_fit",
+                "provenance": {"source": "llm_inferred", "confidence": 0.8},
+            }],
+        }
+        try:
+            selected = app.select_recommendation_slate(
+                self.request(n_results=1, visibility="any"), [candidate],
+            )
+        finally:
+            app.OPENAI_KEY = original_key
+            app.openai_json_response = original_call
+        self.assertEqual(selected, [])
+        summary = app.quality_gate_summary([candidate])
+        self.assertEqual(summary["status"], "unavailable")
+        self.assertEqual(summary["counts"]["unassessed"], 1)
+
     def test_recommendation_pipeline_can_include_verified_outside_candidate(self):
         original_key = app.OPENAI_KEY
         original_agent = app.USER_AGENT
@@ -642,6 +772,9 @@ class AppSmokeTests(unittest.TestCase):
         self.assertEqual(len(outside), 1)
         self.assertEqual(outside[0]["disposition"], "final_selection")
         self.assertEqual(outside[0]["research"]["verdict"], "supported")
+        self.assertFalse(any(
+            flag.startswith("weak_bridge") for flag in outside[0]["risk_flags"]
+        ))
         stages = response["analysis_report"]["execution_recipe"]
         self.assertEqual(
             next(stage for stage in stages if stage["stage"] == "outside_candidate_generation")[
@@ -649,6 +782,76 @@ class AppSmokeTests(unittest.TestCase):
             ],
             app.CANDIDATE_SCOUT_INSTRUCTION,
         )
+
+    def test_short_quality_slate_researches_existing_reserve_once(self):
+        originals = {
+            "key": app.OPENAI_KEY, "agent": app.USER_AGENT,
+            "generate": app.generate_album_candidates,
+            "research": app.research_album_candidates,
+            "verify": app.verify_release_group,
+            "copy": app.compose_listener_copy,
+            "parse": app.parse_brief,
+            "select": app.select_recommendation_slate,
+        }
+        app.OPENAI_KEY = "test-key"
+        app.USER_AGENT = "test-agent"
+        proposals = [{
+            "artist": f"Reserve Artist {index}", "album": f"Reserve Album {index}",
+            "year": 1990 + index, "connection": "A supported nocturnal bridge.",
+            "matched_descriptors": ["nocturnal"], "scenes": [], "confidence": 0.8,
+            "visibility": "underheard", "genre_family": f"family-{index}",
+            "frontier_route": "A distinct route.",
+        } for index in range(12)]
+        research_batch_sizes = []
+
+        def research(_req, candidates, _labels):
+            research_batch_sizes.append(len(candidates))
+            supported = range(1) if len(research_batch_sizes) == 1 else range(len(candidates))
+            return {
+                "findings": [{
+                    "candidate_index": index, "verdict": "supported",
+                    "bridge_summary": "Research supports the bridge.",
+                    "supported_requirements": ["nocturnal"], "limitations": [],
+                    "visibility": "underheard", "release_year": candidates[index]["year"],
+                    "genres": ["ambient"], "sound_preview": "Spacious and alert.",
+                } for index in supported],
+                "rabbit_holes": {"labels": [], "scenes": []}, "sources": [],
+            }
+
+        app.generate_album_candidates = lambda *_args: proposals
+        app.research_album_candidates = research
+        app.verify_release_group = lambda candidate: {
+            **candidate, "rg_mbid": f"mbid-{candidate['album'].split()[-1]}",
+            "verification_score": 0.99,
+        }
+        app.compose_listener_copy = lambda *_args: {
+            "intent_title": "Reserve path", "summary": "A replenished path.",
+            "explanations": [],
+        }
+        app.parse_brief = lambda *_args: {
+            "moods": ["nocturnal"], "sonic_traits": [], "scenes": [],
+            "unmapped_terms": [],
+        }
+        app.select_recommendation_slate = lambda req, candidates: candidates[:req.n_results]
+        try:
+            response = app.recommend(self.request(
+                seeds=[], visibility="underheard",
+                features=app.FeatureToggles(corpus_candidates=False),
+            ))
+        finally:
+            app.OPENAI_KEY = originals["key"]
+            app.USER_AGENT = originals["agent"]
+            app.generate_album_candidates = originals["generate"]
+            app.research_album_candidates = originals["research"]
+            app.verify_release_group = originals["verify"]
+            app.compose_listener_copy = originals["copy"]
+            app.parse_brief = originals["parse"]
+            app.select_recommendation_slate = originals["select"]
+        self.assertEqual(research_batch_sizes, [8, 4])
+        self.assertEqual(len(response["results"]), 5)
+        self.assertTrue(response["discovery"]["reserve_used"])
+        self.assertEqual(response["discovery"]["reserve_researched"], 4)
+        self.assertEqual(response["discovery"]["reserve_verified"], 4)
 
 
 if __name__ == "__main__":

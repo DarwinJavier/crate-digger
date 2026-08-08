@@ -26,8 +26,9 @@ import re
 import sqlite3
 import threading
 import time
+import uuid
 from pathlib import Path
-from typing import Optional
+from typing import Any, Callable, Optional
 
 import requests
 from fastapi import FastAPI
@@ -108,6 +109,44 @@ MUSICBRAINZ_LOCK = threading.Lock()
 MUSICBRAINZ_LAST_REQUEST = 0.0
 
 app = FastAPI(title="Music Context Sandbox", version="0.1")
+
+RECOMMENDATION_JOBS: dict[str, dict[str, Any]] = {}
+RECOMMENDATION_JOBS_LOCK = threading.Lock()
+MAX_RETAINED_RECOMMENDATION_JOBS = 40
+
+
+def recommendation_job_event(job_id: str, stage: str, message: str, **details: Any) -> None:
+    """Record one honest, user-safe pipeline checkpoint for a background request."""
+    with RECOMMENDATION_JOBS_LOCK:
+        job = RECOMMENDATION_JOBS.get(job_id)
+        if not job or job["status"] in {"complete", "failed"}:
+            return
+        event = {
+            "stage": stage,
+            "message": message,
+            "details": details,
+            "recorded_at": time.time(),
+        }
+        job["stage"] = stage
+        job["message"] = message
+        job["details"] = details
+        job["events"].append(event)
+        job["updated_at"] = event["recorded_at"]
+
+
+def prune_recommendation_jobs() -> None:
+    """Bound process-local job retention without interrupting active work."""
+    with RECOMMENDATION_JOBS_LOCK:
+        finished = sorted(
+            (
+                (job.get("updated_at", job["created_at"]), job_id)
+                for job_id, job in RECOMMENDATION_JOBS.items()
+                if job["status"] in {"complete", "failed"}
+            ),
+        )
+        excess = max(0, len(RECOMMENDATION_JOBS) - MAX_RETAINED_RECOMMENDATION_JOBS)
+        for _, job_id in finished[:excess]:
+            RECOMMENDATION_JOBS.pop(job_id, None)
 
 
 def load_runtime_policy() -> str:
@@ -571,16 +610,15 @@ def openai_web_json_response(instructions: str, prompt: str, name: str, schema: 
 
 
 def needs_musical_orientation(brief: str) -> bool:
-    """Conservatively detect cold-start prompts that describe a use or scene, not music."""
+    """Detect cold-start prompts that describe a concept or situation, not music."""
     text = normalized_identity(brief)
     if not text:
         return False
-    reference_markers = (
-        " similar to ", " like ", " sounds like ", " start with ", " by ",
-        " artist ", " album ", " record ",
+    strong_reference_markers = (
+        " start with ", " by ", " artist ", " album ", " record ",
     )
     padded = f" {text} "
-    if any(marker in padded for marker in reference_markers):
+    if any(marker in padded for marker in strong_reference_markers):
         return False
     explicit_genres = {
         "ambient", "blues", "classical", "country", "dancehall", "disco", "drone",
@@ -590,10 +628,30 @@ def needs_musical_orientation(brief: str) -> bool:
     }
     if any(re.search(rf"(?:^| ){re.escape(genre)}(?: |$)", text) for genre in explicit_genres):
         return False
+    concrete_musical_terms = {
+        "acoustic", "bass", "beat", "choir", "drums", "guitar", "instrumental",
+        "melody", "orchestral", "piano", "production", "reverb", "rhythm", "synth",
+        "tempo", "vocals",
+    }
+    if any(re.search(rf"(?:^| ){re.escape(term)}(?: |$)", text)
+           for term in concrete_musical_terms):
+        return False
+    abstract_comparison_terms = {
+        "beige", "black", "blue", "brown", "color", "colour", "crimson", "gold",
+        "golden", "gray", "green", "grey", "indigo", "magenta", "orange", "pink",
+        "purple", "red", "scarlet", "silver", "teal", "turquoise", "violet", "white",
+        "yellow", "painting", "photograph", "picture", "shape", "texture",
+    }
+    comparison = re.search(r"(?:sounds? like|similar to|like) (.+)$", text)
+    if comparison:
+        target = comparison.group(1)
+        return any(re.search(rf"(?:^| ){re.escape(term)}(?: |$)", target)
+                   for term in abstract_comparison_terms)
     situational_terms = {
         "rain", "rainy", "storm", "snow", "walk", "walking", "drive", "driving",
         "dinner", "cooking", "study", "studying", "work", "working", "sleep", "sleeping",
         "morning", "night", "party", "gym", "road trip", "sunset", "sunrise", "weather",
+        "color", "colour", "painting", "photograph", "picture",
     }
     return (text.startswith("music for ") or text.startswith("soundtrack for ") or
             any(re.search(rf"(?:^| ){re.escape(term)}(?: |$)", text)
@@ -640,6 +698,7 @@ def analyze_calibration(brief: str, has_image: bool = False,
     """Form a request-specific hypothesis, then add stable genre/visibility controls."""
     awaiting_orientation = needs_musical_orientation(brief) and not musical_orientation.strip()
     fallback = {
+        "stage": "orientation" if awaiting_orientation else "calibration",
         "interpretation": "The request may be about sound, feeling, or cultural context.",
         "must_preserve": [],
         "may_change": [],
@@ -794,6 +853,7 @@ def analyze_calibration(brief: str, has_image: bool = False,
     if not awaiting_orientation:
         stable = tuning_questions(brief, has_image, None, None, include_interpretation=False)
         output["questions"] = output["questions"] + stable
+    output["stage"] = "orientation" if awaiting_orientation else "calibration"
     output["interpretation"] = calibration_display_copy(output.get("interpretation", ""))
     output["source"] = "openai_interpretation"
     return output
@@ -1544,7 +1604,7 @@ def deterministic_slate(pool: list[dict], preference: str, n_results: int) -> li
 
 
 def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list[dict]:
-    """Run a separate comparative pass; corpus membership never reserves a position."""
+    """Run a comparative quality gate; corpus membership never reserves a position."""
     if not candidates:
         return []
     fallback = deterministic_slate(candidates, req.visibility or "any", req.n_results)
@@ -1574,8 +1634,17 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
     } for item in candidates]
     try:
         output = openai_json_response(
-            "You are the final comparative selector in a conversational music-discovery process. "
-            "Compare every candidate against the exact calibrated bridge. No candidate "
+            "You are the final comparative selector and quality gate in a conversational "
+            "music-discovery process. Compare every candidate against the exact calibrated bridge. "
+            "Classify every candidate as strong, qualified, or reject. Strong means it clearly "
+            "satisfies the defining calibrated quality with no material contradiction. Qualified "
+            "means it satisfies the core request but has one meaningful weakness. Reject means it "
+            "misses or contradicts an essential quality or lacks adequate supplied evidence. "
+            "A secondary strength must never average away a contradiction of an essential quality. "
+            "Select no rejected candidate and select at most one qualified candidate when strong "
+            "alternatives exist. Keep satisfied requirements, weaknesses, and selection reasons "
+            "concise so every candidate receives a complete assessment. It is acceptable to return "
+            "fewer than the requested count. No candidate "
             "receives a place because it came from a curated corpus or from live discovery. Preserve "
             "the requested visibility: underheard means select only underheard artists; mixed means "
             "include at least one underheard and one recognizable artist when evidence-backed examples "
@@ -1598,6 +1667,39 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
             {
                 "type": "object",
                 "properties": {
+                    "assessments": {
+                        "type": "array",
+                        "minItems": len(candidates),
+                        "maxItems": len(candidates),
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "rg_mbid": {
+                                    "type": "string",
+                                    "enum": [item["entity"]["rg_mbid"] for item in candidates],
+                                },
+                                "fit": {
+                                    "type": "string",
+                                    "enum": ["strong", "qualified", "reject"],
+                                },
+                                "satisfied_requirements": {
+                                    "type": "array", "items": {"type": "string"},
+                                    "maxItems": 8,
+                                },
+                                "weaknesses": {
+                                    "type": "array", "items": {"type": "string"},
+                                    "maxItems": 5,
+                                },
+                                "selection_reason": {"type": "string"},
+                                "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                            },
+                            "required": [
+                                "rg_mbid", "fit", "satisfied_requirements", "weaknesses",
+                                "selection_reason", "confidence",
+                            ],
+                            "additionalProperties": False,
+                        },
+                    },
                     "selected_rg_mbids": {
                         "type": "array", "items": {
                             "type": "string",
@@ -1606,28 +1708,133 @@ def select_recommendation_slate(req: RecRequest, candidates: list[dict]) -> list
                         "maxItems": req.n_results,
                     },
                 },
-                "required": ["selected_rg_mbids"],
+                "required": ["assessments", "selected_rg_mbids"],
                 "additionalProperties": False,
             },
-            1200,
+            3600,
         )
     except Exception as exc:
-        print(f"Comparative slate selection failed ({exc}); using evidence fallback")
-        return fallback
+        print(
+            f"Comparative quality gate failed ({exc}); "
+            "returning no unassessed substitute"
+        )
+        for item in candidates:
+            item["quality_assessment"] = {
+                "fit": "unassessed",
+                "satisfied_requirements": [],
+                "weaknesses": [],
+                "selection_reason": "The quality gate did not complete.",
+                "provenance": {
+                    "source": "llm_inferred", "confidence": 0.0,
+                    "confidence_state": "possible",
+                },
+            }
+        return []
     by_id = {item["entity"]["rg_mbid"]: item for item in candidates}
+    assessments = {
+        item["rg_mbid"]: {
+            "fit": item["fit"],
+            "satisfied_requirements": item["satisfied_requirements"],
+            "weaknesses": item["weaknesses"],
+            "selection_reason": item["selection_reason"],
+            "provenance": {
+                "source": "llm_inferred",
+                "confidence": item["confidence"],
+                "confidence_state": confidence_state(item["confidence"]),
+            },
+        }
+        for item in output["assessments"]
+        if item["rg_mbid"] in by_id
+    }
+    for mbid, assessment in assessments.items():
+        by_id[mbid]["quality_assessment"] = assessment
+    eligible = {
+        mbid for mbid, assessment in assessments.items()
+        if assessment["fit"] in {"strong", "qualified"}
+    }
     selected = []
+    qualified_count = 0
     for mbid in output["selected_rg_mbids"]:
         item = by_id.get(mbid)
+        assessment = assessments.get(mbid)
+        if not item or not assessment or mbid not in eligible or item in selected:
+            continue
+        if assessment["fit"] == "qualified" and qualified_count >= 1:
+            continue
+        if assessment["fit"] == "qualified":
+            qualified_count += 1
+        item["quality_assessment"] = assessment
         if item and item not in selected:
             selected.append(item)
     if len(selected) < req.n_results:
-        selected.extend(item for item in fallback if item not in selected)
-    selected = enforce_visibility(selected, candidates, req.visibility or "any", req.n_results)
+        for item in fallback:
+            mbid = item["entity"]["rg_mbid"]
+            assessment = assessments.get(mbid)
+            if not assessment or mbid not in eligible or item in selected:
+                continue
+            if assessment["fit"] == "qualified" and qualified_count >= 1:
+                continue
+            if assessment["fit"] == "qualified":
+                qualified_count += 1
+            item["quality_assessment"] = assessment
+            selected.append(item)
+            if len(selected) >= req.n_results:
+                break
+    selected_qualified = next((
+        item["entity"]["rg_mbid"] for item in selected
+        if assessments[item["entity"]["rg_mbid"]]["fit"] == "qualified"
+    ), None)
+    if selected_qualified is None:
+        selected_qualified = next((
+            item["entity"]["rg_mbid"] for item in fallback
+            if assessments.get(item["entity"]["rg_mbid"], {}).get("fit") == "qualified"
+        ), None)
+    eligible_candidates = []
+    for item in candidates:
+        assessment = assessments.get(item["entity"]["rg_mbid"])
+        if assessment and (
+            assessment["fit"] == "strong"
+            or (assessment["fit"] == "qualified"
+                and item["entity"]["rg_mbid"] == selected_qualified)
+        ):
+            item["quality_assessment"] = assessment
+            eligible_candidates.append(item)
+    selected = enforce_visibility(
+        selected, eligible_candidates, req.visibility or "any", req.n_results,
+    )
     if genre_distance(req) == 4:
         selected = enforce_frontier_genre_diversity(
-            selected, candidates, req.visibility or "any", req.n_results,
+            selected, eligible_candidates, req.visibility or "any", req.n_results,
         )
     return selected
+
+
+def quality_gate_summary(candidates: list[dict]) -> dict:
+    """Summarize auditable quality verdicts without inventing missing assessments."""
+    assessments = []
+    counts = {"strong": 0, "qualified": 0, "reject": 0, "unassessed": 0}
+    for item in candidates:
+        assessment = item.get("quality_assessment") or {
+            "fit": "unassessed",
+            "satisfied_requirements": [], "weaknesses": [],
+            "selection_reason": "No quality assessment was returned.",
+            "provenance": {
+                "source": "llm_inferred", "confidence": 0.0,
+                "confidence_state": "possible",
+            },
+        }
+        fit = assessment.get("fit", "unassessed")
+        counts[fit if fit in counts else "unassessed"] += 1
+        assessments.append({
+            "rg_mbid": item["entity"].get("rg_mbid"),
+            "artist": item["entity"].get("artist"),
+            "album": item["entity"].get("title"),
+            **assessment,
+        })
+    status = "unavailable" if counts["unassessed"] else "complete"
+    if not assessments:
+        status = "not_run"
+    return {"status": status, "counts": counts, "assessments": assessments}
 
 
 def apply_freshness(results: list[dict], req: RecRequest, signature: str) -> list[dict]:
@@ -1761,13 +1968,29 @@ def build_analysis_report(req: RecRequest, intent: dict, coverage: dict, seeds: 
         result["entity"].get("rg_mbid"): index
         for index, result in enumerate(results, 1)
     }
+    quality_by_id = {
+        item.get("rg_mbid"): item
+        for item in discovery.get("quality_gate", {}).get("assessments", [])
+        if item.get("rg_mbid")
+    }
     for item in ledger:
         mbid = item.get("rg_mbid")
+        quality = quality_by_id.get(mbid)
+        if quality:
+            item["quality_assessment"] = {
+                key: value for key, value in quality.items()
+                if key not in {"rg_mbid", "artist", "album"}
+            }
         if mbid in selected_ids:
             item["disposition"] = "final_selection"
             item["final_rank"] = selected_order[mbid]
         elif item["disposition"] in {"curated_reserve", "verified_discovery_reserve"}:
-            item["disposition"] = "displaced_before_final_selection"
+            if quality and quality.get("fit") == "reject":
+                item["disposition"] = "rejected_quality_gate"
+            elif quality and quality.get("fit") == "unassessed":
+                item["disposition"] = "quality_gate_unavailable"
+            else:
+                item["disposition"] = "displaced_before_final_selection"
         contributions = [
             component for component in item.get("score_breakdown", [])
             if component.get("contribution", 0) > 0
@@ -1787,8 +2010,11 @@ def build_analysis_report(req: RecRequest, intent: dict, coverage: dict, seeds: 
             }
         ]
         risk_flags = []
+        research_verdict = (item.get("research") or {}).get("verdict")
+        has_researched_fit = research_verdict in {"supported", "partially_supported"}
         if item["disposition"] not in {
-                "excluded_by_hard_constraint", "rejected_no_relevance_evidence"} and not direct_intent:
+                "excluded_by_hard_constraint", "rejected_no_relevance_evidence"} \
+                and not direct_intent and not has_researched_fit:
             risk_flags.append(
                 "weak_bridge: qualified without a direct descriptor, label-territory, or researched fit"
             )
@@ -1869,8 +2095,10 @@ def build_analysis_report(req: RecRequest, intent: dict, coverage: dict, seeds: 
              )},
             {"stage": "comparative_slate_selection",
              "instruction": (
-                 "Compare every evidence-backed survivor against the calibrated bridge. Corpus and live "
-                 "discovery receive no reserved slots; visibility is enforced at slate level."
+                 "Classify every evidence-backed survivor as strong, qualified, or reject against "
+                 "the calibrated bridge. Never select a reject, permit at most one qualified result "
+                 "when strong alternatives exist, and use one bounded reserve research pass only "
+                 "when the initial quality-gated slate is short."
              )},
         ])
     return {
@@ -1889,7 +2117,8 @@ def build_analysis_report(req: RecRequest, intent: dict, coverage: dict, seeds: 
             "selection_order": [
                 {"rank": index, "artist": result["entity"]["artist"],
                  "album": result["entity"]["title"], "score": result["match"]["score"],
-                 "reasons": result["reasons"]}
+                 "reasons": result["reasons"],
+                 "quality_assessment": result.get("quality_assessment")}
                 for index, result in enumerate(results, 1)
             ],
             "outside_discovery": discovery,
@@ -1908,7 +2137,12 @@ def build_analysis_report(req: RecRequest, intent: dict, coverage: dict, seeds: 
     }
 
 
-def recommend(req: RecRequest) -> dict:
+def recommend(
+    req: RecRequest,
+    progress: Optional[Callable[..., None]] = None,
+) -> dict:
+    emit = progress or (lambda *_args, **_kwargs: None)
+    emit("request_understood", "Request understood")
     con = db()
     vocab = load_vocab(con)
     intent = parse_brief(req.brief, vocab)
@@ -2153,6 +2387,9 @@ def recommend(req: RecRequest) -> dict:
         "researched": 0,
         "verified": 0,
         "identity_cache_hits": 0,
+        "reserve_researched": 0,
+        "reserve_verified": 0,
+        "reserve_used": False,
         "stage": "idle",
     }
     grounded_reference_required = requires_grounded_reference(req, seeds)
@@ -2160,6 +2397,7 @@ def recommend(req: RecRequest) -> dict:
         discovery["status"] = "running"
         try:
             discovery["stage"] = "candidate_generation"
+            emit("candidate_generation", "Preparing candidate possibilities")
             label_context = discovery_label_context(con, intent)
             analysis_scout_payload = candidate_scout_payload(
                 req, intent, seeds, label_context,
@@ -2216,6 +2454,12 @@ def recommend(req: RecRequest) -> dict:
                 provisional_research_pool = diversify_frontier_research_pool(
                     provisional_research_pool, 8,
                 )
+            emit(
+                "context_research",
+                "Researching the most promising records",
+                proposed=len(proposed),
+                research_target=len(provisional_research_pool),
+            )
             research = research_album_candidates(req, provisional_research_pool, label_context)
             findings = {
                 item["candidate_index"]: item for item in research["findings"]
@@ -2239,6 +2483,13 @@ def recommend(req: RecRequest) -> dict:
                 else:
                     audit["disposition"] = "not_researched_or_no_finding"
             discovery["researched"] = len(findings)
+            emit(
+                "identity_verification",
+                "Verifying album identities",
+                proposed=len(proposed),
+                researched=len(findings),
+                verification_target=min(len(findings), max(req.n_results + 2, 6)),
+            )
             rabbit_holes = {
                 **research["rabbit_holes"],
                 "sources": research.get("sources", []),
@@ -2260,7 +2511,15 @@ def recommend(req: RecRequest) -> dict:
             shortlist = [
                 (index, provisional_research_pool[index]) for index in supported_indices
             ][:max(req.n_results + 2, 6)]
-            for candidate_index, candidate in shortlist:
+            for verification_index, (candidate_index, candidate) in enumerate(shortlist, 1):
+                emit(
+                    "identity_verification",
+                    "Verifying album identities",
+                    researched=len(findings),
+                    checked=verification_index - 1,
+                    verification_target=len(shortlist),
+                    verified=len(verified),
+                )
                 finding = findings[candidate_index]
                 audit = outside_audit[candidate.get("_proposal_index", candidate_index)]
                 candidate = {
@@ -2336,7 +2595,130 @@ def recommend(req: RecRequest) -> dict:
         else:
             results = []
             bridge_abstention = True
-    results = select_recommendation_slate(req, results)
+    selection_pool = list(results)
+    emit(
+        "quality_selection",
+        "Comparing the final listening path",
+        verified=len(selection_pool),
+    )
+    results = select_recommendation_slate(req, selection_pool)
+    discovery["quality_gate"] = quality_gate_summary(selection_pool)
+    if (
+        len(results) < req.n_results
+        and discovery["status"] == "verified"
+        and "proposed" in locals()
+        and "provisional_research_pool" in locals()
+    ):
+        initially_researched = {
+            candidate.get("_proposal_index") for candidate in provisional_research_pool
+        }
+        reserve_pool = [
+            candidate for candidate in proposed
+            if candidate.get("_proposal_index") not in initially_researched
+        ][:4]
+        if reserve_pool:
+            discovery["reserve_used"] = True
+            discovery["stage"] = "reserve_research"
+            emit(
+                "reserve_research",
+                "The first path was short; checking the reserve",
+                selected=len(results),
+                requested=req.n_results,
+                reserve_target=len(reserve_pool),
+            )
+            reserve_research = research_album_candidates(req, reserve_pool, label_context)
+            reserve_findings = {
+                item["candidate_index"]: item for item in reserve_research["findings"]
+                if item["verdict"] in {"supported", "partially_supported"}
+                and 0 <= item["candidate_index"] < len(reserve_pool)
+            }
+            discovery["reserve_researched"] = len(reserve_findings)
+            rabbit_holes["sources"] = list({
+                source["url"]: source
+                for source in rabbit_holes.get("sources", [])
+                + reserve_research.get("sources", [])
+                if source.get("url")
+            }.values())[:12]
+            reserve_verified = []
+            discovery["stage"] = "reserve_identity_verification"
+            emit(
+                "reserve_identity_verification",
+                "Verifying reserve album identities",
+                researched=len(reserve_findings),
+            )
+            for reserve_index, candidate in enumerate(reserve_pool):
+                emit(
+                    "reserve_identity_verification",
+                    "Verifying reserve album identities",
+                    researched=len(reserve_findings),
+                    checked=reserve_index,
+                    verification_target=len(reserve_pool),
+                    verified=len(reserve_verified),
+                )
+                finding = reserve_findings.get(reserve_index)
+                audit = outside_audit[candidate["_proposal_index"]]
+                if not finding:
+                    audit["disposition"] = "reserve_research_rejected"
+                    continue
+                audit["research"] = finding
+                audit["decision_reasons"].append(finding["bridge_summary"])
+                candidate = {
+                    **candidate,
+                    "year": finding.get("release_year") or candidate.get("year"),
+                    "visibility": finding.get("visibility", candidate.get("visibility", "unknown")),
+                    "research": finding,
+                    "research_sources": reserve_research.get("sources", []),
+                }
+                audit["visibility"] = candidate["visibility"]
+                if (req.visibility or "").casefold() == "underheard" \
+                        and candidate["visibility"] != "underheard":
+                    audit["disposition"] = "rejected_visibility_mismatch"
+                    continue
+                resolved = verify_release_group(candidate)
+                if not resolved:
+                    audit["disposition"] = "rejected_identity_unverified"
+                    continue
+                audit.update(
+                    disposition="identity_verified", year=resolved["year"],
+                    rg_mbid=resolved["rg_mbid"], corpus_status="verified_discovery",
+                )
+                discovery["identity_cache_hits"] += int(
+                    resolved.get("identity_source") in {
+                        "musicbrainz_cache", "musicbrainz_corpus",
+                    }
+                )
+                identity = (resolved["artist"].casefold(), resolved["album"].casefold())
+                if identity in existing:
+                    audit["disposition"] = "rejected_duplicate"
+                    continue
+                if hc.year_min and (resolved["year"] is None or resolved["year"] < hc.year_min):
+                    audit["disposition"] = "excluded_by_hard_constraint"
+                    continue
+                if hc.year_max and (resolved["year"] is None or resolved["year"] > hc.year_max):
+                    audit["disposition"] = "excluded_by_hard_constraint"
+                    continue
+                if hc.exclude_seed_artists and resolved["artist"].casefold() in {
+                        seed["artist"].casefold() for seed in seeds}:
+                    audit["disposition"] = "excluded_by_hard_constraint"
+                    continue
+                if set(resolved["matched_descriptors"]) & set(hc.exclude_moods):
+                    audit["disposition"] = "excluded_by_hard_constraint"
+                    continue
+                reserve_verified.append(verified_candidate_result(resolved))
+                audit["disposition"] = "verified_discovery_reserve"
+                existing.add(identity)
+            discovery["reserve_verified"] = len(reserve_verified)
+            discovery["verified"] += len(reserve_verified)
+            discovery["stage"] = "complete"
+            if reserve_verified:
+                selection_pool.extend(reserve_verified)
+                emit(
+                    "quality_selection",
+                    "Comparing the expanded listening path",
+                    verified=len(selection_pool),
+                )
+                results = select_recommendation_slate(req, selection_pool)
+                discovery["quality_gate"] = quality_gate_summary(selection_pool)
     results = apply_freshness(results, req, journey_signature)
     coverage = "full"
     notes = []
@@ -2361,7 +2743,19 @@ def recommend(req: RecRequest) -> dict:
     if not results:
         coverage = "no_match"
         if not req.features.corpus_candidates:
-            if discovery["status"] == "fallback":
+            quality_gate = discovery.get("quality_gate", {})
+            quality_counts = quality_gate.get("counts", {})
+            if discovery.get("verified", 0) and quality_gate.get("status") == "unavailable":
+                failure = (
+                    f"{discovery['verified']} album identities were verified, but the final "
+                    "quality check could not complete. No unassessed albums were substituted."
+                )
+            elif discovery.get("verified", 0) and quality_counts.get("reject", 0):
+                failure = (
+                    f"{discovery['verified']} album identities were verified, but none satisfied "
+                    "the final quality check strongly enough for this calibrated path."
+                )
+            elif discovery["status"] == "fallback":
                 failure = (
                     f"Discovery could not complete during {discovery['stage'].replace('_', ' ')}. "
                     "No unverified albums were substituted."
@@ -2427,6 +2821,11 @@ def recommend(req: RecRequest) -> dict:
         )
     if OPENAI_KEY and results:
         try:
+            emit(
+                "editorial_copy",
+                "Writing the listening notes",
+                selected=len(results),
+            )
             listener_copy = compose_listener_copy(req.brief, results, req.calibration)
             response["intent_title"] = listener_copy["intent_title"]
             response["summary"] = listener_copy["summary"]
@@ -2447,6 +2846,7 @@ def recommend(req: RecRequest) -> dict:
             pass
     record_exposures(results, req, journey_signature)
     con.close()
+    emit("complete", "Listening path ready", selected=len(results))
     return response
 
 
@@ -2533,6 +2933,73 @@ def recommendations(req: RecRequest):
     if not DB_PATH.exists():
         return {"error": "corpus.db not found - run: python build_corpus.py build"}
     return recommend(req)
+
+
+def run_recommendation_job(job_id: str, req: RecRequest) -> None:
+    """Execute a recommendation while publishing safe progress metadata."""
+    try:
+        result = recommend(
+            req,
+            lambda stage, message, **details: recommendation_job_event(
+                job_id, stage, message, **details
+            ),
+        )
+        with RECOMMENDATION_JOBS_LOCK:
+            job = RECOMMENDATION_JOBS.get(job_id)
+            if job:
+                job.update(
+                    status="complete", stage="complete", message="Listening path ready",
+                    result=result, updated_at=time.time(),
+                )
+    except Exception as exc:
+        print(f"Recommendation job {job_id} failed ({exc})")
+        with RECOMMENDATION_JOBS_LOCK:
+            job = RECOMMENDATION_JOBS.get(job_id)
+            if job:
+                job.update(
+                    status="failed", stage="failed",
+                    message="The listening path could not be completed.",
+                    error=type(exc).__name__, updated_at=time.time(),
+                )
+
+
+@app.post("/recommendation-jobs")
+def create_recommendation_job(req: RecRequest):
+    if not DB_PATH.exists():
+        return {"error": "corpus.db not found - run: python build_corpus.py build"}
+    prune_recommendation_jobs()
+    job_id = uuid.uuid4().hex
+    now = time.time()
+    with RECOMMENDATION_JOBS_LOCK:
+        RECOMMENDATION_JOBS[job_id] = {
+            "job_id": job_id, "status": "running", "stage": "queued",
+            "message": "Starting the listening path", "details": {}, "events": [],
+            "created_at": now, "updated_at": now, "result": None,
+        }
+    threading.Thread(
+        target=run_recommendation_job,
+        args=(job_id, req),
+        name=f"recommendation-{job_id[:8]}",
+        daemon=True,
+    ).start()
+    return {"job_id": job_id, "status": "running"}
+
+
+@app.get("/recommendation-jobs/{job_id}")
+def recommendation_job_status(job_id: str):
+    with RECOMMENDATION_JOBS_LOCK:
+        job = RECOMMENDATION_JOBS.get(job_id)
+        if not job:
+            return {"error": "Recommendation job not found or expired."}
+        return {
+            "job_id": job_id,
+            "status": job["status"],
+            "stage": job["stage"],
+            "message": job["message"],
+            "details": dict(job["details"]),
+            "events": [dict(event) for event in job["events"]],
+            "result": job["result"] if job["status"] == "complete" else None,
+        }
 
 
 @app.post("/tuning-questions")

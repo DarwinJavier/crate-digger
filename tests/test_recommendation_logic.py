@@ -67,8 +67,8 @@ class RecommendationLogicTests(unittest.TestCase):
         self.assertEqual([item["id"] for item in questions],
                          ["interpretation_focus", "genre_distance", "visibility"])
         self.assertEqual(len(questions[1]["options"]), 5)
-        self.assertEqual(questions[1]["options"][0]["label"], "Close")
-        self.assertEqual(questions[1]["options"][3]["label"], "Frontier")
+        self.assertEqual(questions[1]["options"][0]["label"], "Same genre")
+        self.assertEqual(questions[1]["options"][3]["label"], "Different genres")
         self.assertIn("popularity", questions[2]["help"])
 
     def test_pairwise_diversity_reports_every_pair(self):

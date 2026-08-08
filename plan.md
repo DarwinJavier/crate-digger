@@ -185,6 +185,12 @@ Tasks:
       requests without turning verified exemplars into recommendation inventory.
 - [x] Split situational calibration into an orientation stage followed by interpretation,
       genre-distance, and visibility questions generated from the selected world.
+- [x] Add an auditable final quality gate with strong/qualified/reject verdicts and one
+      bounded research pass over unused generated candidates when the initial slate is short.
+- [x] Add process-local background recommendation jobs and honest listener-facing progress
+      checkpoints without exposing provisional album identities or simulated percentages.
+- [x] Add a curated listener prompt deck with session-stable inspiration, capability-based
+      starting points, and an expandable gallery that never submits without listener action.
 
 Exit criteria:
 - [x] Existing Phase 1 smoke checks still pass.

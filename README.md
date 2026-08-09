@@ -228,6 +228,9 @@ crate-digger/
 |-- plan.md                        # Phased delivery plan and readiness gates
 |-- AGENTS.md                      # Engineering, provenance, security, and data-rights rules
 |-- .env.example                   # Safe environment-variable template
+|-- .python-version                # Python runtime pinned for local and Render parity
+|-- requirements.txt               # Pinned production Python dependencies
+|-- render.yaml                    # Render service, environment, health, and disk Blueprint
 `-- README.md                      # Project overview and operating instructions
 ```
 
@@ -249,6 +252,30 @@ These boundaries are product features, not implementation trivia. They make the 
 The project is designed to test whether a curated, provenance-aware platform can outperform an LLM alone on recommendation quality and trust. The planned comparison has three arms: LLM alone, platform, and platform plus LLM summary.
 
 Development and calibration cases remain separate from the future holdout set. Once 25 unseen briefs are approved and frozen, they must not be edited during an evaluation run. Current results should not be presented as comparative proof until that holdout is complete.
+
+## Render deployment
+
+The repository includes a Render Blueprint in `render.yaml`. It defines one paid starter web service and a 1 GB persistent disk for anonymous feedback. Render builds the disposable corpus database from the tracked CSV sources during every deployment and stores only public feedback under `/var/data`.
+
+To deploy:
+
+1. In Render, create a new Blueprint and connect `DarwinJavier/crate-digger`.
+2. Confirm that Render detected the root `render.yaml` file.
+3. Enter `OPENAI_API_KEY` and `MUSICBRAINZ_CONTACT` when prompted. These use `sync: false` and are never stored in the repository.
+4. Allow Render to create the `crate-digger` starter web service and `crate-digger-data` persistent disk.
+5. After the first deploy, copy the generated `FEEDBACK_ADMIN_TOKEN` from the service environment settings and store it securely.
+6. Verify `/listen`, `/health`, feedback submission, owner CSV export, and the public-mode `404` routes before sharing the URL.
+
+The Blueprint uses:
+
+```text
+Build:  pip install -r requirements.txt && python build_corpus.py build
+Start:  uvicorn app:app --host 0.0.0.0 --port $PORT
+Health: /health
+Disk:   /var/data
+```
+
+`PUBLIC_MODE=true` and `PUBLIC_DATA_DIR=/var/data` are safe non-secret deployment settings. The generated feedback token and all API credentials remain server-side. Add `LASTFM_API_KEY` manually in Render only if the optional Last.fm query-time signal is needed.
 
 ## Authoritative documents
 

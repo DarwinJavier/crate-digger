@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: crate-digger
+    runtime: python
+    plan: starter
+    autoDeployTrigger: commit
+    buildCommand: pip install -r requirements.txt && python build_corpus.py build
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    maxShutdownDelaySeconds: 60
+    envVars:
+      - key: PUBLIC_MODE
+        value: "true"
+      - key: PUBLIC_DATA_DIR
+        value: /var/data
+      - key: FEEDBACK_ADMIN_TOKEN
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5.6-luna
+      - key: MUSICBRAINZ_CONTACT
+        sync: false
+    disk:
+      name: crate-digger-data
+      mountPath: /var/data
+      sizeGB: 1

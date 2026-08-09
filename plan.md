@@ -196,6 +196,8 @@ Tasks:
       internal request-level analysis reports.
 - [x] Add anonymous public journey feedback with structured fit, discovery, listening-intent,
       and flow signals; strict SQLite storage; and a bearer-protected owner CSV export.
+- [x] Add a Render Blueprint with pinned Python dependencies, deterministic corpus build,
+      public-mode defaults, health checks, dashboard-only secrets, and persistent feedback disk.
 
 Exit criteria:
 - [x] Existing Phase 1 smoke checks still pass.

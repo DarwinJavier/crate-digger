@@ -121,5 +121,24 @@ class ListenerUiTrustTests(unittest.TestCase):
         self.assertNotIn("/chat/completions", self.page)
         self.assertNotIn("/responses", self.page)
 
+    def test_public_feedback_captures_the_journey_without_personal_identity(self):
+        for contract in (
+            "How was this listening path?",
+            "How well did the recommendations respond to your original request?",
+            "How much did the path expand what you already knew or had considered?",
+            "Did any recommendation make you want to listen?",
+            "What should we preserve, change, or investigate?",
+            "api('/public-feedback'",
+            "journey_id:lastRecommendationBody?.journey_id",
+            "prompt:lastBrief",
+            "calibration:calibrationAnswers.map",
+            "results:feedbackResults()",
+            "No name, email address, IP address, or internal decision report is collected.",
+        ):
+            self.assertIn(contract, self.page)
+        self.assertNotIn('name="email"', self.page)
+        self.assertNotIn('name="name"', self.page)
+        self.assertEqual(self.page.count("api('/public-feedback'"), 1)
+
 if __name__ == "__main__":
     unittest.main()

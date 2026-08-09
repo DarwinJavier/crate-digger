@@ -191,6 +191,11 @@ Tasks:
       checkpoints without exposing provisional album identities or simulated percentages.
 - [x] Add a curated listener prompt deck with session-stable inspiration, capability-based
       starting points, and an expandable gallery that never submits without listener action.
+- [x] Add an environment-controlled public mode that preserves recommendation behavior while
+      hiding evaluation writes, framework documentation, detailed health diagnostics, and
+      internal request-level analysis reports.
+- [x] Add anonymous public journey feedback with structured fit, discovery, listening-intent,
+      and flow signals; strict SQLite storage; and a bearer-protected owner CSV export.
 
 Exit criteria:
 - [x] Existing Phase 1 smoke checks still pass.

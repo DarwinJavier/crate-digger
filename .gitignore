@@ -10,6 +10,7 @@ venv/
 *.pyc
 *.pyo
 *.pyd
+**/public_feedback.db*
 .env
 .env.*
 !.env.example

@@ -56,6 +56,9 @@ Then fill in only the values needed for the features you want to use:
 
 | Variable | Required | Description |
 | --- | --- | --- |
+| `PUBLIC_MODE` | For public deployment | Set to `true` to expose only the listener experience and its required API surface; defaults to full local mode |
+| `PUBLIC_DATA_DIR` | For public feedback | Directory containing the feedback database; use the Render persistent-disk mount in production |
+| `FEEDBACK_ADMIN_TOKEN` | For feedback export | Long server-only bearer secret protecting the owner CSV download |
 | `MUSICBRAINZ_CONTACT` | For MusicBrainz calls | Descriptive contact email or project URL used in the required User-Agent |
 | `OPENAI_API_KEY` | For model-guided discovery | Enables structured candidate discovery, intent inference, and bounded explanation prose |
 | `OPENAI_MODEL` | For model-guided discovery | Model used for optional query-time inference; a cost-conscious default is provided |
@@ -101,6 +104,22 @@ Open:
 
 Core corpus recommendations work without OpenAI or Last.fm credentials. Features that need unavailable external services return labeled fallback or coverage states.
 
+### Public mode
+
+Full mode is the default for local development. It includes the evaluation room, framework documentation, detailed health diagnostics, and complete request-level analysis reports.
+
+Set the following only in a public deployment:
+
+```text
+PUBLIC_MODE=true
+```
+
+Public mode redirects `/` to `/listen`, reduces `/health` to an availability signal, disables `/evaluation` and its write endpoints, disables `/docs`, `/redoc`, and `/openapi.json`, and removes internal analysis reports from recommendation responses. Recommendation selection, quality gates, evidence trails, confidence, calibration, and listener-facing explanations remain unchanged.
+
+Public testers can submit anonymous journey feedback through the listener interface. Each submission stores the original prompt, selected calibration, recommended album identities, four structured experience answers, and an optional message. It does not store names, email addresses, IP addresses, rejected candidates, or internal analysis reports.
+
+Feedback is written to `public_feedback.db` under `PUBLIC_DATA_DIR`. A production deployment must point that variable to persistent storage or submissions will be lost during a restart or redeploy.
+
 ## API
 
 Recommendation and discovery endpoints:
@@ -111,6 +130,7 @@ POST /recommendation-jobs
 GET  /recommendation-jobs/{job_id}
 POST /tuning-questions
 GET  /labels
+POST /public-feedback
 ```
 
 Evaluation endpoints:
@@ -131,6 +151,15 @@ GET /
 GET /listen
 ```
 
+Owner-only feedback export:
+
+```text
+GET /admin/public-feedback.csv
+Authorization: Bearer <FEEDBACK_ADMIN_TOKEN>
+```
+
+The export returns `404` when the token is absent or incorrect. Never put the token in browser code or a public URL.
+
 Example recommendation request:
 
 ```json
@@ -146,6 +175,8 @@ Example recommendation request:
 ```
 
 The full request schema, including hard constraints, calibration answers, reference records, image features, and feature toggles, is available at `/docs`.
+
+The framework documentation and internal analysis report are available only in full mode.
 
 ## Tests
 

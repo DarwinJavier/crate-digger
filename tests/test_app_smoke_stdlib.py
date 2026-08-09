@@ -2,6 +2,7 @@
 
 import os
 import sys
+import tempfile
 import time
 import types
 import unittest
@@ -29,8 +30,9 @@ def Field(default=None, default_factory=None, **_kwargs):
 
 
 class FastAPI:
-    def __init__(self, **_kwargs):
-        pass
+    def __init__(self, **kwargs):
+        self.options = kwargs
+        self.version = kwargs.get("version", "")
 
     def post(self, _path, **_kwargs):
         return lambda function: function
@@ -41,8 +43,27 @@ class FastAPI:
 
 fastapi = types.ModuleType("fastapi")
 fastapi.FastAPI = FastAPI
+fastapi.Header = lambda default="", **_kwargs: default
+class HTTPException(Exception):
+    def __init__(self, status_code, detail=None):
+        super().__init__(detail)
+        self.status_code = status_code
+        self.detail = detail
+fastapi.HTTPException = HTTPException
 responses = types.ModuleType("fastapi.responses")
 responses.HTMLResponse = object
+class Response:
+    def __init__(self, content="", media_type=None, headers=None, status_code=200):
+        self.content = content
+        self.media_type = media_type
+        self.headers = headers or {}
+        self.status_code = status_code
+responses.Response = Response
+class RedirectResponse:
+    def __init__(self, url, status_code=307):
+        self.url = url
+        self.status_code = status_code
+responses.RedirectResponse = RedirectResponse
 pydantic = types.ModuleType("pydantic")
 pydantic.BaseModel = BaseModel
 pydantic.Field = Field
@@ -95,6 +116,81 @@ class AppSmokeTests(unittest.TestCase):
             "weak_bridge" in " ".join(item["risk_flags"])
             for item in report["candidates"]
         ))
+
+    def test_public_mode_hides_internal_surfaces_without_changing_results(self):
+        full_request = self.request(include_analysis_report=True)
+        expected_entities = [
+            result["entity"]["rg_mbid"] for result in app.recommend(self.request())["results"]
+        ]
+        original_mode = app.PUBLIC_MODE
+        app.PUBLIC_MODE = True
+        try:
+            public_response = app.recommendations(full_request)
+            self.assertNotIn("analysis_report", public_response)
+            self.assertEqual(
+                [result["entity"]["rg_mbid"] for result in public_response["results"]],
+                expected_entities,
+            )
+            self.assertTrue(all(result["reasons"] for result in public_response["results"]))
+            self.assertEqual(app.health(), {"ok": True})
+            redirect = app.home()
+            self.assertEqual(redirect.url, "/listen")
+            self.assertEqual(redirect.status_code, 307)
+            for restricted_call in (
+                lambda: app.get_evaluation_state(),
+                lambda: app.create_evaluation_brief(None),
+                lambda: app.freeze_evaluation_briefs(),
+                lambda: app.create_evaluation_feedback(None),
+                lambda: app.evaluation_home(),
+            ):
+                with self.assertRaises(HTTPException) as raised:
+                    restricted_call()
+                self.assertEqual(raised.exception.status_code, 404)
+        finally:
+            app.PUBLIC_MODE = original_mode
+
+    def test_public_mode_disables_framework_discovery_routes(self):
+        public = app.fastapi_configuration(True)
+        self.assertIsNone(public["docs_url"])
+        self.assertIsNone(public["redoc_url"])
+        self.assertIsNone(public["openapi_url"])
+        full = app.fastapi_configuration(False)
+        self.assertEqual(full["docs_url"], "/docs")
+        self.assertEqual(full["redoc_url"], "/redoc")
+        self.assertEqual(full["openapi_url"], "/openapi.json")
+
+    def test_public_feedback_is_anonymous_and_export_requires_the_owner_secret(self):
+        original_path = app.PUBLIC_FEEDBACK_DB_PATH
+        original_token = app.FEEDBACK_ADMIN_TOKEN
+        with tempfile.TemporaryDirectory() as directory:
+            app.PUBLIC_FEEDBACK_DB_PATH = Path(directory) / "feedback.db"
+            app.FEEDBACK_ADMIN_TOKEN = "owner-secret"
+            payload = app.PublicFeedbackPayload(
+                journey_id="journey-public-1",
+                prompt="Music that feels watchful rather than conventionally dark.",
+                calibration=[{"question_id": "visibility", "selected_label": "Underground"}],
+                results=[app.PublicFeedbackResult(
+                    artist="Artist", album="Album", year=2004, rg_mbid="mbid-1"
+                )],
+                request_fit=4,
+                discovery_expansion="significantly",
+                listen_intent="yes_multiple",
+                flow_rating=5,
+                message="The calibration made the result easier to trust.",
+            )
+            try:
+                receipt = app.create_public_feedback(payload)
+                self.assertTrue(receipt["ok"])
+                with self.assertRaises(HTTPException) as denied:
+                    app.download_public_feedback(authorization="Bearer wrong-secret")
+                self.assertEqual(denied.exception.status_code, 404)
+                export = app.download_public_feedback(authorization="Bearer owner-secret")
+                self.assertEqual(export.media_type, "text/csv")
+                self.assertIn("journey-public-1", export.content)
+                self.assertNotIn("email", export.content.casefold())
+            finally:
+                app.PUBLIC_FEEDBACK_DB_PATH = original_path
+                app.FEEDBACK_ADMIN_TOKEN = original_token
 
     def test_progress_callback_and_background_job_report_real_stages(self):
         events = []

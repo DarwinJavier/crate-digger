@@ -21,6 +21,7 @@ Then open http://127.0.0.1:8000  (simple form)
 
 import json
 import hashlib
+import hmac
 import os
 import re
 import sqlite3
@@ -31,8 +32,8 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 import requests
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Header, HTTPException
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from pydantic import BaseModel, Field
 
 from recommendation_logic import (
@@ -54,6 +55,7 @@ from recommendation_logic import (
 from evaluation_store import evaluation_state, freeze_briefs, save_brief, save_feedback
 from evaluation_ui import evaluation_page
 from listener_ui import listener_page
+from public_feedback_store import export_public_feedback_csv, save_public_feedback
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
@@ -100,6 +102,12 @@ ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 OPENAI_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5.6-luna")
 MUSICBRAINZ_CONTACT = os.environ.get("MUSICBRAINZ_CONTACT", "").strip()
+PUBLIC_MODE = os.environ.get("PUBLIC_MODE", "").strip().casefold() in {"1", "true", "yes", "on"}
+PUBLIC_DATA_DIR = Path(os.environ.get("PUBLIC_DATA_DIR", str(PROJECT_ROOT / "build")))
+if not PUBLIC_DATA_DIR.is_absolute():
+    PUBLIC_DATA_DIR = PROJECT_ROOT / PUBLIC_DATA_DIR
+PUBLIC_FEEDBACK_DB_PATH = PUBLIC_DATA_DIR / "public_feedback.db"
+FEEDBACK_ADMIN_TOKEN = os.environ.get("FEEDBACK_ADMIN_TOKEN", "").strip()
 USER_AGENT = os.environ.get(
     "MUSICBRAINZ_USER_AGENT",
     f"MusicCorpusSandbox/0.1 ({MUSICBRAINZ_CONTACT})" if MUSICBRAINZ_CONTACT else "",
@@ -108,11 +116,35 @@ CORPUS_VERSION = time.strftime("%Y-%m-%d", time.gmtime(DB_PATH.stat().st_mtime))
 MUSICBRAINZ_LOCK = threading.Lock()
 MUSICBRAINZ_LAST_REQUEST = 0.0
 
-app = FastAPI(title="Music Context Sandbox", version="0.1")
+def fastapi_configuration(public_mode: bool) -> dict[str, Any]:
+    """Hide framework discovery surfaces only in the public deployment."""
+    return {
+        "title": "Music Context Sandbox",
+        "version": "0.1",
+        "docs_url": None if public_mode else "/docs",
+        "redoc_url": None if public_mode else "/redoc",
+        "openapi_url": None if public_mode else "/openapi.json",
+    }
+
+
+app = FastAPI(**fastapi_configuration(PUBLIC_MODE))
 
 RECOMMENDATION_JOBS: dict[str, dict[str, Any]] = {}
 RECOMMENDATION_JOBS_LOCK = threading.Lock()
 MAX_RETAINED_RECOMMENDATION_JOBS = 40
+
+
+def require_full_mode() -> None:
+    """Make internal surfaces indistinguishable from routes that do not exist."""
+    if PUBLIC_MODE:
+        raise HTTPException(status_code=404, detail="Not found")
+
+
+def apply_public_request_policy(req: "RecRequest") -> "RecRequest":
+    """Remove internal diagnostics without changing recommendation inputs or ranking."""
+    if PUBLIC_MODE:
+        req.include_analysis_report = False
+    return req
 
 
 def recommendation_job_event(job_id: str, stage: str, message: str, **details: Any) -> None:
@@ -301,6 +333,26 @@ class EvaluationFeedback(BaseModel):
     save_revisit: int
     explanation_trust: int
     justification: str
+
+
+class PublicFeedbackResult(BaseModel):
+    artist: str
+    album: str
+    year: Optional[int] = None
+    rg_mbid: str = ""
+
+
+class PublicFeedbackPayload(BaseModel):
+    journey_id: str
+    prompt: str
+    calibration: list[dict[str, Any]] = Field(default_factory=list)
+    results: list[PublicFeedbackResult] = Field(default_factory=list)
+    request_fit: int = Field(ge=1, le=5)
+    discovery_expansion: str
+    listen_intent: str
+    flow_rating: int = Field(ge=1, le=5)
+    message: str = ""
+    website: str = ""
 
 
 def model_values(model: BaseModel) -> dict:
@@ -2932,7 +2984,7 @@ def compose_summary(brief: str, results: list) -> str:
 def recommendations(req: RecRequest):
     if not DB_PATH.exists():
         return {"error": "corpus.db not found - run: python build_corpus.py build"}
-    return recommend(req)
+    return recommend(apply_public_request_policy(req))
 
 
 def run_recommendation_job(job_id: str, req: RecRequest) -> None:
@@ -2967,6 +3019,7 @@ def run_recommendation_job(job_id: str, req: RecRequest) -> None:
 def create_recommendation_job(req: RecRequest):
     if not DB_PATH.exists():
         return {"error": "corpus.db not found - run: python build_corpus.py build"}
+    apply_public_request_policy(req)
     prune_recommendation_jobs()
     job_id = uuid.uuid4().hex
     now = time.time()
@@ -3028,13 +3081,44 @@ def labels(query: str = "", genre: str = "", mood: str = "", texture: str = "",
             "provenance": {"source": "curator", "dataset": "crate-digger-curated-record-labels"}}
 
 
+@app.post("/public-feedback")
+def create_public_feedback(payload: PublicFeedbackPayload):
+    """Accept one anonymous, size-bounded product-testing response per journey."""
+    values = model_values(payload)
+    if str(values.get("website") or "").strip():
+        return {"ok": True}
+    values["results"] = [model_values(item) for item in payload.results]
+    values["app_version"] = app.version
+    values["scoring_policy"] = SCORING_POLICY_VERSION
+    try:
+        receipt = save_public_feedback(PUBLIC_FEEDBACK_DB_PATH, values)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {"ok": True, **receipt}
+
+
+@app.get("/admin/public-feedback.csv")
+def download_public_feedback(authorization: str = Header(default="")):
+    """Export public feedback only when the deployment owner supplies the bearer secret."""
+    expected = f"Bearer {FEEDBACK_ADMIN_TOKEN}"
+    if not FEEDBACK_ADMIN_TOKEN or not hmac.compare_digest(authorization, expected):
+        raise HTTPException(status_code=404, detail="Not found")
+    return Response(
+        content=export_public_feedback_csv(PUBLIC_FEEDBACK_DB_PATH),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=crate-digger-feedback.csv"},
+    )
+
+
 @app.get("/evaluation/state")
 def get_evaluation_state(evaluator_id: str = ""):
+    require_full_mode()
     return evaluation_state(evaluator_id)
 
 
 @app.post("/evaluation/briefs")
 def create_evaluation_brief(payload: EvaluationBrief):
+    require_full_mode()
     try:
         return {"brief": save_brief(model_values(payload))}
     except ValueError as exc:
@@ -3043,6 +3127,7 @@ def create_evaluation_brief(payload: EvaluationBrief):
 
 @app.post("/evaluation/freeze")
 def freeze_evaluation_briefs():
+    require_full_mode()
     try:
         payload = freeze_briefs()
         return {"frozen": True, "brief_count": len(payload["cases"])}
@@ -3052,6 +3137,7 @@ def freeze_evaluation_briefs():
 
 @app.post("/evaluation/feedback")
 def create_evaluation_feedback(payload: EvaluationFeedback):
+    require_full_mode()
     try:
         return {"feedback": save_feedback(model_values(payload))}
     except ValueError as exc:
@@ -3060,6 +3146,7 @@ def create_evaluation_feedback(payload: EvaluationFeedback):
 
 @app.get("/evaluation", response_class=HTMLResponse)
 def evaluation_home():
+    require_full_mode()
     return evaluation_page()
 
 
@@ -3071,7 +3158,9 @@ def listener_home():
 @app.get("/health")
 def health():
     if not DB_PATH.exists():
-        return {"ok": False, "error": "corpus.db missing"}
+        return {"ok": False} if PUBLIC_MODE else {"ok": False, "error": "corpus.db missing"}
+    if PUBLIC_MODE:
+        return {"ok": True}
     con = db()
     total = con.execute("SELECT COUNT(*) FROM albums").fetchone()[0]
     core = con.execute("SELECT COUNT(*) FROM albums WHERE corpus_status='core'").fetchone()[0]
@@ -3103,6 +3192,8 @@ def health():
 
 @app.get("/", response_class=HTMLResponse)
 def home():
+    if PUBLIC_MODE:
+        return RedirectResponse(url="/listen", status_code=307)
     return """<!doctype html><html><head><title>Music Context Sandbox</title>
 <style>body{font-family:system-ui;max-width:720px;margin:2rem auto;padding:0 1rem;background:#111;color:#eee}
 input,button{font-size:1rem;padding:.5rem;margin:.25rem 0;width:100%;box-sizing:border-box;

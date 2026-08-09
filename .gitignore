@@ -11,6 +11,7 @@ venv/
 *.pyo
 *.pyd
 **/public_feedback.db*
+public-feedback.csv
 .env
 .env.*
 !.env.example

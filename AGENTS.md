@@ -47,7 +47,12 @@ AGENTS.md                 # this file
 5. **Data rights lines:** MusicBrainz (CC0), Wikidata structured data (CC0), and
    human curation may be stored. Last.fm data is an optional query-time signal
    only, never written to the corpus.
-   Do not add Spotify API, Apple Music API, or Rate Your Music data in any form.
+   Spotify API access is permitted for explicitly authorized account connection,
+   listening exploration, private playlist export, and playback control (approved
+   2026-10-26). Keep Spotify content and account data outside the corpus, exports,
+   recommendation evidence, and LLM prompts. Keep OAuth tokens server-side and
+   request only the permissions needed for these features.
+   Do not add Apple Music API or Rate Your Music data in any form.
 6. **MusicBrainz etiquette:** max 1 request/second, descriptive User-Agent. Never
    parallelize MusicBrainz calls.
 7. **Keep it one-person simple.** SQLite not Postgres, no Docker, no graph DB, no

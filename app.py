@@ -56,6 +56,7 @@ from evaluation_store import evaluation_state, freeze_briefs, save_brief, save_f
 from evaluation_ui import evaluation_page
 from listener_ui import listener_page
 from public_feedback_store import export_public_feedback_csv, save_public_feedback
+from spotify_control import register_spotify
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
@@ -128,6 +129,11 @@ def fastapi_configuration(public_mode: bool) -> dict[str, Any]:
 
 
 app = FastAPI(**fastapi_configuration(PUBLIC_MODE))
+spotify_control = register_spotify(
+    app,
+    os.environ.get("SPOTIFY_CLIENT_ID", ""),
+    os.environ.get("SPOTIFY_REDIRECT_URI", "http://127.0.0.1:8000/spotify/callback"),
+)
 
 RECOMMENDATION_JOBS: dict[str, dict[str, Any]] = {}
 RECOMMENDATION_JOBS_LOCK = threading.Lock()

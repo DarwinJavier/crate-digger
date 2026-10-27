@@ -43,6 +43,7 @@ class FastAPI:
 
 fastapi = types.ModuleType("fastapi")
 fastapi.FastAPI = FastAPI
+fastapi.Request = object
 fastapi.Header = lambda default="", **_kwargs: default
 class HTTPException(Exception):
     def __init__(self, status_code, detail=None):

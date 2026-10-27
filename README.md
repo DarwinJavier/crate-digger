@@ -15,7 +15,59 @@ An agent-first music intelligence sandbox for finding records through context, n
 - **Deterministic corpus pipeline:** Builds a disposable SQLite database and JSONL export from versioned CSV sources of truth.
 - **Optional external signals:** Supports query-time Last.fm signals without writing Last.fm data into the corpus.
 
-## Current status
+## Optional Spotify connection
+
+Spotify is a listening destination: account connection, album/track search, private
+playlist export, queueing, and play/pause/skip on an available Spotify device.
+Recommendation cards link to a prefilled search through **Send to Spotify**. Select
+the correct Spotify edition and tracks before sending. No Spotify data enters the
+corpus, recommendation evidence, or LLM prompts.
+
+1. Create a Web API app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+2. Register `http://127.0.0.1:8000/spotify/callback` as its redirect URI.
+3. Add the app's Client ID to your ignored `.env`:
+
+   ```text
+   SPOTIFY_CLIENT_ID=your_client_id
+   SPOTIFY_REDIRECT_URI=http://127.0.0.1:8000/spotify/callback
+   ```
+
+4. Restart the server, open `http://127.0.0.1:8000/spotify`, and select **Connect Spotify**.
+   Use that exact origin rather than `localhost` so the session cookie matches the callback.
+
+No client secret or new dependency is needed. Authorization uses PKCE, a one-use
+state bound to the browser, and server-side tokens. An HTTP-only session cookie
+identifies each account; write actions also require the app origin and a CSRF token.
+Tokens expire from process memory after eight hours or a restart. Use one server
+worker. Disconnect clears this app session; revoke the app in Spotify account
+settings to withdraw the underlying authorization.
+
+Development-mode app owners need Premium, and apps currently allow up to five
+allowlisted users. Playback also needs Premium and a Spotify device: open Spotify
+and start a track, then refresh devices in Crate Digger. Endpoint permissions and
+quotas can still deny an action. See Spotify's [quota modes](https://developer.spotify.com/documentation/web-api/concepts/quota-modes)
+and [playback documentation](https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback).
+Private playlist creation uses `POST /me/playlists`; additions use the current
+`POST /playlists/{id}/items` endpoint. Public playlist editing is deliberately outside
+the requested permissions. The UI permits up to 100 explicitly selected tracks per
+action and paginates album tracks and private playlists. It never retries writes
+automatically; inspect Spotify after an ambiguous failure before retrying.
+
+For a hosted instance, set `SPOTIFY_CLIENT_ID` and `SPOTIFY_REDIRECT_URI` in its
+environment and register the exact HTTPS callback in Spotify. Use the same origin
+to open the app. Each visitor connects their own account; no shared owner account
+is exposed. Sessions are intentionally process-local, so do not scale to multiple
+workers or instances without redesigning session storage. Avoid access logs that
+record callback query strings; for local use, `uvicorn app:app --no-access-log`.
+
+Offline integration checks use the installed base dependencies and mock all Spotify
+requests. Run them separately from the dependency-free stub suite:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests/integration -p test_spotify_control.py
+```
+
+## Current recommendation status
 
 The recommendation proof and experimental recommendation-intelligence track are implemented. Corpus expansion is still in progress: the current documented baseline is 177 verified albums, including 36 core descriptor-annotated albums, across buckets A-N and years 1978-2024.
 

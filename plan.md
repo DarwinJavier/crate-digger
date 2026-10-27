@@ -211,6 +211,35 @@ Exit criteria:
 
 ---
 
+## Experimental track S - Spotify listening (authorized 2026-10-26)
+
+**Goal:** connect the listener's Spotify account for exploration, private playlist
+export, and playback control without adding Spotify content to recommendation data.
+This is an explicitly approved side track while corpus and evaluation gates stay open.
+
+Tasks and exit checks:
+- [x] Amend AGENTS.md rule 5 for the approved account/listening exception.
+- [x] Implement PKCE, browser-bound one-use OAuth state, expiring server-side
+      sessions, CSRF checks, per-user cookies, refresh, and disconnect.
+- [x] Link the listener and each recommendation to a separate Spotify controls page.
+- [x] Add explicit track selection, private playlist creation/addition, album/track
+      search, track queueing, device selection, and play/pause/next/previous.
+- [x] Keep account data, tokens, and Spotify search results out of the corpus,
+      recommendation evidence, exports, and model prompts. Add no dependencies.
+- [x] Document developer dashboard configuration, Premium/allowlist restrictions,
+      process-local session limits, and partial playlist failure behavior.
+- [x] Record passing offline security/transport tests and required recommendation smoke checks:
+      63 existing tests plus 14 real-ASGI integration tests pass; Python compilation
+      and listener/Spotify JavaScript syntax checks pass. Health, reason-bearing
+      recommendations, impossible-year no-match, and outside-corpus seed checks pass.
+- [ ] Configure the user's Spotify app and verify authorization, playlist export,
+      and playback against the real account. No real account actions taken yet.
+
+Status: implementation passes offline validation; live-account acceptance remains
+pending the user's Spotify Developer Dashboard setup. No Phase 2+ completion claim.
+
+---
+
 ## Phase 4 - Targeted enrichment, conditional
 
 **Goal:** address only the recommendation failures demonstrated by Phase 3.

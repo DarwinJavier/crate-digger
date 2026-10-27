@@ -4,6 +4,7 @@
 def listener_page() -> str:
     return r'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="BV2WWM9vDy373dvsX0pBDb4ChoSbfuhDAuUTNf1cf3U" />
 <meta name="theme-color" content="#e9e5da"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4.5 10.5 16 5l11.5 5.5v13L16 28 4.5 23.5zM4.5 10.5 16 15l11.5-4.5M16 15v13' fill='none' stroke='%23607268' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='m10.5 9.1 5.5-2.6 5.5 2.6' fill='none' stroke='%23d55b2c' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;display=swap" rel="stylesheet"><title>Crate Digger</title>
 <style>
 :root{--ink:#171d1d;--muted:#5c6663;--paper:#dfe4e1;--surface:#f0f2ed;--line:rgba(23,29,29,.22);--accent:#9e332f;--dark:#17343a;--ease:cubic-bezier(.22,1,.36,1)}

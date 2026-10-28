@@ -194,6 +194,16 @@ Tasks:
 - [x] Add an environment-controlled public mode that preserves recommendation behavior while
       hiding evaluation writes, framework documentation, detailed health diagnostics, and
       internal request-level analysis reports.
+- [x] Add browser-local Listening History (authorized 2026-10-27): automatically
+      retain the latest 50 completed journey snapshots, original prompts and calibration,
+      exact recommendation order and evidence, browsing position, and delete controls.
+      No additional model calls, account sync, or server storage. Browser data clearing
+      removes history. Internal analysis reports and Spotify account data are not saved.
+      Validation: 12 listener UI contracts, JavaScript syntax, and functional Node checks
+      for snapshot recovery, deduplication, retention, deletion, corruption, and quota failure.
+      Release validation: 34 recommendation smoke tests pass. A live five-album browser
+      journey survived refresh and reopened at album 2 with original explanation and
+      calibration intact; mobile History access was verified and corrected.
 - [x] Add anonymous public journey feedback with structured fit, discovery, listening-intent,
       and flow signals; strict SQLite storage; and a bearer-protected owner CSV export.
 - [x] Add a Render Blueprint with pinned Python dependencies, deterministic corpus build,
